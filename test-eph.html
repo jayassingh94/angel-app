@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>SE WASM diagnostic</title>
+  <style>
+    body { margin: 0; background: #0a0814; font-family: monospace; color: #a5f3fc; padding: 24px; }
+    h2   { color: #818cf8; }
+    pre  { background: #040310; border: 1px solid #1e1b4b; border-radius: 8px;
+           padding: 16px; white-space: pre-wrap; line-height: 1.7; font-size: 13px; }
+    .ok  { color: #4ade80; }
+    .err { color: #f87171; }
+  </style>
+</head>
+<body>
+  <h2>@swisseph/browser — WASM diagnostic</h2>
+  <p style="color:#64748b;font-size:12px;">
+    Diagnostic date: July 3 1992 01:42 AM IST → UTC July 2 1992 20:12:00<br/>
+    City: Mumbai (lat 19.076°, lon 72.878°) · House system: Whole Sign
+  </p>
+  <pre id="out">Loading WASM…</pre>
+
+  <script type="module">
+    import { runEphTest } from '/src/utils/testEph.js'
+
+    const pre = document.getElementById('out')
+    const lines = []
+
+    const origLog  = console.log
+    const origErr  = console.error
+    const origWarn = console.warn
+
+    const capture = (cls) => (...args) => {
+      origLog(...args)
+      const text = args.map(a => (typeof a === 'object' ? JSON.stringify(a) : String(a))).join(' ')
+      lines.push(`<span class="${cls}">${text.replace(/</g,'&lt;')}</span>`)
+      pre.innerHTML = lines.join('\n')
+    }
+    console.log  = capture('ok')
+    console.error = capture('err')
+    console.warn  = capture('err')
+
+    try {
+      const result = await runEphTest()
+      console.log('\nResult object:', JSON.stringify(result, null, 2))
+    } catch (e) {
+      console.error('FATAL:', e.message, e.stack)
+    }
+  </script>
+</body>
+</html>
