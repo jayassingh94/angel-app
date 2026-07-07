@@ -9,14 +9,12 @@ const SUBITEMS = [
     label: 'Life Path Number',
     glyph: '◷',
     desc: 'Your core numerological blueprint derived from your date of birth.',
-    soon: true,
   },
   {
     id: 'namecorrection',
     label: 'Name Numerology',
     glyph: '✎',
     desc: 'How your name\'s vibrational number aligns with your Life Path.',
-    soon: true,
   },
   {
     id: 'oracle',
