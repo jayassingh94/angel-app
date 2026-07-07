@@ -86,7 +86,7 @@ function FeaturedCard({ card, onNavigate }) {
   const [hovered, setHovered] = useState(false)
   return (
     <button
-      className="sm:col-span-2 text-left rounded-2xl p-6 relative overflow-hidden transition-all duration-300 w-full"
+      className="col-span-1 sm:col-span-2 text-left rounded-2xl p-6 relative overflow-hidden transition-all duration-300 w-full"
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       onClick={() => onNavigate(card.id)}
