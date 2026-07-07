@@ -433,6 +433,7 @@ export default function VedicKundali() {
   const [error,     setError]     = useState('')
   const [computing, setComputing] = useState(false)
   const [chartView, setChartView] = useState('d1')
+  const [activeTab,  setActiveTab]  = useState('chart')
   const debounceRef = useRef(null)
 
   useEffect(() => {
@@ -500,6 +501,7 @@ export default function VedicKundali() {
       const result = computeKundali(_swe, yearNum, monthNum, dayNum, h24, min, city)
       setChart(result)
       setChartView('d1')
+      setActiveTab('chart')
     } catch (e) {
       setError(e.message || 'Calculation failed. Please check your inputs.')
     } finally {
@@ -509,6 +511,7 @@ export default function VedicKundali() {
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const navamsaChart = useMemo(() => chart ? computeNavamsa(chart) : null, [chart])
+  const moon         = useMemo(() => chart?.grahas.find(g => g.id === 'Mo') ?? null, [chart])
 
   return (
     <div className="flex flex-col items-center px-4 sm:px-6 py-12 w-full">
@@ -709,15 +712,12 @@ export default function VedicKundali() {
 
         {/* ── Chart results ── */}
         {chart && (
-          <div className="chakra-card-in flex flex-col gap-6">
+          <div className="chakra-card-in flex flex-col gap-5">
 
-            {/* Chart identity bar */}
+            {/* Identity bar — always visible */}
             <div
               className="rounded-xl px-5 py-3 flex flex-wrap items-center justify-between gap-3"
-              style={{
-                background: 'rgba(99,102,241,0.08)',
-                border: '1px solid rgba(99,102,241,0.2)',
-              }}
+              style={{ background: 'rgba(99,102,241,0.08)', border: '1px solid rgba(99,102,241,0.2)' }}
             >
               <div>
                 <p className="text-[10px] uppercase tracking-[0.2em] text-slate-500">Lagna (Ascendant)</p>
@@ -732,86 +732,106 @@ export default function VedicKundali() {
               </div>
             </div>
 
-            {/* Split layout: chart SVG | graha table */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
+            {/* ── Tab navigation ── */}
+            <div
+              className="flex gap-1 rounded-xl p-1"
+              style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(99,102,241,0.15)' }}
+            >
+              {[
+                { key: 'chart',     label: 'Chart' },
+                { key: 'mahadasha', label: 'Mahadasha' },
+                { key: 'doshas',    label: 'Doshas' },
+                { key: 'transits',  label: 'Transits' },
+              ].map(({ key, label }) => (
+                <button
+                  key={key}
+                  onClick={() => setActiveTab(key)}
+                  className="flex-1 py-2 rounded-lg text-[9.5px] uppercase tracking-widest font-semibold transition-all"
+                  style={{
+                    background: activeTab === key ? 'rgba(99,102,241,0.28)' : 'transparent',
+                    color:      activeTab === key ? '#a5b4fc' : '#475569',
+                  }}
+                >
+                  {label}
+                </button>
+              ))}
+            </div>
 
-              {/* Left: North Indian chart with D1/D9 toggle */}
-              <div
-                className="rounded-2xl overflow-hidden p-4"
-                style={{
-                  background: 'rgba(4,3,14,0.9)',
-                  border: '1px solid rgba(99,102,241,0.25)',
-                  boxShadow: '0 0 48px rgba(99,102,241,0.12), 0 8px 32px rgba(0,0,0,0.5)',
-                }}
-              >
-                {/* D1 / D9 tab toggle */}
-                <div className="flex items-center justify-between mb-3">
-                  <div className="flex rounded-lg overflow-hidden" style={{ border: '1px solid rgba(99,102,241,0.2)' }}>
-                    {[{ key: 'd1', label: 'D1 · Rashi' }, { key: 'd9', label: 'D9 · Navamsa' }].map(({ key, label }) => (
-                      <button
-                        key={key}
-                        onClick={() => setChartView(key)}
-                        className="px-3 py-1 text-[8.5px] uppercase tracking-widest font-semibold transition-colors"
-                        style={{
-                          background: chartView === key ? 'rgba(99,102,241,0.28)' : 'transparent',
-                          color: chartView === key ? '#a5b4fc' : '#475569',
-                        }}
-                      >
-                        {label}
-                      </button>
-                    ))}
+            {/* ── Chart tab ── */}
+            <div style={{ display: activeTab === 'chart' ? 'flex' : 'none', flexDirection: 'column', gap: '1.5rem' }}>
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
+
+                {/* Left: chart with D1/D9 toggle */}
+                <div
+                  className="rounded-2xl overflow-hidden p-4"
+                  style={{
+                    background: 'rgba(4,3,14,0.9)',
+                    border: '1px solid rgba(99,102,241,0.25)',
+                    boxShadow: '0 0 48px rgba(99,102,241,0.12), 0 8px 32px rgba(0,0,0,0.5)',
+                  }}
+                >
+                  <div className="flex items-center justify-between mb-3">
+                    <div className="flex rounded-lg overflow-hidden" style={{ border: '1px solid rgba(99,102,241,0.2)' }}>
+                      {[{ key: 'd1', label: 'D1 · Rashi' }, { key: 'd9', label: 'D9 · Navamsa' }].map(({ key, label }) => (
+                        <button
+                          key={key}
+                          onClick={() => setChartView(key)}
+                          className="px-3 py-1 text-[8.5px] uppercase tracking-widest font-semibold transition-colors"
+                          style={{
+                            background: chartView === key ? 'rgba(99,102,241,0.28)' : 'transparent',
+                            color:      chartView === key ? '#a5b4fc' : '#475569',
+                          }}
+                        >
+                          {label}
+                        </button>
+                      ))}
+                    </div>
+                    {chartView === 'd9' && navamsaChart && (
+                      <span className="text-[9px] font-mono" style={{ color: 'rgba(99,102,241,0.5)' }}>
+                        Lagna {navamsaChart.lagnaSymbol} {navamsaChart.lagnaRashiName}
+                      </span>
+                    )}
                   </div>
-                  {chartView === 'd9' && navamsaChart && (
-                    <span className="text-[9px] font-mono" style={{ color: 'rgba(99,102,241,0.5)' }}>
-                      Lagna {navamsaChart.lagnaSymbol} {navamsaChart.lagnaRashiName}
-                    </span>
+                  <NorthIndianChart chart={chartView === 'd1' ? chart : navamsaChart} />
+                  {chartView === 'd9' && (
+                    <p className="text-[9px] text-slate-700 mt-3 text-center leading-relaxed px-2">
+                      Navamsa reflects the strength of planets and matters related to marriage and inner life.
+                    </p>
                   )}
                 </div>
 
-                <NorthIndianChart chart={chartView === 'd1' ? chart : navamsaChart} />
-
-                {chartView === 'd9' && (
-                  <p className="text-[9px] text-slate-700 mt-3 text-center leading-relaxed px-2">
-                    Navamsa reflects the strength of planets and matters related to marriage and inner life.
+                {/* Right: Graha table */}
+                <div
+                  className="rounded-2xl p-4"
+                  style={{
+                    background: 'rgba(10,8,28,0.85)',
+                    border: '1px solid rgba(99,102,241,0.18)',
+                    boxShadow: '0 8px 32px rgba(0,0,0,0.4)',
+                  }}
+                >
+                  <p className="text-[10px] uppercase tracking-[0.2em] text-slate-600 mb-3 text-center">
+                    Graha Positions · Sidereal
                   </p>
-                )}
-              </div>
-
-              {/* Right: Graha table */}
-              <div
-                className="rounded-2xl p-4"
-                style={{
-                  background: 'rgba(10,8,28,0.85)',
-                  border: '1px solid rgba(99,102,241,0.18)',
-                  boxShadow: '0 8px 32px rgba(0,0,0,0.4)',
-                }}
-              >
-                <p className="text-[10px] uppercase tracking-[0.2em] text-slate-600 mb-3 text-center">
-                  Graha Positions · Sidereal
-                </p>
-                <GrahaTable chart={chart} />
+                  <GrahaTable chart={chart} />
+                </div>
               </div>
             </div>
 
-            {/* Doshas section */}
-            <MangalDosha chart={chart} />
-            <KalsarpaDosha chart={chart} />
+            {/* ── Mahadasha tab ── */}
+            <div style={{ display: activeTab === 'mahadasha' ? 'block' : 'none' }}>
+              {moon && <VedicDasha moonSidLon={moon.sidLon} birthDate={new Date(chart.utcISO)} />}
+            </div>
 
-            {/* Transit section */}
-            {(() => {
-              const moon = chart.grahas.find(g => g.id === 'Mo')
-              return moon
-                ? <Transit swe={_swe} natalMoonRashi={moon.rashiIdx} />
-                : null
-            })()}
+            {/* ── Doshas tab ── */}
+            <div style={{ display: activeTab === 'doshas' ? 'flex' : 'none', flexDirection: 'column', gap: '1rem' }}>
+              <MangalDosha chart={chart} />
+              <KalsarpaDosha chart={chart} />
+            </div>
 
-            {/* Dasha section */}
-            {(() => {
-              const moon = chart.grahas.find(g => g.id === 'Mo')
-              return moon
-                ? <VedicDasha moonSidLon={moon.sidLon} birthDate={new Date(chart.utcISO)} />
-                : null
-            })()}
+            {/* ── Transits tab ── */}
+            <div style={{ display: activeTab === 'transits' ? 'block' : 'none' }}>
+              {moon && <Transit swe={_swe} natalMoonRashi={moon.rashiIdx} />}
+            </div>
 
             <p className="text-center text-slate-700 text-[11px]">
               Positions calculated using Swiss Ephemeris WASM (Moshier) with Lahiri ayanamsha. For ceremonial use, verify with a licensed Jyotishi.
