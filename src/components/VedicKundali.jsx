@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from 'react'
 import { SwissEphemeris } from '@swisseph/browser'
 import VedicDasha from './VedicDasha.jsx'
 import MangalDosha from './MangalDosha.jsx'
+import KalsarpaDosha from './KalsarpaDosha.jsx'
 
 // ── WASM singleton — initialised once at module load ──────────────────────────
 
@@ -759,6 +760,7 @@ export default function VedicKundali() {
 
             {/* Doshas section */}
             <MangalDosha chart={chart} />
+            <KalsarpaDosha chart={chart} />
 
             {/* Dasha section */}
             {(() => {
