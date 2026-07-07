@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from 'react'
 import { SwissEphemeris } from '@swisseph/browser'
+import VedicDasha from './VedicDasha.jsx'
 
 // ── WASM singleton — initialised once at module load ──────────────────────────
 
@@ -754,6 +755,14 @@ export default function VedicKundali() {
                 <GrahaTable chart={chart} />
               </div>
             </div>
+
+            {/* Dasha section */}
+            {(() => {
+              const moon = chart.grahas.find(g => g.id === 'Mo')
+              return moon
+                ? <VedicDasha moonSidLon={moon.sidLon} birthDate={new Date(chart.utcISO)} />
+                : null
+            })()}
 
             <p className="text-center text-slate-700 text-[11px]">
               Positions calculated using Swiss Ephemeris WASM (Moshier) with Lahiri ayanamsha. For ceremonial use, verify with a licensed Jyotishi.
