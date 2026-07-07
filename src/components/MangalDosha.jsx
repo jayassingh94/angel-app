@@ -76,8 +76,8 @@ export default function MangalDosha({ chart }) {
           {/* From-Lagna / From-Moon / Mars-sign chips */}
           <div className="flex gap-2 flex-wrap">
             {[
-              { label: 'From Lagna', active: fromLagna, house: marsHouseFromLagna },
-              { label: 'From Moon',  active: fromMoon,  house: marsHouseFromMoon  },
+              { label: 'From Lagna', active: fromLagna && severity !== 'none', house: marsHouseFromLagna },
+              { label: 'From Moon',  active: fromMoon  && severity !== 'none', house: marsHouseFromMoon  },
             ].map(({ label, active, house }) => (
               <div
                 key={label}

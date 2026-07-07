@@ -41,7 +41,7 @@ export function computeMangalDosha(chart) {
     // 1. Mars in own sign or exaltation
     if (EXCEPT_SIGNS.has(marsRashi)) {
       const reason = marsRashi === 9 ? 'exalted' : 'in its own sign'
-      exception = `Mars is ${reason} in ${marsSign}, which traditional texts consider a significant reducer of this dosha.`
+      exception = `Mars is ${reason} in ${marsSign} — classical Jyotish texts consider this a full cancellation of the dosha.`
     }
 
     // 2. Mars in the 2nd house from Lagna or Moon while placed in Gemini or Virgo
@@ -49,32 +49,37 @@ export function computeMangalDosha(chart) {
     if (!exception) {
       const in2nd = marsHouseFromLagna === 2 || marsHouseFromMoon === 2
       if (in2nd && (marsRashi === 2 || marsRashi === 5)) {
-        exception = `Mars in the 2nd house in ${marsSign} (a Mercury sign) is traditionally considered exempt from Mangal Dosha.`
+        exception = `Mars in the 2nd house in ${marsSign} (a Mercury sign) is traditionally considered a full cancellation of Mangal Dosha.`
       }
     }
   }
 
   // ── Severity ──────────────────────────────────────────────────────────────
-  const severity = !hasDosha ? 'none' : exception ? 'mild' : 'significant'
+  // Exception = full cancellation (not reduction); Moon-only trigger = mild.
+  const severity = (!hasDosha || exception) ? 'none'
+                 : (!fromLagna && fromMoon)  ? 'mild'
+                 : 'significant'
 
   // ── Explanation ───────────────────────────────────────────────────────────
+  const triggers = []
+  if (fromLagna) triggers.push(`${ORD[marsHouseFromLagna]} house from Lagna (${HOUSE_THEME[marsHouseFromLagna]})`)
+  if (fromMoon)  triggers.push(`${ORD[marsHouseFromMoon]} house from Moon (${HOUSE_THEME[marsHouseFromMoon]})`)
+
   let explanation
   if (!hasDosha) {
     explanation =
       `Mars is in the ${ORD[marsHouseFromLagna]} house from Lagna and the ` +
       `${ORD[marsHouseFromMoon]} house from Moon. Neither placement falls in a ` +
       `dosha-activating house (1, 2, 4, 7, 8, or 12), so no Mangal Dosha is present.`
+  } else if (exception) {
+    explanation =
+      `Mars in ${marsSign} occupies the ${triggers.join(' and the ')}, which would ` +
+      `normally activate Mangal Dosha. ${exception}`
   } else {
-    const triggers = []
-    if (fromLagna) triggers.push(`${ORD[marsHouseFromLagna]} house from Lagna (${HOUSE_THEME[marsHouseFromLagna]})`)
-    if (fromMoon)  triggers.push(`${ORD[marsHouseFromMoon]} house from Moon (${HOUSE_THEME[marsHouseFromMoon]})`)
-
     explanation =
       `Mars is placed in ${marsSign} in the ${triggers.join(' and the ')}. ` +
       `This activates Mangal Dosha, traditionally associated with intensity and friction ` +
       `in the areas of partnerships and marriage.`
-
-    if (exception) explanation += ` ${exception}`
   }
 
   return {
