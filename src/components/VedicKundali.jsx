@@ -4,6 +4,7 @@ import VedicDasha from './VedicDasha.jsx'
 import MangalDosha from './MangalDosha.jsx'
 import KalsarpaDosha from './KalsarpaDosha.jsx'
 import { computeNavamsa } from '../utils/navamsa.js'
+import Transit from './Transit.jsx'
 
 // ── WASM singleton — initialised once at module load ──────────────────────────
 
@@ -795,6 +796,14 @@ export default function VedicKundali() {
             {/* Doshas section */}
             <MangalDosha chart={chart} />
             <KalsarpaDosha chart={chart} />
+
+            {/* Transit section */}
+            {(() => {
+              const moon = chart.grahas.find(g => g.id === 'Mo')
+              return moon
+                ? <Transit swe={_swe} natalMoonRashi={moon.rashiIdx} />
+                : null
+            })()}
 
             {/* Dasha section */}
             {(() => {
