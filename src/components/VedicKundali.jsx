@@ -1,8 +1,9 @@
-import { useState, useRef, useEffect } from 'react'
+import { useState, useRef, useEffect, useMemo } from 'react'
 import { SwissEphemeris } from '@swisseph/browser'
 import VedicDasha from './VedicDasha.jsx'
 import MangalDosha from './MangalDosha.jsx'
 import KalsarpaDosha from './KalsarpaDosha.jsx'
+import { computeNavamsa } from '../utils/navamsa.js'
 
 // ── WASM singleton — initialised once at module load ──────────────────────────
 
@@ -127,6 +128,7 @@ function computeKundali(swe, year, month, day, h24, min, city) {
     lagnaDegs:      Math.floor(lagnaDegs),
     lagnaRashiName: RASHIS[lagnaRashi],
     lagnaSymbol:    RASHI_SYMS[lagnaRashi],
+    lagnaSidLon:    lagnaLon,
     ayanamsha:      ay.toFixed(4),
     grahas,
     utcISO:         utcDate.toISOString(),
@@ -178,7 +180,7 @@ function NorthIndianChart({ chart }) {
 
       <text x={CELL*2} y={CELL*2 + 32}
         textAnchor="middle" fill={accent} fontSize={8} opacity={0.4} fontFamily="monospace">
-        {`${chart.lagnaRashiName} ${chart.lagnaDegs}°`}
+        {`${chart.lagnaRashiName}${chart.lagnaDegs != null ? ' ' + chart.lagnaDegs + '°' : ''}`}
       </text>
 
       {HOUSE_GRID.map(([houseNum, row, col]) => {
@@ -429,6 +431,7 @@ export default function VedicKundali() {
   const [chart,     setChart]     = useState(null)
   const [error,     setError]     = useState('')
   const [computing, setComputing] = useState(false)
+  const [chartView, setChartView] = useState('d1')
   const debounceRef = useRef(null)
 
   useEffect(() => {
@@ -495,12 +498,16 @@ export default function VedicKundali() {
 
       const result = computeKundali(_swe, yearNum, monthNum, dayNum, h24, min, city)
       setChart(result)
+      setChartView('d1')
     } catch (e) {
       setError(e.message || 'Calculation failed. Please check your inputs.')
     } finally {
       setComputing(false)
     }
   }
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const navamsaChart = useMemo(() => chart ? computeNavamsa(chart) : null, [chart])
 
   return (
     <div className="flex flex-col items-center px-4 sm:px-6 py-12 w-full">
@@ -727,7 +734,7 @@ export default function VedicKundali() {
             {/* Split layout: chart SVG | graha table */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
 
-              {/* Left: North Indian chart */}
+              {/* Left: North Indian chart with D1/D9 toggle */}
               <div
                 className="rounded-2xl overflow-hidden p-4"
                 style={{
@@ -736,10 +743,37 @@ export default function VedicKundali() {
                   boxShadow: '0 0 48px rgba(99,102,241,0.12), 0 8px 32px rgba(0,0,0,0.5)',
                 }}
               >
-                <p className="text-[10px] uppercase tracking-[0.2em] text-slate-600 mb-3 text-center">
-                  North Indian Rasi Chart
-                </p>
-                <NorthIndianChart chart={chart} />
+                {/* D1 / D9 tab toggle */}
+                <div className="flex items-center justify-between mb-3">
+                  <div className="flex rounded-lg overflow-hidden" style={{ border: '1px solid rgba(99,102,241,0.2)' }}>
+                    {[{ key: 'd1', label: 'D1 · Rashi' }, { key: 'd9', label: 'D9 · Navamsa' }].map(({ key, label }) => (
+                      <button
+                        key={key}
+                        onClick={() => setChartView(key)}
+                        className="px-3 py-1 text-[8.5px] uppercase tracking-widest font-semibold transition-colors"
+                        style={{
+                          background: chartView === key ? 'rgba(99,102,241,0.28)' : 'transparent',
+                          color: chartView === key ? '#a5b4fc' : '#475569',
+                        }}
+                      >
+                        {label}
+                      </button>
+                    ))}
+                  </div>
+                  {chartView === 'd9' && navamsaChart && (
+                    <span className="text-[9px] font-mono" style={{ color: 'rgba(99,102,241,0.5)' }}>
+                      Lagna {navamsaChart.lagnaSymbol} {navamsaChart.lagnaRashiName}
+                    </span>
+                  )}
+                </div>
+
+                <NorthIndianChart chart={chartView === 'd1' ? chart : navamsaChart} />
+
+                {chartView === 'd9' && (
+                  <p className="text-[9px] text-slate-700 mt-3 text-center leading-relaxed px-2">
+                    Navamsa reflects the strength of planets and matters related to marriage and inner life.
+                  </p>
+                )}
               </div>
 
               {/* Right: Graha table */}
