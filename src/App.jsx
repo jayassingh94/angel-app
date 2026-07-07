@@ -7,6 +7,7 @@ import LoShuGrid from './components/LoShuGrid.jsx'
 import ChakraSounds from './components/ChakraSounds.jsx'
 import ChakraAlignment from './components/ChakraAlignment.jsx'
 import VedicKundali from './components/VedicKundali.jsx'
+import NumerologyHub from './components/NumerologyHub.jsx'
 
 const SERIF = "'Cormorant Garamond', Georgia, serif"
 const SANS  = "'Inter', system-ui, sans-serif"
@@ -82,7 +83,8 @@ export default function App() {
 
       {/* ── Views ── */}
       <div className="relative z-10 flex flex-col flex-1">
-        {activeView === 'home'       && <Home onNavigate={setActiveView} />}
+        {activeView === 'home'           && <Home onNavigate={setActiveView} />}
+        {activeView === 'numerology-hub' && <NumerologyHub onNavigate={setActiveView} />}
         {activeView === 'oracle'     && <DailyOracle />}
         {activeView === 'dictionary' && <AngelDictionary />}
         {activeView === 'loshu'      && <LoShuGrid />}

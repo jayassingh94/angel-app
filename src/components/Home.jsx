@@ -17,6 +17,12 @@ const CATEGORIES = [
         featured: true,
       },
       {
+        id: 'numerology-hub',
+        label: 'Numerology & Name Correction',
+        glyph: '∑',
+        desc: 'Your Life Path Number, and how your name\'s numerology aligns with it.',
+      },
+      {
         id: null,
         label: 'Vastu Check',
         glyph: '⌂',
