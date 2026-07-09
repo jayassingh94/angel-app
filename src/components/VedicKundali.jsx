@@ -60,10 +60,17 @@ const HOUSE_TRIANGLES = [
   [12, [[0,0],[200,0],[100,100]],       [37, 22]],    // top-left corner
 ]
 
-// Darker planet hues for visibility on the light chart background
+// Distinct planet colors for the light chart background
 const PLANET_CHART_COLOR = {
-  Su: '#b45309', Mo: '#64748b', Ma: '#dc2626', Me: '#15803d',
-  Ju: '#c2410c', Ve: '#be185d', Sa: '#334155', Ra: '#7c3aed', Ke: '#0d9488',
+  Su: '#ea580c', // orange
+  Mo: '#64748b', // silver-grey
+  Ma: '#dc2626', // red
+  Me: '#16a34a', // green
+  Ju: '#ca8a04', // yellow (distinct from Su orange)
+  Ve: '#c026d3', // magenta/fuchsia
+  Sa: '#1e3a8a', // dark blue
+  Ra: '#2563eb', // blue (distinct from Sa)
+  Ke: '#92400e', // brown/maroon
 }
 
 const DEFAULT_CITY = { label: 'Mumbai, Maharashtra', lat: 19.0760, lon: 72.8777, tz: 'Asia/Kolkata' }
@@ -181,19 +188,8 @@ function NorthIndianChart({ chart }) {
       <line x1={S}   y1={200} x2={200} y2={S}   stroke={lineColor} strokeWidth={lineW} />
       <line x1={0}   y1={200} x2={200} y2={S}   stroke={lineColor} strokeWidth={lineW} />
 
-      {/* Center square */}
+      {/* Center square — intentionally empty */}
       <rect x={100} y={100} width={200} height={200} fill="rgba(242,240,234,0.9)" stroke={lineColor} strokeWidth={lineW} />
-
-      {/* Center: lagna sign + degree */}
-      <text x={200} y={187} textAnchor="middle" fontSize={11} fill="#5048a8" fontFamily="monospace" fontWeight="bold">
-        {RASHI_SHORT[chart.lagnaRashi]}
-      </text>
-      <text x={200} y={203} textAnchor="middle" fontSize={9} fill="#7066aa" fontFamily="monospace">
-        {chart.lagnaDegs}°
-      </text>
-      <text x={200} y={218} textAnchor="middle" fontSize={7.5} fill="#9090bb" fontFamily="monospace">
-        {chart.lagnaRashiName}
-      </text>
 
       {/* House numbers + planet abbreviations */}
       {HOUSE_TRIANGLES.map(([houseNum, pts, [lx, ly]]) => {
@@ -697,7 +693,7 @@ export default function VedicKundali() {
 
         {/* ── Chart results ── */}
         {chart && (
-          <div className="chakra-card-in flex flex-col gap-5">
+          <div className="chakra-card-in flex flex-col gap-6">
 
             {/* Identity bar — always visible */}
             <div
@@ -731,7 +727,7 @@ export default function VedicKundali() {
                 <button
                   key={key}
                   onClick={() => setActiveTab(key)}
-                  className="flex-1 py-2 rounded-lg text-[9.5px] uppercase tracking-widest font-semibold transition-all"
+                  className="flex-1 py-2 rounded-lg text-xs uppercase tracking-wider font-semibold transition-all"
                   style={{
                     background: activeTab === key ? 'rgba(99,102,241,0.28)' : 'transparent',
                     color:      activeTab === key ? '#a5b4fc' : '#475569',
