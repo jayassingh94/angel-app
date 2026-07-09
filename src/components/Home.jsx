@@ -23,11 +23,10 @@ const CATEGORIES = [
         desc: 'Your Life Path Number, and how your name\'s numerology aligns with it.',
       },
       {
-        id: null,
+        id: 'vastu',
         label: 'Vastu Check',
         glyph: '⌂',
         desc: 'Space & directional energy analysis',
-        soon: true,
       },
       {
         id: null,

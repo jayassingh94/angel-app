@@ -10,6 +10,7 @@ import VedicKundali from './components/VedicKundali.jsx'
 import NumerologyHub from './components/NumerologyHub.jsx'
 import LifePath from './components/LifePath.jsx'
 import NameNumerology from './components/NameNumerology.jsx'
+import VastuCheck from './components/VastuCheck.jsx'
 
 const SERIF = "'Cormorant Garamond', Georgia, serif"
 const SANS  = "'Inter', system-ui, sans-serif"
@@ -95,6 +96,7 @@ export default function App() {
         {activeView === 'chakra'     && <ChakraSounds />}
         {activeView === 'alignment'  && <ChakraAlignment />}
         {activeView === 'kundali'    && <VedicKundali />}
+        {activeView === 'vastu'      && <VastuCheck />}
       </div>
     </div>
   )
