@@ -127,7 +127,7 @@ function FeaturedCard({ card }) {
       >
         {card.label}
       </h3>
-      <p style={{ fontFamily: SANS, fontSize: '11.5px', color: '#64748b', lineHeight: 1.6 }}>
+      <p style={{ fontFamily: SANS, fontSize: '0.875rem', color: '#64748b', lineHeight: 1.6 }}>
         {card.desc}
       </p>
     </button>
@@ -169,12 +169,12 @@ function Card({ card }) {
       </h3>
       {card.soon ? (
         <span
-          style={{ fontFamily: SANS, fontSize: '9px', letterSpacing: '0.2em', textTransform: 'uppercase', color: '#334155', fontWeight: 600 }}
+          style={{ fontFamily: SANS, fontSize: '0.75rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: '#334155', fontWeight: 600 }}
         >
           Coming Soon
         </span>
       ) : (
-        <p style={{ fontFamily: SANS, fontSize: '11px', color: '#475569', lineHeight: 1.55 }}>
+        <p style={{ fontFamily: SANS, fontSize: '0.8125rem', color: '#475569', lineHeight: 1.55 }}>
           {card.desc}
         </p>
       )}
@@ -213,7 +213,7 @@ export default function Home() {
       <div className="px-6 pt-16 pb-12 text-center flex flex-col items-center">
         <p
           className="mb-5 uppercase"
-          style={{ fontFamily: SANS, fontSize: '10px', letterSpacing: '0.35em', color: 'rgba(167,139,250,0.55)', fontWeight: 500 }}
+          style={{ fontFamily: SANS, fontSize: '0.75rem', letterSpacing: '0.35em', color: 'rgba(167,139,250,0.55)', fontWeight: 500 }}
         >
           Your Cosmic Companion
         </p>
@@ -232,7 +232,7 @@ export default function Home() {
         <p
           style={{
             fontFamily: SANS,
-            fontSize: '13px',
+            fontSize: '1rem',
             color: '#475569',
             lineHeight: 1.7,
             maxWidth: '360px',
@@ -251,7 +251,7 @@ export default function Home() {
                 className="shrink-0"
                 style={{
                   fontFamily: SANS,
-                  fontSize: '10px',
+                  fontSize: '0.75rem',
                   letterSpacing: '0.28em',
                   textTransform: 'uppercase',
                   fontWeight: 600,
@@ -281,7 +281,7 @@ export default function Home() {
       {/* ── Footer ── */}
       <p
         className="text-center pb-10"
-        style={{ fontFamily: SANS, fontSize: '9px', letterSpacing: '0.2em', textTransform: 'uppercase', color: '#1e293b' }}
+        style={{ fontFamily: SANS, fontSize: '0.75rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: '#1e293b' }}
       >
         Trust the signs ✦ The universe is always speaking
       </p>

@@ -19,7 +19,7 @@ const selectStyle = {
   borderRadius: '0.75rem',
   padding: '0.6rem 0.75rem',
   fontFamily: SANS,
-  fontSize: '13px',
+  fontSize: '1rem',
   outline: 'none',
   appearance: 'none',
   cursor: 'pointer',
@@ -55,7 +55,7 @@ function NumberCard({ label, number, isMaster }) {
             Master Number
           </span>
         )}
-        <p style={{ fontFamily: SANS, fontSize: '9px', letterSpacing: '0.2em', textTransform: 'uppercase', color: '#4f5d7a', fontWeight: 600 }}>{label}</p>
+        <p style={{ fontFamily: SANS, fontSize: '0.75rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: '#4f5d7a', fontWeight: 600 }}>{label}</p>
         <p style={{ fontFamily: SERIF, fontSize: '1.15rem', color: '#e2e8f0', fontWeight: 500, marginTop: '0.15rem' }}>
           {label.split(' ')[0]} {number}
         </p>
@@ -82,10 +82,10 @@ function SuggestionCard({ suggestion, lifePath }) {
         </span>
       </div>
       {/* Reason */}
-      <p style={{ fontFamily: SANS, fontSize: '11.5px', color: '#64748b', lineHeight: 1.6 }}>
+      <p style={{ fontFamily: SANS, fontSize: '1rem', color: '#64748b', lineHeight: 1.6 }}>
         {snippet}
       </p>
-      <p style={{ fontFamily: SANS, fontSize: '9.5px', color: '#334155', lineHeight: 1.5 }}>
+      <p style={{ fontFamily: SANS, fontSize: '0.75rem', color: '#334155', lineHeight: 1.5 }}>
         Name Number {suggestion.nameNumber} is compatible with Life Path {lifePath}.
       </p>
     </div>
@@ -121,13 +121,13 @@ export default function NameNumerology() {
       {/* Header */}
       <div className="text-center mb-2">
         <p className="mb-3 uppercase"
-          style={{ fontFamily: SANS, fontSize: '10px', letterSpacing: '0.32em', color: 'rgba(167,139,250,0.55)', fontWeight: 500 }}>
+          style={{ fontFamily: SANS, fontSize: '0.75rem', letterSpacing: '0.32em', color: 'rgba(167,139,250,0.55)', fontWeight: 500 }}>
           Name Correction
         </p>
         <h1 style={{ fontFamily: SERIF, fontSize: 'clamp(1.9rem, 5vw, 2.8rem)', fontWeight: 500, color: '#e2e8f0', lineHeight: 1.1 }}>
           Name Numerology
         </h1>
-        <p style={{ fontFamily: SANS, fontSize: '13px', color: '#475569', marginTop: '0.75rem', lineHeight: 1.7 }}>
+        <p style={{ fontFamily: SANS, fontSize: '1rem', color: '#475569', marginTop: '0.75rem', lineHeight: 1.7 }}>
           How your name&apos;s vibrational number aligns with your Life Path.
         </p>
       </div>
@@ -137,7 +137,7 @@ export default function NameNumerology() {
         style={{ background: 'rgba(10,8,28,0.85)', border: '1px solid rgba(99,102,241,0.18)', boxShadow: '0 8px 32px rgba(0,0,0,0.4)' }}>
 
         <div className="flex flex-col gap-1.5">
-          <label style={{ fontFamily: SANS, fontSize: '10px', color: '#475569', letterSpacing: '0.15em', textTransform: 'uppercase', fontWeight: 600 }}>
+          <label style={{ fontFamily: SANS, fontSize: '0.75rem', color: '#475569', letterSpacing: '0.15em', textTransform: 'uppercase', fontWeight: 600 }}>
             Full Name <span style={{ color: '#334155', fontWeight: 400 }}>(as used in daily life)</span>
           </label>
           <input
@@ -145,12 +145,12 @@ export default function NameNumerology() {
             value={name}
             onChange={e => setName(e.target.value)}
             placeholder="Enter your name"
-            style={{ ...selectStyle, padding: '0.65rem 0.85rem', fontSize: '14px', color: name ? '#e2e8f0' : '#334155' }}
+            style={{ ...selectStyle, padding: '0.65rem 0.85rem', fontSize: '1rem', color: name ? '#e2e8f0' : '#334155' }}
           />
         </div>
 
         <div>
-          <p style={{ fontFamily: SANS, fontSize: '10px', color: '#334155', letterSpacing: '0.15em', textTransform: 'uppercase', fontWeight: 600, marginBottom: '0.75rem' }}>
+          <p style={{ fontFamily: SANS, fontSize: '0.75rem', color: '#334155', letterSpacing: '0.15em', textTransform: 'uppercase', fontWeight: 600, marginBottom: '0.75rem' }}>
             Date of Birth <span style={{ fontWeight: 400, letterSpacing: '0.05em' }}>· optional — adds Life Path alignment &amp; spelling suggestions</span>
           </p>
           <div className="grid grid-cols-3 gap-3">
@@ -175,7 +175,7 @@ export default function NameNumerology() {
           className="w-full py-3 rounded-xl font-semibold transition-all"
           style={{
             fontFamily: SANS,
-            fontSize: '13px',
+            fontSize: '1rem',
             letterSpacing: '0.12em',
             background: !ready ? 'rgba(99,102,241,0.15)' : 'linear-gradient(135deg, #4f46e5, #7c3aed)',
             color: !ready ? '#334155' : '#fff',
@@ -201,10 +201,10 @@ export default function NameNumerology() {
           {align && alignSty && (
             <div className="rounded-xl px-4 py-3"
               style={{ background: alignSty.bg, border: `1px solid ${alignSty.border}` }}>
-              <p className="mb-1.5" style={{ fontFamily: SANS, fontSize: '9px', letterSpacing: '0.2em', textTransform: 'uppercase', color: alignSty.color, fontWeight: 700 }}>
+              <p className="mb-1.5" style={{ fontFamily: SANS, fontSize: '0.75rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: alignSty.color, fontWeight: 700 }}>
                 {alignSty.label}
               </p>
-              <p style={{ fontFamily: SANS, fontSize: '12px', color: '#94a3b8', lineHeight: 1.65 }}>
+              <p style={{ fontFamily: SANS, fontSize: '0.8125rem', color: '#94a3b8', lineHeight: 1.65 }}>
                 {nnInterp?.note}
               </p>
             </div>
@@ -212,24 +212,24 @@ export default function NameNumerology() {
 
           {nnInterp && (
             <div className="flex flex-col gap-2">
-              <p style={{ fontFamily: SANS, fontSize: '9px', letterSpacing: '0.2em', textTransform: 'uppercase', color: '#4f5d7a', fontWeight: 600 }}>
+              <p style={{ fontFamily: SANS, fontSize: '0.75rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: '#4f5d7a', fontWeight: 600 }}>
                 Name Number {nameNum} · Vibration
               </p>
               <div className="rounded-xl px-5 py-4"
                 style={{ background: 'rgba(255,255,255,0.02)', borderLeft: '2px solid rgba(99,102,241,0.35)' }}>
-                <p style={{ fontFamily: SANS, fontSize: '13px', color: '#94a3b8', lineHeight: 1.75 }}>{nnInterp.theme}</p>
+                <p style={{ fontFamily: SANS, fontSize: '1rem', color: '#94a3b8', lineHeight: 1.75 }}>{nnInterp.theme}</p>
               </div>
             </div>
           )}
 
           {lpInterp && (
             <div className="flex flex-col gap-2">
-              <p style={{ fontFamily: SANS, fontSize: '9px', letterSpacing: '0.2em', textTransform: 'uppercase', color: '#4f5d7a', fontWeight: 600 }}>
+              <p style={{ fontFamily: SANS, fontSize: '0.75rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: '#4f5d7a', fontWeight: 600 }}>
                 Life Path {lifePath} · Core Theme
               </p>
               <div className="rounded-xl px-5 py-4"
                 style={{ background: 'rgba(255,255,255,0.02)', borderLeft: '2px solid rgba(168,85,247,0.3)' }}>
-                <p style={{ fontFamily: SANS, fontSize: '13px', color: '#94a3b8', lineHeight: 1.75 }}>{lpInterp.theme}</p>
+                <p style={{ fontFamily: SANS, fontSize: '1rem', color: '#94a3b8', lineHeight: 1.75 }}>{lpInterp.theme}</p>
               </div>
             </div>
           )}
@@ -247,7 +247,7 @@ export default function NameNumerology() {
                 : 'A few spelling variations that align more closely with your Life Path'}
             </p>
             {!isAlreadyHarmonious && (
-              <p style={{ fontFamily: SANS, fontSize: '11px', color: '#334155', lineHeight: 1.6 }}>
+              <p style={{ fontFamily: SANS, fontSize: '0.8125rem', color: '#334155', lineHeight: 1.6 }}>
                 These are traditional numerology suggestions to consider, not a requirement — many people keep their name exactly as is.
               </p>
             )}
@@ -262,20 +262,20 @@ export default function NameNumerology() {
           ) : (
             <div className="rounded-xl px-5 py-4"
               style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.06)' }}>
-              <p style={{ fontFamily: SANS, fontSize: '12.5px', color: '#475569', lineHeight: 1.7 }}>
+              <p style={{ fontFamily: SANS, fontSize: '0.875rem', color: '#475569', lineHeight: 1.7 }}>
                 No close spelling variations were found that shift the name number into a more compatible range for Life Path {lifePath}. Your current spelling may already be the most natural form.
               </p>
             </div>
           )}
 
-          <p style={{ fontFamily: SANS, fontSize: '9px', letterSpacing: '0.15em', textTransform: 'uppercase', color: '#1e293b', textAlign: 'center' }}>
+          <p style={{ fontFamily: SANS, fontSize: '0.75rem', letterSpacing: '0.15em', textTransform: 'uppercase', color: '#1e293b', textAlign: 'center' }}>
             Suggestions use Chaldean numerology · ranked by closeness to original spelling
           </p>
         </div>
       )}
 
       <p className="text-center"
-        style={{ fontFamily: SANS, fontSize: '9px', letterSpacing: '0.18em', textTransform: 'uppercase', color: '#1e293b' }}>
+        style={{ fontFamily: SANS, fontSize: '0.75rem', letterSpacing: '0.18em', textTransform: 'uppercase', color: '#1e293b' }}>
         Chaldean system · Life Path via Pythagorean reduction
       </p>
     </div>

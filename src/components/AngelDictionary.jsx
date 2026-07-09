@@ -42,7 +42,7 @@ function NumberCard({ entry, index }) {
       <div className={`w-10 h-px mx-auto bg-gradient-to-r from-transparent via-current to-transparent opacity-30`} />
 
       {/* Message */}
-      <p className="text-slate-400 text-sm leading-relaxed text-center">
+      <p className="text-slate-400 text-base leading-relaxed text-center">
         {entry.message}
       </p>
     </div>

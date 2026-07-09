@@ -58,12 +58,12 @@ function InterpBlock({ planet, interp, color }) {
       className="mx-3 mt-1 mb-2 px-3 py-3 rounded-lg"
       style={{ background: 'rgba(255,255,255,0.025)', borderLeft: `2px solid ${color}40` }}
     >
-      <p className="text-[8px] uppercase tracking-[0.18em] mb-2" style={{ color: `${color}70` }}>
+      <p className="text-xs uppercase tracking-[0.18em] mb-2" style={{ color: `${color}70` }}>
         ✦ {planet} Mahadasha
       </p>
-      <p className="text-[11.5px] text-slate-400 leading-[1.7] mb-3">{interp.theme}</p>
-      <p className="text-[8px] uppercase tracking-[0.15em] mb-1.5 text-slate-700">Points to navigate</p>
-      <p className="text-[11.5px] text-slate-500 leading-[1.7]">{interp.challenges}</p>
+      <p className="text-base text-slate-400 leading-[1.7] mb-3">{interp.theme}</p>
+      <p className="text-xs uppercase tracking-[0.15em] mb-1.5 text-slate-700">Points to navigate</p>
+      <p className="text-base text-slate-500 leading-[1.7]">{interp.challenges}</p>
     </div>
   )
 }

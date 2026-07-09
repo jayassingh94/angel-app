@@ -49,13 +49,13 @@ export default function MangalDosha({ chart }) {
         onClick={() => setExpanded(e => !e)}
       >
         <div className="flex flex-col gap-1">
-          <p className="text-[10px] uppercase tracking-[0.22em] text-indigo-400/70 font-semibold">
+          <p className="text-xs uppercase tracking-[0.22em] text-indigo-400/70 font-semibold">
             Doshas
           </p>
           <div className="flex items-center gap-2 flex-wrap">
             <span className="text-sm font-semibold text-slate-300">Mangal Dosha</span>
             <span
-              className="text-[9px] font-bold px-2 py-0.5 rounded-full tracking-wide"
+              className="text-xs font-bold px-2 py-0.5 rounded-full tracking-wide"
               style={{ background: sty.bg, border: `1px solid ${sty.border}`, color: sty.color }}
             >
               {sty.label}
@@ -94,7 +94,7 @@ export default function MangalDosha({ chart }) {
                   {active ? '●' : '○'}
                 </span>
                 <span
-                  className="text-[10px] font-mono"
+                  className="text-xs font-mono"
                   style={{ color: active ? '#f87171' : '#334155' }}
                 >
                   {label}
@@ -114,24 +114,24 @@ export default function MangalDosha({ chart }) {
               }}
             >
               <span className="text-[11px]" style={{ color: '#f87171' }}>♂</span>
-              <span className="text-[10px] font-mono text-slate-500">
+              <span className="text-xs font-mono text-slate-500">
                 Mars in {marsSign}
               </span>
             </div>
           </div>
 
           {/* Explanation */}
-          <p className="text-[11.5px] text-slate-400 leading-relaxed">{explanation}</p>
+          <p className="text-base text-slate-400 leading-relaxed">{explanation}</p>
 
           {/* Footer reference */}
           <div
             className="pt-3 border-t"
             style={{ borderColor: 'rgba(255,255,255,0.05)' }}
           >
-            <p className="text-[8px] uppercase tracking-[0.2em] text-slate-800 mb-1">
+            <p className="text-xs uppercase tracking-[0.2em] text-slate-800 mb-1">
               Dosha-activating houses
             </p>
-            <p className="text-[9px] font-mono text-slate-800">
+            <p className="text-xs font-mono text-slate-800">
               1 · 2 · 4 · 7 · 8 · 12 &nbsp;(checked from Lagna &amp; Moon)
             </p>
           </div>

@@ -45,7 +45,7 @@ export default function Transit({ swe, natalMoonRashi }) {
       {/* ── Header ── */}
       <div className="flex items-center justify-between gap-4 flex-wrap">
         <div>
-          <p className="text-[10px] uppercase tracking-[0.22em] text-indigo-400/70 font-semibold">
+          <p className="text-xs uppercase tracking-[0.22em] text-indigo-400/70 font-semibold">
             Gochar · Transit
           </p>
           <p className="text-sm font-semibold text-slate-300 mt-0.5">
@@ -81,13 +81,13 @@ export default function Transit({ swe, natalMoonRashi }) {
           <div className="flex items-center gap-2">
             <span className="text-[13px]" style={{ color: '#a78bfa' }}>♄</span>
             <p
-              className="text-[10px] uppercase tracking-[0.22em] font-bold"
+              className="text-xs uppercase tracking-[0.22em] font-bold"
               style={{ color: '#a78bfa' }}
             >
               Sade Sati · {SADE_SATI_PHASE_LABEL[sadeSati.sadeSatiPhase]}
             </p>
           </div>
-          <p className="text-[11.5px] text-slate-400 leading-relaxed">
+          <p className="text-base text-slate-400 leading-relaxed">
             {sadeSatiInterpretations[sadeSati.sadeSatiPhase]}
           </p>
         </div>
@@ -114,20 +114,20 @@ export default function Transit({ swe, natalMoonRashi }) {
 
                 {/* Name + transit sign */}
                 <div className="flex-1 min-w-0">
-                  <span className="text-[11px] font-semibold text-slate-300">{t.name}</span>
-                  <span className="text-[10px] text-slate-600 ml-1.5">
+                  <span className="text-sm font-semibold text-slate-300">{t.name}</span>
+                  <span className="text-xs text-slate-600 ml-1.5">
                     {t.transitSymbol} {t.transitSign}
                   </span>
                 </div>
 
                 {/* House from Moon */}
-                <span className="text-[9px] font-mono text-slate-700 shrink-0">
+                <span className="text-xs font-mono text-slate-700 shrink-0">
                   H{t.houseFromMoon} ☽
                 </span>
 
                 {/* Nature badge */}
                 <span
-                  className="text-[8px] font-bold px-2 py-0.5 rounded-full tracking-wide shrink-0"
+                  className="text-xs font-bold px-2 py-0.5 rounded-full tracking-wide shrink-0"
                   style={{ background: sty.bg, border: `1px solid ${sty.border}`, color: sty.color }}
                 >
                   {sty.label}
@@ -135,7 +135,7 @@ export default function Transit({ swe, natalMoonRashi }) {
 
                 {/* Chevron */}
                 <span
-                  className="text-slate-700 text-[10px] shrink-0"
+                  className="text-slate-700 text-xs shrink-0"
                   style={{ transform: isOpen ? 'rotate(90deg)' : 'none', transition: 'transform 0.15s' }}
                 >
                   ›
@@ -151,7 +151,7 @@ export default function Transit({ swe, natalMoonRashi }) {
                     borderLeft: `2px solid ${t.color}30`,
                   }}
                 >
-                  <p className="text-[11px] text-slate-500 leading-relaxed">{interp}</p>
+                  <p className="text-sm text-slate-500 leading-relaxed">{interp}</p>
                 </div>
               )}
             </div>
@@ -159,7 +159,7 @@ export default function Transit({ swe, natalMoonRashi }) {
         })}
       </div>
 
-      <p className="text-[8px] uppercase tracking-[0.18em] text-slate-800 text-center">
+      <p className="text-xs uppercase tracking-[0.18em] text-slate-800 text-center">
         Classical Vedic Gochar · houses from natal Moon · Lahiri ayanamsha
       </p>
     </div>

@@ -525,7 +525,7 @@ export default function VedicKundali() {
           <h2 className="text-3xl font-bold text-white">
             <span className="shimmer-text">Vedic Kundali</span>
           </h2>
-          <p className="text-slate-500 text-sm max-w-lg mx-auto leading-relaxed mt-1">
+          <p className="text-slate-500 text-base max-w-lg mx-auto leading-relaxed mt-1">
             Your precise North Indian birth chart, calculated from the positions of all 9 Grahas
             using the Lahiri sidereal ayanamsha.
           </p>
@@ -541,13 +541,13 @@ export default function VedicKundali() {
             boxShadow: '0 8px 32px rgba(0,0,0,0.4), 0 0 40px rgba(99,102,241,0.06)',
           }}
         >
-          <p className="text-[10px] uppercase tracking-[0.22em] text-indigo-400/70 font-semibold">
+          <p className="text-xs uppercase tracking-[0.22em] text-indigo-400/70 font-semibold">
             Birth Details
           </p>
 
           {/* ── Date of Birth — DD / MM / YYYY ── */}
           <div className="flex flex-col gap-1.5">
-            <label className="text-[10px] uppercase tracking-widest text-slate-500">
+            <label className="text-xs uppercase tracking-widest text-slate-500">
               Date of Birth
             </label>
             <div className="grid grid-cols-3 gap-2">
@@ -575,7 +575,7 @@ export default function VedicKundali() {
                 ))}
               </KSel>
             </div>
-            <p className="text-[9px] text-slate-700 pl-1">Day / Month / Year</p>
+            <p className="text-xs text-slate-700 pl-1">Day / Month / Year</p>
           </div>
 
           {/* ── Time & City ── */}
@@ -583,7 +583,7 @@ export default function VedicKundali() {
 
             {/* Time of Birth — HH / MM / AM·PM */}
             <div className="flex flex-col gap-1.5">
-              <label className="text-[10px] uppercase tracking-widest text-slate-500">
+              <label className="text-xs uppercase tracking-widest text-slate-500">
                 Time of Birth
               </label>
               <div className="grid grid-cols-3 gap-2">
@@ -611,12 +611,12 @@ export default function VedicKundali() {
                   ))}
                 </KSel>
               </div>
-              <p className="text-[9px] text-slate-700 pl-1">Hour / Minute / AM · PM</p>
+              <p className="text-xs text-slate-700 pl-1">Hour / Minute / AM · PM</p>
             </div>
 
             {/* Birth City — Nominatim autocomplete */}
             <div className="flex flex-col gap-1.5">
-              <label className="text-[10px] uppercase tracking-widest text-slate-500">
+              <label className="text-xs uppercase tracking-widest text-slate-500">
                 Birth City
               </label>
               <div className="relative">
@@ -657,7 +657,7 @@ export default function VedicKundali() {
                           onMouseEnter={e => { e.currentTarget.style.background = 'rgba(99,102,241,0.13)' }}
                           onMouseLeave={e => { e.currentTarget.style.background = 'transparent' }}
                         >
-                          <span className="text-[13px] font-medium text-white leading-snug">{name}</span>
+                          <span className="text-sm font-medium text-white leading-snug">{name}</span>
                           {subtitle && (
                             <span className="text-[10px] text-slate-500 leading-none">{subtitle}</span>
                           )}

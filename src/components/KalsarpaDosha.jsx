@@ -49,7 +49,7 @@ export default function KalsarpaDosha({ chart }) {
         onClick={() => setExpanded(e => !e)}
       >
         <div className="flex flex-col gap-1">
-          <p className="text-[10px] uppercase tracking-[0.22em] text-indigo-400/70 font-semibold">
+          <p className="text-xs uppercase tracking-[0.22em] text-indigo-400/70 font-semibold">
             Kalsarpa Dosha
           </p>
           <div className="flex items-center gap-2 flex-wrap">
@@ -57,7 +57,7 @@ export default function KalsarpaDosha({ chart }) {
               <span className="text-sm font-semibold text-slate-300">{fullName}</span>
             )}
             <span
-              className="text-[9px] font-bold px-2 py-0.5 rounded-full tracking-wide"
+              className="text-xs font-bold px-2 py-0.5 rounded-full tracking-wide"
               style={{ background: sty.bg, border: `1px solid ${sty.border}`, color: sty.color }}
             >
               {sty.label}
@@ -89,7 +89,7 @@ export default function KalsarpaDosha({ chart }) {
                 }}
               >
                 <span className="text-[11px]" style={{ color: active ? nodeColor : '#334155' }}>{symbol}</span>
-                <span className="text-[10px] font-mono" style={{ color: active ? nodeColor : '#334155' }}>
+                <span className="text-xs font-mono" style={{ color: active ? nodeColor : '#334155' }}>
                   {label} H{house}
                 </span>
                 <span className="text-[9px] text-slate-700">{sign}</span>
@@ -97,11 +97,11 @@ export default function KalsarpaDosha({ chart }) {
             ))}
           </div>
 
-          <p className="text-[11.5px] text-slate-400 leading-relaxed">{explanation}</p>
+          <p className="text-base text-slate-400 leading-relaxed">{explanation}</p>
 
           <div className="pt-3 border-t" style={{ borderColor: 'rgba(255,255,255,0.05)' }}>
-            <p className="text-[8px] uppercase tracking-[0.2em] text-slate-800 mb-1">How it's checked</p>
-            <p className="text-[9px] text-slate-800">
+            <p className="text-xs uppercase tracking-[0.2em] text-slate-800 mb-1">How it's checked</p>
+            <p className="text-xs text-slate-800">
               All 7 planets (Sun–Saturn) must be hemmed between Rahu and Ketu on one side of the axis.
               A planet sharing a sign with a node is treated as a partial cancellation.
             </p>

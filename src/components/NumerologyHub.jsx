@@ -65,11 +65,11 @@ function Card({ card }) {
         {card.label}
       </h3>
       {card.soon ? (
-        <span style={{ fontFamily: SANS, fontSize: '9px', letterSpacing: '0.2em', textTransform: 'uppercase', color: '#334155', fontWeight: 600 }}>
+        <span style={{ fontFamily: SANS, fontSize: '0.75rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: '#334155', fontWeight: 600 }}>
           Coming Soon
         </span>
       ) : (
-        <p style={{ fontFamily: SANS, fontSize: '11px', color: '#475569', lineHeight: 1.55 }}>
+        <p style={{ fontFamily: SANS, fontSize: '0.8125rem', color: '#475569', lineHeight: 1.55 }}>
           {card.desc}
         </p>
       )}
@@ -84,14 +84,14 @@ export default function NumerologyHub() {
       <div className="text-center mb-12">
         <p
           className="mb-3 uppercase"
-          style={{ fontFamily: SANS, fontSize: '10px', letterSpacing: '0.32em', color: 'rgba(167,139,250,0.55)', fontWeight: 500 }}
+          style={{ fontFamily: SANS, fontSize: '0.75rem', letterSpacing: '0.32em', color: 'rgba(167,139,250,0.55)', fontWeight: 500 }}
         >
           Numbers &amp; Vibration
         </p>
         <h1 style={{ fontFamily: SERIF, fontSize: 'clamp(1.9rem, 5vw, 2.9rem)', fontWeight: 500, color: '#e2e8f0', lineHeight: 1.1 }}>
           Numerology &amp; Name Correction
         </h1>
-        <p style={{ fontFamily: SANS, fontSize: '13px', color: '#475569', marginTop: '0.9rem', lineHeight: 1.7, maxWidth: '380px', margin: '0.9rem auto 0' }}>
+        <p style={{ fontFamily: SANS, fontSize: '1rem', color: '#475569', marginTop: '0.9rem', lineHeight: 1.7, maxWidth: '380px', margin: '0.9rem auto 0' }}>
           Your Life Path Number, and how your name&apos;s numerology aligns with it.
         </p>
       </div>
@@ -99,7 +99,7 @@ export default function NumerologyHub() {
       {/* Divider */}
       <div className="flex items-center gap-4 mb-6">
         <div className="flex-1 h-px" style={{ background: 'linear-gradient(90deg, transparent, rgba(99,102,241,0.3))' }} />
-        <span style={{ fontFamily: SANS, fontSize: '9px', letterSpacing: '0.25em', textTransform: 'uppercase', color: '#334155' }}>Tools</span>
+        <span style={{ fontFamily: SANS, fontSize: '0.75rem', letterSpacing: '0.25em', textTransform: 'uppercase', color: '#334155' }}>Tools</span>
         <div className="flex-1 h-px" style={{ background: 'linear-gradient(90deg, rgba(99,102,241,0.3), transparent)' }} />
       </div>
 

@@ -327,7 +327,7 @@ function SectionLabel({ label, color }) {
   return (
     <div className="flex items-center gap-2 mb-2">
       <span
-        className="text-[10px] font-bold uppercase tracking-[0.18em]"
+        className="text-xs font-bold uppercase tracking-[0.18em]"
         style={{ color }}
       >
         {label}
@@ -410,7 +410,7 @@ function ChakraCard({ chakra, isExpanded, onToggle }) {
             <span className="text-white font-bold text-base leading-tight">{chakra.name}</span>
             <span className="text-[11px] italic" style={{ color: `${c}90` }}>{chakra.sanskrit}</span>
           </div>
-          <p className="text-[10px] uppercase tracking-[0.15em] text-slate-600 mt-0.5 leading-tight">
+          <p className="text-xs uppercase tracking-[0.15em] text-slate-600 mt-0.5 leading-tight">
             {chakra.location}
           </p>
           <p className="text-[11px] text-slate-500 mt-1 leading-snug hidden sm:block">
@@ -445,7 +445,7 @@ function ChakraCard({ chakra, isExpanded, onToggle }) {
             <div>
               <SectionLabel label="Core Identity" color={c} />
               <p
-                className="text-sm text-slate-400 leading-relaxed pl-3 border-l-2"
+                className="text-base text-slate-400 leading-relaxed pl-3 border-l-2"
                 style={{ borderColor: `${c}40` }}
               >
                 {chakra.significance}
@@ -458,10 +458,10 @@ function ChakraCard({ chakra, isExpanded, onToggle }) {
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
 
                 <div>
-                  <p className="text-[10px] uppercase tracking-widest text-slate-600 mb-2">Physical</p>
+                  <p className="text-xs uppercase tracking-widest text-slate-600 mb-2">Physical</p>
                   <ul className="flex flex-col gap-1.5">
                     {chakra.symptoms.physical.map((s, i) => (
-                      <li key={i} className="flex items-start gap-2 text-[12px] text-slate-400 leading-snug">
+                      <li key={i} className="flex items-start gap-2 text-[0.8125rem] text-slate-400 leading-snug">
                         <span className="mt-1 shrink-0 w-1.5 h-1.5 rounded-full" style={{ background: c }} />
                         {s}
                       </li>
@@ -470,10 +470,10 @@ function ChakraCard({ chakra, isExpanded, onToggle }) {
                 </div>
 
                 <div>
-                  <p className="text-[10px] uppercase tracking-widest text-slate-600 mb-2">Emotional</p>
+                  <p className="text-xs uppercase tracking-widest text-slate-600 mb-2">Emotional</p>
                   <ul className="flex flex-col gap-1.5">
                     {chakra.symptoms.emotional.map((s, i) => (
-                      <li key={i} className="flex items-start gap-2 text-[12px] text-slate-400 leading-snug">
+                      <li key={i} className="flex items-start gap-2 text-[0.8125rem] text-slate-400 leading-snug">
                         <span className="mt-1 shrink-0 w-1.5 h-1.5 rounded-full" style={{ background: c, opacity: 0.7 }} />
                         {s}
                       </li>
@@ -504,7 +504,7 @@ function ChakraCard({ chakra, isExpanded, onToggle }) {
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
 
                 <div>
-                  <p className="text-[10px] uppercase tracking-widest text-slate-600 mb-2">Healing Crystals</p>
+                  <p className="text-xs uppercase tracking-widest text-slate-600 mb-2">Healing Crystals</p>
                   <div className="flex flex-wrap gap-1.5">
                     {chakra.remedies.crystals.map(cr => (
                       <Pill key={cr} label={cr} color={c} variant="crystal" />
@@ -513,7 +513,7 @@ function ChakraCard({ chakra, isExpanded, onToggle }) {
                 </div>
 
                 <div>
-                  <p className="text-[10px] uppercase tracking-widest text-slate-600 mb-2">Balancing Foods</p>
+                  <p className="text-xs uppercase tracking-widest text-slate-600 mb-2">Balancing Foods</p>
                   <div className="flex flex-wrap gap-1.5">
                     {chakra.remedies.foods.map(f => (
                       <Pill key={f} label={f} color={c} variant="food" />
@@ -525,12 +525,12 @@ function ChakraCard({ chakra, isExpanded, onToggle }) {
 
             {/* ── Exercises ── */}
             <div>
-              <p className="text-[10px] uppercase tracking-widest text-slate-600 mb-2">Mindfulness Practices</p>
+              <p className="text-xs uppercase tracking-widest text-slate-600 mb-2">Mindfulness Practices</p>
               <ol className="flex flex-col gap-2">
                 {chakra.remedies.exercises.map((ex, i) => (
-                  <li key={i} className="flex items-start gap-3 text-[12px] text-slate-400 leading-snug">
+                  <li key={i} className="flex items-start gap-3 text-[0.8125rem] text-slate-400 leading-snug">
                     <span
-                      className="shrink-0 w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold mt-0.5"
+                      className="shrink-0 w-5 h-5 rounded-full flex items-center justify-center text-xs font-bold mt-0.5"
                       style={{ background: `${c}25`, color: c, border: `1px solid ${c}35` }}
                     >
                       {i + 1}
@@ -598,7 +598,7 @@ function SymptomItem({ symptom, checked, onChange }) {
           className="shrink-0 mt-1.5 w-1.5 h-1.5 rounded-full"
           style={{ background: symptom.color, opacity: 0.7 }}
         />
-        <span className="text-[12px] leading-snug text-slate-400 group-hover:text-slate-300 transition-colors duration-150">
+        <span className="text-[0.8125rem] leading-snug text-slate-400 group-hover:text-slate-300 transition-colors duration-150">
           {symptom.text}
         </span>
       </div>
@@ -623,8 +623,8 @@ function ResultBar({ chakra, score, maxScore }) {
 
       <div className="flex-1 min-w-0">
         <div className="flex items-center justify-between mb-1">
-          <span className="text-[12px] font-medium text-slate-300 truncate">{chakra.name}</span>
-          <span className="text-[10px] font-bold ml-2 shrink-0" style={{ color: info.textColor }}>
+          <span className="text-[0.8125rem] font-medium text-slate-300 truncate">{chakra.name}</span>
+          <span className="text-xs font-bold ml-2 shrink-0" style={{ color: info.textColor }}>
             {info.label}
           </span>
         </div>
@@ -642,7 +642,7 @@ function ResultBar({ chakra, score, maxScore }) {
         </div>
       </div>
 
-      <span className="text-[10px] text-slate-700 shrink-0 tabular-nums">
+      <span className="text-xs text-slate-700 shrink-0 tabular-nums">
         {score}/{maxScore}
       </span>
     </div>
@@ -668,7 +668,7 @@ function AssessmentPanel({ checked, onToggle, onClear, onAnalyze, showResults })
           border: '1px solid rgba(255,255,255,0.07)',
         }}
       >
-        <p className="text-slate-400 text-sm leading-relaxed">
+        <p className="text-slate-400 text-base leading-relaxed">
           Check every symptom you are currently experiencing. Your selections will reveal which energy centres may be blocked or in need of healing attention.
         </p>
       </div>
@@ -678,7 +678,7 @@ function AssessmentPanel({ checked, onToggle, onClear, onAnalyze, showResults })
 
         <div>
           <div className="flex items-center gap-2 mb-3">
-            <span className="text-[10px] uppercase tracking-[0.2em] font-bold text-slate-500">Physical Symptoms</span>
+            <span className="text-xs uppercase tracking-[0.2em] font-bold text-slate-500">Physical Symptoms</span>
             <div className="flex-1 h-px bg-slate-800" />
           </div>
           <div className="flex flex-col gap-0.5">
@@ -695,7 +695,7 @@ function AssessmentPanel({ checked, onToggle, onClear, onAnalyze, showResults })
 
         <div>
           <div className="flex items-center gap-2 mb-3">
-            <span className="text-[10px] uppercase tracking-[0.2em] font-bold text-slate-500">Emotional Symptoms</span>
+            <span className="text-xs uppercase tracking-[0.2em] font-bold text-slate-500">Emotional Symptoms</span>
             <div className="flex-1 h-px bg-slate-800" />
           </div>
           <div className="flex flex-col gap-0.5">
@@ -754,7 +754,7 @@ function AssessmentPanel({ checked, onToggle, onClear, onAnalyze, showResults })
               border: '1px solid rgba(147,51,234,0.25)',
             }}
           >
-            <p className="text-[10px] uppercase tracking-[0.25em] text-slate-500 mb-1">Your Chakra Reading</p>
+            <p className="text-xs uppercase tracking-[0.25em] text-slate-500 mb-1">Your Chakra Reading</p>
             <p className="text-white font-bold text-lg">
               {imbalanced === 0
                 ? 'All chakras appear balanced'
@@ -823,7 +823,7 @@ export default function ChakraAlignment() {
           <h2 className="text-3xl font-bold text-white">
             <span className="shimmer-text">Chakra Alignment</span>
           </h2>
-          <p className="text-slate-500 text-sm max-w-md mx-auto leading-relaxed mt-1">
+          <p className="text-slate-500 text-base max-w-md mx-auto leading-relaxed mt-1">
             Explore all seven energy centres in depth, or use the Symptom Assessment to discover which chakras may need your healing attention today.
           </p>
 

@@ -98,7 +98,7 @@ function QuizStep({ step, answers, selected, onSelect, onConfirm, onSkip }) {
     <div className="max-w-lg mx-auto w-full px-4 sm:px-6 pt-12 pb-20 flex flex-col gap-8 items-center">
       <div className="text-center w-full">
         <p className="mb-3 uppercase"
-          style={{ fontFamily: SANS, fontSize: '10px', letterSpacing: '0.32em', color: 'rgba(167,139,250,0.55)', fontWeight: 500 }}>
+          style={{ fontFamily: SANS, fontSize: '0.75rem', letterSpacing: '0.32em', color: 'rgba(167,139,250,0.55)', fontWeight: 500 }}>
           Vastu Check
         </p>
         <h1 style={{ fontFamily: SERIF, fontSize: 'clamp(1.8rem, 5vw, 2.5rem)', fontWeight: 500, color: '#e2e8f0', lineHeight: 1.1 }}>
@@ -109,10 +109,10 @@ function QuizStep({ step, answers, selected, onSelect, onConfirm, onSkip }) {
       {/* Progress */}
       <div className="w-full flex flex-col gap-2">
         <div className="flex justify-between items-center">
-          <span style={{ fontFamily: SANS, fontSize: '10px', color: '#475569', letterSpacing: '0.15em', textTransform: 'uppercase', fontWeight: 600 }}>
+          <span style={{ fontFamily: SANS, fontSize: '0.75rem', color: '#475569', letterSpacing: '0.15em', textTransform: 'uppercase', fontWeight: 600 }}>
             {q.label}
           </span>
-          <span style={{ fontFamily: SANS, fontSize: '10px', color: '#334155' }}>{step + 1} / 4</span>
+          <span style={{ fontFamily: SANS, fontSize: '0.75rem', color: '#334155' }}>{step + 1} / 4</span>
         </div>
         <div className="flex gap-1.5">
           {[0, 1, 2, 3].map(i => (
@@ -138,7 +138,7 @@ function QuizStep({ step, answers, selected, onSelect, onConfirm, onSkip }) {
             disabled={!selected}
             className="w-full py-3 rounded-xl font-semibold transition-all"
             style={{
-              fontFamily: SANS, fontSize: '13px', letterSpacing: '0.1em',
+              fontFamily: SANS, fontSize: '1rem', letterSpacing: '0.1em',
               background: selected ? 'linear-gradient(135deg, #4f46e5, #7c3aed)' : 'rgba(99,102,241,0.1)',
               color: selected ? '#fff' : '#334155',
               border: 'none', cursor: selected ? 'pointer' : 'not-allowed',
@@ -150,7 +150,7 @@ function QuizStep({ step, answers, selected, onSelect, onConfirm, onSkip }) {
           <button onClick={onSkip}
             style={{
               background: 'none', border: 'none', cursor: 'pointer',
-              fontFamily: SANS, fontSize: '11px', color: '#334155',
+              fontFamily: SANS, fontSize: '0.8125rem', color: '#334155',
               textDecoration: 'underline', textDecorationColor: 'rgba(100,116,139,0.3)',
               padding: '0.4rem', letterSpacing: '0.04em',
             }}>
@@ -159,7 +159,7 @@ function QuizStep({ step, answers, selected, onSelect, onConfirm, onSkip }) {
         </div>
       </div>
 
-      <p style={{ fontFamily: SANS, fontSize: '9px', letterSpacing: '0.18em', textTransform: 'uppercase', color: '#1e293b', textAlign: 'center' }}>
+      <p style={{ fontFamily: SANS, fontSize: '0.75rem', letterSpacing: '0.18em', textTransform: 'uppercase', color: '#1e293b', textAlign: 'center' }}>
         Classical Vastu Shastra directional principles
       </p>
     </div>
@@ -172,7 +172,7 @@ function ResultsScreen({ answers, onRestart }) {
     <div className="max-w-2xl mx-auto w-full px-4 sm:px-6 pt-12 pb-20 flex flex-col gap-6">
       <div className="text-center mb-2">
         <p className="mb-3 uppercase"
-          style={{ fontFamily: SANS, fontSize: '10px', letterSpacing: '0.32em', color: 'rgba(167,139,250,0.55)', fontWeight: 500 }}>
+          style={{ fontFamily: SANS, fontSize: '0.75rem', letterSpacing: '0.32em', color: 'rgba(167,139,250,0.55)', fontWeight: 500 }}>
           Vastu Analysis
         </p>
         <h1 style={{ fontFamily: SERIF, fontSize: 'clamp(1.9rem, 5vw, 2.6rem)', fontWeight: 500, color: '#e2e8f0', lineHeight: 1.1 }}>
@@ -183,7 +183,7 @@ function ResultsScreen({ answers, onRestart }) {
       {summary && (
         <div className="rounded-xl px-5 py-4"
           style={{ background: 'rgba(10,8,28,0.85)', border: '1px solid rgba(99,102,241,0.2)', boxShadow: '0 4px 20px rgba(0,0,0,0.3)' }}>
-          <p style={{ fontFamily: SANS, fontSize: '12.5px', color: '#94a3b8', lineHeight: 1.8 }}>{summary}</p>
+          <p style={{ fontFamily: SANS, fontSize: '0.875rem', color: '#94a3b8', lineHeight: 1.8 }}>{summary}</p>
         </div>
       )}
 
@@ -197,27 +197,27 @@ function ResultsScreen({ answers, onRestart }) {
                 style={{ background: 'rgba(10,8,28,0.85)', border: '1px solid rgba(99,102,241,0.18)', boxShadow: '0 4px 16px rgba(0,0,0,0.35)' }}>
                 <div className="flex items-center justify-between gap-3">
                   <div>
-                    <p style={{ fontFamily: SANS, fontSize: '9px', letterSpacing: '0.2em', textTransform: 'uppercase', color: '#4f5d7a', fontWeight: 600, marginBottom: '0.25rem' }}>
+                    <p style={{ fontFamily: SANS, fontSize: '0.75rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: '#4f5d7a', fontWeight: 600, marginBottom: '0.25rem' }}>
                       {ans.room}
                     </p>
                     <p style={{ fontFamily: SERIF, fontSize: '1.15rem', fontWeight: 500, color: '#cbd5e1' }}>
                       {ans.direction}
                     </p>
                   </div>
-                  <span className="shrink-0 text-[9px] font-bold px-3 py-1.5 rounded-full uppercase tracking-[0.12em]"
+                  <span className="shrink-0 text-xs font-bold px-3 py-1.5 rounded-full uppercase tracking-[0.12em]"
                     style={{ background: sty.bg, border: `1px solid ${sty.border}`, color: sty.color, fontFamily: SANS }}>
                     {sty.label}
                   </span>
                 </div>
-                <p style={{ fontFamily: SANS, fontSize: '12px', color: '#475569', lineHeight: 1.75, fontStyle: 'italic' }}>
+                <p style={{ fontFamily: SANS, fontSize: '1rem', color: '#475569', lineHeight: 1.75, fontStyle: 'italic' }}>
                   {ans.note}
                 </p>
                 <div className="rounded-xl px-4 py-3"
                   style={{ background: 'rgba(255,255,255,0.02)', borderLeft: `2px solid ${sty.border}` }}>
-                  <p style={{ fontFamily: SANS, fontSize: '11px', letterSpacing: '0.12em', textTransform: 'uppercase', color: sty.color, fontWeight: 600, marginBottom: '0.4rem' }}>
+                  <p style={{ fontFamily: SANS, fontSize: '0.8125rem', letterSpacing: '0.12em', textTransform: 'uppercase', color: sty.color, fontWeight: 600, marginBottom: '0.4rem' }}>
                     Remedy
                   </p>
-                  <p style={{ fontFamily: SANS, fontSize: '12px', color: '#64748b', lineHeight: 1.8 }}>
+                  <p style={{ fontFamily: SANS, fontSize: '1rem', color: '#64748b', lineHeight: 1.8 }}>
                     {ans.remedy}
                   </p>
                 </div>
@@ -228,7 +228,7 @@ function ResultsScreen({ answers, onRestart }) {
       ) : (
         <div className="rounded-xl px-5 py-4"
           style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.06)' }}>
-          <p style={{ fontFamily: SANS, fontSize: '13px', color: '#475569', lineHeight: 1.7 }}>
+          <p style={{ fontFamily: SANS, fontSize: '1rem', color: '#475569', lineHeight: 1.7 }}>
             No directions were entered. Try again and answer at least one question to see your space report.
           </p>
         </div>
@@ -237,7 +237,7 @@ function ResultsScreen({ answers, onRestart }) {
       <button onClick={onRestart}
         className="w-full py-3 rounded-xl mt-2"
         style={{
-          fontFamily: SANS, fontSize: '12px', letterSpacing: '0.12em', fontWeight: 600,
+          fontFamily: SANS, fontSize: '1rem', letterSpacing: '0.12em', fontWeight: 600,
           background: 'rgba(99,102,241,0.1)', color: '#818cf8',
           border: '1px solid rgba(99,102,241,0.22)', cursor: 'pointer',
         }}>
@@ -245,7 +245,7 @@ function ResultsScreen({ answers, onRestart }) {
       </button>
 
       <p className="text-center"
-        style={{ fontFamily: SANS, fontSize: '9px', letterSpacing: '0.18em', textTransform: 'uppercase', color: '#1e293b' }}>
+        style={{ fontFamily: SANS, fontSize: '0.75rem', letterSpacing: '0.18em', textTransform: 'uppercase', color: '#1e293b' }}>
         Classical Vastu Shastra directional principles · remedies are optional, not prescriptive
       </p>
     </div>

@@ -282,7 +282,7 @@ function PlaneRow({ plane }) {
         <p className={`text-sm font-semibold bg-gradient-to-r ${plane.color} bg-clip-text text-transparent mb-0.5`}>
           {plane.label}
         </p>
-        <p className="text-slate-400 text-sm leading-relaxed">{plane.text}</p>
+        <p className="text-slate-400 text-base leading-relaxed">{plane.text}</p>
       </div>
     </div>
   )
@@ -331,7 +331,7 @@ function PowerCard({ title, icon, items, accentColor, borderColor, emptyText }) 
                     </span>
                   )}
                 </div>
-                <p className="text-slate-500 text-xs leading-relaxed mt-0.5">{text}</p>
+                <p className="text-slate-500 text-[0.8125rem] leading-relaxed mt-0.5">{text}</p>
               </div>
             </li>
           ))}
@@ -402,7 +402,7 @@ function MissingNumberCard({ num, name, energy, missingMeaning, remedies, gemsto
         {/* 1. Significance */}
         <div className="flex flex-col gap-2">
           <SubLabel color="#f59e0b">Significance</SubLabel>
-          <p className="text-slate-400 text-xs leading-relaxed pl-0.5">
+          <p className="text-slate-400 text-sm leading-relaxed pl-0.5">
             {missingMeaning}
           </p>
         </div>
@@ -417,7 +417,7 @@ function MissingNumberCard({ num, name, energy, missingMeaning, remedies, gemsto
                   className="shrink-0 mt-1 w-1.5 h-1.5 rounded-full"
                   style={{ background: '#2dd4bf', boxShadow: '0 0 6px #2dd4bf' }}
                 />
-                <span className="text-slate-400 text-xs leading-relaxed">{remedy}</span>
+                <span className="text-slate-400 text-sm leading-relaxed">{remedy}</span>
               </li>
             ))}
           </ul>
@@ -482,7 +482,7 @@ function MissingNumberCard({ num, name, energy, missingMeaning, remedies, gemsto
               Affirmation
             </p>
             <p
-              className="text-xs leading-relaxed italic font-medium"
+              className="text-sm leading-relaxed italic font-medium"
               style={{ color: `${chakra.color}dd` }}
             >
               "{chakra.affirmation}"
@@ -503,7 +503,7 @@ function MissingNumberCard({ num, name, energy, missingMeaning, remedies, gemsto
             >
               Meditation &amp; Activation
             </p>
-            <p className="text-slate-400 text-xs leading-relaxed">
+            <p className="text-slate-400 text-sm leading-relaxed">
               {chakra.activation}
             </p>
           </div>
@@ -547,7 +547,7 @@ function MissingNumbersSection({ items }) {
             <p className="text-amber-300 text-sm font-semibold tracking-wide">
               Missing: {missingList}
             </p>
-            <p className="text-slate-500 text-xs leading-relaxed">
+            <p className="text-slate-500 text-sm leading-relaxed">
               Absent numbers are not weaknesses — each one is a precise cosmic invitation to grow, heal, and consciously activate the energy you came here to embody.
             </p>
           </div>

@@ -204,7 +204,7 @@ export default function ChakraSounds() {
           <h2 className="text-3xl font-bold text-white">
             <span className="shimmer-text">Cosmic Meditation Station</span>
           </h2>
-          <p className="text-slate-500 text-sm max-w-md mx-auto leading-relaxed mt-1">
+          <p className="text-slate-500 text-base max-w-md mx-auto leading-relaxed mt-1">
             Seven sacred Solfeggio frequencies, one for each energy centre.
             Press play, close your eyes, and let the vibration carry you.
           </p>
