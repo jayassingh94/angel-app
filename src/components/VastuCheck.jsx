@@ -1,4 +1,5 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import { useLocation, useNavigate } from 'react-router-dom'
 import { vastuRemedies } from '../utils/vastuRemedies.js'
 import { QUESTIONS } from '../utils/vastuData.js'
 
@@ -91,7 +92,7 @@ function CompassPicker({ selected, onSelect }) {
   )
 }
 
-function QuizStep({ step, selected, onSelect, onConfirm, onSkip }) {
+function QuizStep({ step, answers, selected, onSelect, onConfirm, onSkip }) {
   const q = QUESTIONS[step]
   return (
     <div className="max-w-lg mx-auto w-full px-4 sm:px-6 pt-12 pb-20 flex flex-col gap-8 items-center">
@@ -194,8 +195,6 @@ function ResultsScreen({ answers, onRestart }) {
             return (
               <div key={i} className="rounded-2xl p-5 flex flex-col gap-3"
                 style={{ background: 'rgba(10,8,28,0.85)', border: '1px solid rgba(99,102,241,0.18)', boxShadow: '0 4px 16px rgba(0,0,0,0.35)' }}>
-
-                {/* Room + direction + badge */}
                 <div className="flex items-center justify-between gap-3">
                   <div>
                     <p style={{ fontFamily: SANS, fontSize: '9px', letterSpacing: '0.2em', textTransform: 'uppercase', color: '#4f5d7a', fontWeight: 600, marginBottom: '0.25rem' }}>
@@ -210,13 +209,9 @@ function ResultsScreen({ answers, onRestart }) {
                     {sty.label}
                   </span>
                 </div>
-
-                {/* Note — the "why" */}
                 <p style={{ fontFamily: SANS, fontSize: '12px', color: '#475569', lineHeight: 1.75, fontStyle: 'italic' }}>
                   {ans.note}
                 </p>
-
-                {/* Remedy — the "what to do" */}
                 <div className="rounded-xl px-4 py-3"
                   style={{ background: 'rgba(255,255,255,0.02)', borderLeft: `2px solid ${sty.border}` }}>
                   <p style={{ fontFamily: SANS, fontSize: '11px', letterSpacing: '0.12em', textTransform: 'uppercase', color: sty.color, fontWeight: 600, marginBottom: '0.4rem' }}>
@@ -258,28 +253,51 @@ function ResultsScreen({ answers, onRestart }) {
 }
 
 export default function VastuCheck() {
-  const [step,     setStep]     = useState(0)
-  const [selected, setSelected] = useState(null)
-  const [answers,  setAnswers]  = useState([null, null, null, null])
+  const location = useLocation()
+  const navigate  = useNavigate()
+
+  // Step and answers live in the router history stack, not in component state.
+  // Each quiz step transition pushes a new history entry so navigate(-1) and
+  // the browser back button both move one quiz step at a time.
+  const step    = location.state?.step    ?? 0
+  const answers = location.state?.answers ?? [null, null, null, null]
+
+  // selected tracks the current (unconfirmed) compass pick.
+  // Reset whenever the history entry changes (forward advance or back navigation).
+  const [selected, setSelected] = useState(() => {
+    const existingDir = typeof step === 'number' ? (answers[step]?.direction ?? null) : null
+    return existingDir
+      ? Object.entries(DIR_FULL).find(([, v]) => v === existingDir)?.[0] ?? null
+      : null
+  })
+
+  useEffect(() => {
+    const existingDir = typeof step === 'number' ? (answers[step]?.direction ?? null) : null
+    const abbr = existingDir
+      ? Object.entries(DIR_FULL).find(([, v]) => v === existingDir)?.[0] ?? null
+      : null
+    setSelected(abbr)
+  }, [location.key]) // eslint-disable-line react-hooks/exhaustive-deps
 
   function confirm() {
     if (!selected) return
     const { roomKey, label } = QUESTIONS[step]
     const fullDir = DIR_FULL[selected]
     const rule = vastuRemedies[roomKey][fullDir]
-    const next = [...answers]
-    next[step] = { room: label, direction: fullDir, ...rule }
-    setAnswers(next)
-    advance()
+    const newAnswers = [...answers]
+    newAnswers[step] = { room: label, direction: fullDir, ...rule }
+    const nextStep = step < 3 ? step + 1 : 'results'
+    navigate('/vastu', { state: { step: nextStep, answers: newAnswers } })
   }
 
-  function advance() {
-    if (step < 3) { setStep(step + 1); setSelected(null) }
-    else setStep('results')
+  function skipStep() {
+    const nextStep = typeof step === 'number' && step < 3 ? step + 1 : 'results'
+    navigate('/vastu', { state: { step: nextStep, answers } })
   }
 
   function restart() {
-    setStep(0); setSelected(null); setAnswers([null, null, null, null])
+    // replace: true collapses the quiz history stack so back exits to wherever the user came from
+    navigate('/vastu', { state: { step: 0, answers: [null, null, null, null] }, replace: true })
   }
 
   if (step === 'results')
@@ -288,10 +306,11 @@ export default function VastuCheck() {
   return (
     <QuizStep
       step={step}
+      answers={answers}
       selected={selected}
       onSelect={setSelected}
       onConfirm={confirm}
-      onSkip={advance}
+      onSkip={skipStep}
     />
   )
 }

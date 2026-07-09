@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 
 const SERIF = "'Cormorant Garamond', Georgia, serif"
 const SANS  = "'Inter', system-ui, sans-serif"
@@ -9,7 +10,7 @@ const CATEGORIES = [
     heading: 'Vedic Astrology',
     cards: [
       {
-        id: 'kundali',
+        id: '/kundali',
         label: 'Vedic Kundali',
         glyph: '⊕',
         desc: 'Birth chart · Mahadasha · Doshas · Transits · D9',
@@ -17,13 +18,13 @@ const CATEGORIES = [
         featured: true,
       },
       {
-        id: 'numerology-hub',
+        id: '/numerology',
         label: 'Numerology & Name Correction',
         glyph: '∑',
         desc: 'Your Life Path Number, and how your name\'s numerology aligns with it.',
       },
       {
-        id: 'vastu',
+        id: '/vastu',
         label: 'Vastu Check',
         glyph: '⌂',
         desc: 'Space & directional energy analysis',
@@ -42,19 +43,19 @@ const CATEGORIES = [
     heading: 'Numerology',
     cards: [
       {
-        id: 'oracle',
+        id: '/oracle',
         label: 'Angel Numbers',
         glyph: '✦',
         desc: 'Decode the numbers your angels send',
       },
       {
-        id: 'loshu',
+        id: '/loshu',
         label: 'Lo Shu Grid',
         glyph: '⊞',
         desc: 'Chinese numerology birth grid',
       },
       {
-        id: 'dictionary',
+        id: '/dictionary',
         label: 'Angel Dictionary',
         glyph: '✶',
         desc: 'Meanings for every angel number',
@@ -66,19 +67,19 @@ const CATEGORIES = [
     heading: 'Daily Practice',
     cards: [
       {
-        id: 'oracle',
+        id: '/oracle',
         label: 'Daily Oracle',
         glyph: '✧',
         desc: "Today's channeled message & guidance",
       },
       {
-        id: 'chakra',
+        id: '/chakra',
         label: 'Chakra Sounds',
         glyph: '◎',
         desc: 'Healing frequencies for each energy centre',
       },
       {
-        id: 'alignment',
+        id: '/alignment',
         label: 'Chakra Alignment',
         glyph: '◈',
         desc: 'Guided balancing & chakra check',
@@ -87,14 +88,15 @@ const CATEGORIES = [
   },
 ]
 
-function FeaturedCard({ card, onNavigate }) {
+function FeaturedCard({ card }) {
+  const navigate = useNavigate()
   const [hovered, setHovered] = useState(false)
   return (
     <button
       className="col-span-1 sm:col-span-2 text-left rounded-2xl p-6 relative overflow-hidden transition-all duration-300 w-full"
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
-      onClick={() => onNavigate(card.id)}
+      onClick={() => navigate(card.id)}
       style={{
         background: hovered
           ? 'linear-gradient(135deg, rgba(79,70,229,0.38) 0%, rgba(124,58,237,0.38) 60%, rgba(168,85,247,0.28) 100%)'
@@ -107,7 +109,6 @@ function FeaturedCard({ card, onNavigate }) {
         cursor: 'pointer',
       }}
     >
-      {/* Core badge */}
       <span
         className="absolute top-4 right-4 text-[8.5px] uppercase tracking-[0.2em] font-bold px-2.5 py-1 rounded-full"
         style={{
@@ -119,19 +120,13 @@ function FeaturedCard({ card, onNavigate }) {
       >
         {card.badge}
       </span>
-
-      {/* Glyph */}
       <div className="text-4xl mb-4" style={{ color: '#a78bfa' }}>{card.glyph}</div>
-
-      {/* Title */}
       <h3
         className="mb-2"
         style={{ fontFamily: SERIF, fontSize: '1.4rem', fontWeight: 500, color: '#e2e8f0', lineHeight: 1.15 }}
       >
         {card.label}
       </h3>
-
-      {/* Desc */}
       <p style={{ fontFamily: SANS, fontSize: '11.5px', color: '#64748b', lineHeight: 1.6 }}>
         {card.desc}
       </p>
@@ -139,14 +134,15 @@ function FeaturedCard({ card, onNavigate }) {
   )
 }
 
-function Card({ card, onNavigate }) {
+function Card({ card }) {
+  const navigate = useNavigate()
   const [hovered, setHovered] = useState(false)
   return (
     <button
       className="text-left rounded-2xl p-5 relative overflow-hidden transition-all duration-300 w-full"
       onMouseEnter={() => !card.soon && setHovered(true)}
       onMouseLeave={() => setHovered(false)}
-      onClick={() => !card.soon && onNavigate(card.id)}
+      onClick={() => !card.soon && navigate(card.id)}
       style={{
         background: hovered ? 'rgba(255,255,255,0.055)' : 'rgba(255,255,255,0.028)',
         border: `1px solid ${hovered ? 'rgba(99,102,241,0.4)' : 'rgba(255,255,255,0.07)'}`,
@@ -186,7 +182,7 @@ function Card({ card, onNavigate }) {
   )
 }
 
-export default function Home({ onNavigate }) {
+export default function Home() {
   return (
     <div className="relative z-10 flex flex-col min-h-screen">
       {/* ── Top bar ── */}
@@ -250,7 +246,6 @@ export default function Home({ onNavigate }) {
       <div className="px-4 sm:px-6 pb-20 flex flex-col gap-14 max-w-3xl mx-auto w-full">
         {CATEGORIES.map(cat => (
           <section key={cat.id}>
-            {/* Heading + divider */}
             <div className="flex items-center gap-4 mb-5">
               <h2
                 className="shrink-0"
@@ -270,14 +265,12 @@ export default function Home({ onNavigate }) {
                 style={{ background: 'linear-gradient(90deg, rgba(99,102,241,0.35), transparent)' }}
               />
             </div>
-
-            {/* Card grid */}
             <div className={`grid gap-3 ${cat.id === 'astrology' ? 'grid-cols-1 sm:grid-cols-2' : 'grid-cols-1 sm:grid-cols-3'}`}>
               {cat.cards.map((card, i) =>
                 card.featured ? (
-                  <FeaturedCard key={i} card={card} onNavigate={onNavigate} />
+                  <FeaturedCard key={i} card={card} />
                 ) : (
-                  <Card key={i} card={card} onNavigate={onNavigate} />
+                  <Card key={i} card={card} />
                 )
               )}
             </div>

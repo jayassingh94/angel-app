@@ -1,49 +1,51 @@
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 
 const SERIF = "'Cormorant Garamond', Georgia, serif"
 const SANS  = "'Inter', system-ui, sans-serif"
 
 const SUBITEMS = [
   {
-    id: 'lifepath',
+    id: '/numerology/lifepath',
     label: 'Life Path Number',
     glyph: '◷',
     desc: 'Your core numerological blueprint derived from your date of birth.',
   },
   {
-    id: 'namecorrection',
+    id: '/numerology/namecorrection',
     label: 'Name Numerology',
     glyph: '✎',
     desc: 'How your name\'s vibrational number aligns with your Life Path.',
   },
   {
-    id: 'oracle',
+    id: '/oracle',
     label: 'Angel Numbers',
     glyph: '✦',
     desc: 'Decode the numbers your angels send.',
   },
   {
-    id: 'loshu',
+    id: '/loshu',
     label: 'Lo Shu Grid',
     glyph: '⊞',
     desc: 'Chinese numerology birth grid.',
   },
   {
-    id: 'dictionary',
+    id: '/dictionary',
     label: 'Angel Dictionary',
     glyph: '✶',
     desc: 'Meanings for every angel number.',
   },
 ]
 
-function Card({ card, onNavigate }) {
+function Card({ card }) {
+  const navigate = useNavigate()
   const [hovered, setHovered] = useState(false)
   return (
     <button
       className="text-left rounded-2xl p-5 relative overflow-hidden transition-all duration-300 w-full"
       onMouseEnter={() => !card.soon && setHovered(true)}
       onMouseLeave={() => setHovered(false)}
-      onClick={() => !card.soon && onNavigate(card.id)}
+      onClick={() => !card.soon && navigate(card.id)}
       style={{
         background: hovered ? 'rgba(255,255,255,0.055)' : 'rgba(255,255,255,0.028)',
         border: `1px solid ${hovered ? 'rgba(99,102,241,0.4)' : 'rgba(255,255,255,0.07)'}`,
@@ -75,7 +77,7 @@ function Card({ card, onNavigate }) {
   )
 }
 
-export default function NumerologyHub({ onNavigate }) {
+export default function NumerologyHub() {
   return (
     <div className="relative z-10 max-w-3xl mx-auto w-full px-4 sm:px-6 pt-12 pb-20">
       {/* Header */}
@@ -104,7 +106,7 @@ export default function NumerologyHub({ onNavigate }) {
       {/* Sub-card grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
         {SUBITEMS.map(item => (
-          <Card key={item.id} card={item} onNavigate={onNavigate} />
+          <Card key={item.id} card={item} />
         ))}
       </div>
     </div>

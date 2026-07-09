@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { BrowserRouter, Routes, Route, useLocation, useNavigate } from 'react-router-dom'
 import { STARS } from './data.js'
 import Home from './components/Home.jsx'
 import DailyOracle from './components/DailyOracle.jsx'
@@ -36,8 +36,10 @@ function Stars() {
   )
 }
 
-export default function App() {
-  const [activeView, setActiveView] = useState('home')
+function AppShell() {
+  const location = useLocation()
+  const navigate  = useNavigate()
+  const isHome    = location.pathname === '/'
 
   return (
     <div
@@ -59,7 +61,7 @@ export default function App() {
       />
 
       {/* ── Feature nav bar (hidden on home) ── */}
-      {activeView !== 'home' && (
+      {!isHome && (
         <nav
           className="sticky top-0 z-40 px-5 sm:px-8 py-3.5 flex items-center gap-4 border-b"
           style={{
@@ -69,13 +71,13 @@ export default function App() {
           }}
         >
           <button
-            onClick={() => setActiveView('home')}
+            onClick={() => navigate(-1)}
             className="flex items-center gap-1.5 transition-colors"
             style={{ fontFamily: SANS, fontSize: '12px', color: '#64748b', background: 'none', border: 'none', cursor: 'pointer', padding: 0 }}
             onMouseEnter={e => (e.currentTarget.style.color = '#94a3b8')}
             onMouseLeave={e => (e.currentTarget.style.color = '#64748b')}
           >
-            <span style={{ fontSize: '15px' }}>←</span>&nbsp;Home
+            <span style={{ fontSize: '15px' }}>←</span>&nbsp;Back
           </button>
           <div className="flex-1" />
           <span style={{ fontFamily: SERIF, color: 'rgba(167,139,250,0.45)', fontSize: '1rem', letterSpacing: '0.06em' }}>
@@ -86,18 +88,28 @@ export default function App() {
 
       {/* ── Views ── */}
       <div className="relative z-10 flex flex-col flex-1">
-        {activeView === 'home'           && <Home onNavigate={setActiveView} />}
-        {activeView === 'numerology-hub'  && <NumerologyHub onNavigate={setActiveView} />}
-        {activeView === 'lifepath'        && <LifePath />}
-        {activeView === 'namecorrection'  && <NameNumerology />}
-        {activeView === 'oracle'     && <DailyOracle />}
-        {activeView === 'dictionary' && <AngelDictionary />}
-        {activeView === 'loshu'      && <LoShuGrid />}
-        {activeView === 'chakra'     && <ChakraSounds />}
-        {activeView === 'alignment'  && <ChakraAlignment />}
-        {activeView === 'kundali'    && <VedicKundali />}
-        {activeView === 'vastu'      && <VastuCheck />}
+        <Routes>
+          <Route path="/"                        element={<Home />} />
+          <Route path="/kundali"                 element={<VedicKundali />} />
+          <Route path="/numerology"              element={<NumerologyHub />} />
+          <Route path="/numerology/lifepath"     element={<LifePath />} />
+          <Route path="/numerology/namecorrection" element={<NameNumerology />} />
+          <Route path="/oracle"                  element={<DailyOracle />} />
+          <Route path="/dictionary"              element={<AngelDictionary />} />
+          <Route path="/loshu"                   element={<LoShuGrid />} />
+          <Route path="/chakra"                  element={<ChakraSounds />} />
+          <Route path="/alignment"               element={<ChakraAlignment />} />
+          <Route path="/vastu"                   element={<VastuCheck />} />
+        </Routes>
       </div>
     </div>
+  )
+}
+
+export default function App() {
+  return (
+    <BrowserRouter>
+      <AppShell />
+    </BrowserRouter>
   )
 }
