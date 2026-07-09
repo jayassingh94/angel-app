@@ -1,10 +1,16 @@
 import { useState } from 'react'
-import { VASTU_RULES, QUESTIONS } from '../utils/vastuData.js'
+import { vastuRemedies } from '../utils/vastuRemedies.js'
+import { QUESTIONS } from '../utils/vastuData.js'
 
 const SERIF = "'Cormorant Garamond', Georgia, serif"
 const SANS  = "'Inter', system-ui, sans-serif"
 
 const DIRS = ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW']
+
+const DIR_FULL = {
+  N: 'North', NE: 'Northeast', E: 'East', SE: 'Southeast',
+  S: 'South', SW: 'Southwest', W: 'West', NW: 'Northwest',
+}
 
 const DIR_POSITIONS = DIRS.map((dir, i) => {
   const rad = (-90 + i * 45) * Math.PI / 180
@@ -188,13 +194,15 @@ function ResultsScreen({ answers, onRestart }) {
             return (
               <div key={i} className="rounded-2xl p-5 flex flex-col gap-3"
                 style={{ background: 'rgba(10,8,28,0.85)', border: '1px solid rgba(99,102,241,0.18)', boxShadow: '0 4px 16px rgba(0,0,0,0.35)' }}>
+
+                {/* Room + direction + badge */}
                 <div className="flex items-center justify-between gap-3">
                   <div>
                     <p style={{ fontFamily: SANS, fontSize: '9px', letterSpacing: '0.2em', textTransform: 'uppercase', color: '#4f5d7a', fontWeight: 600, marginBottom: '0.25rem' }}>
                       {ans.room}
                     </p>
                     <p style={{ fontFamily: SERIF, fontSize: '1.15rem', fontWeight: 500, color: '#cbd5e1' }}>
-                      {ans.direction} direction
+                      {ans.direction}
                     </p>
                   </div>
                   <span className="shrink-0 text-[9px] font-bold px-3 py-1.5 rounded-full uppercase tracking-[0.12em]"
@@ -202,8 +210,18 @@ function ResultsScreen({ answers, onRestart }) {
                     {sty.label}
                   </span>
                 </div>
+
+                {/* Note — the "why" */}
+                <p style={{ fontFamily: SANS, fontSize: '12px', color: '#475569', lineHeight: 1.75, fontStyle: 'italic' }}>
+                  {ans.note}
+                </p>
+
+                {/* Remedy — the "what to do" */}
                 <div className="rounded-xl px-4 py-3"
                   style={{ background: 'rgba(255,255,255,0.02)', borderLeft: `2px solid ${sty.border}` }}>
+                  <p style={{ fontFamily: SANS, fontSize: '11px', letterSpacing: '0.12em', textTransform: 'uppercase', color: sty.color, fontWeight: 600, marginBottom: '0.4rem' }}>
+                    Remedy
+                  </p>
                   <p style={{ fontFamily: SANS, fontSize: '12px', color: '#64748b', lineHeight: 1.8 }}>
                     {ans.remedy}
                   </p>
@@ -247,9 +265,10 @@ export default function VastuCheck() {
   function confirm() {
     if (!selected) return
     const { roomKey, label } = QUESTIONS[step]
-    const rule = VASTU_RULES[roomKey][selected]
+    const fullDir = DIR_FULL[selected]
+    const rule = vastuRemedies[roomKey][fullDir]
     const next = [...answers]
-    next[step] = { room: label, direction: selected, ...rule }
+    next[step] = { room: label, direction: fullDir, ...rule }
     setAnswers(next)
     advance()
   }
