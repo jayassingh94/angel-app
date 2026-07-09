@@ -42,14 +42,29 @@ const GRAHAS = [
   { id: 'Ke', name: 'Ketu',    vName: 'Ketu',     symbol: '☋', bodyKey: null,      color: '#6ee7b7' },
 ]
 
-// House positions in the 4×4 grid: [houseNum, row, col]
-const HOUSE_GRID = [
-  [12,0,0],[1,0,1],[2,0,2],[3,0,3],
-  [11,1,0],[4,1,3],
-  [10,2,0],[5,2,3],
-  [9,3,0],[8,3,1],[7,3,2],[6,3,3],
+// North Indian diamond layout: 12 triangular house sections in 400×400 SVG
+// Inner square corners: iNW(100,100), iNE(300,100), iSE(300,300), iSW(100,300)
+// [houseNum, [[x1,y1],[x2,y2],[x3,y3]], [labelX, labelY]]
+const HOUSE_TRIANGLES = [
+  [1,  [[200,0],[100,100],[300,100]],   [200, 26]],   // top-center (Lagna)
+  [2,  [[200,0],[400,0],[300,100]],     [363, 22]],   // top-right corner
+  [3,  [[400,0],[400,200],[300,100]],   [384, 80]],   // right-upper
+  [4,  [[400,200],[300,100],[300,300]], [362, 200]],  // right-center
+  [5,  [[400,200],[400,400],[300,300]], [384, 320]],  // right-lower
+  [6,  [[400,400],[200,400],[300,300]], [363, 380]],  // bottom-right corner
+  [7,  [[200,400],[300,300],[100,300]], [200, 382]],  // bottom-center
+  [8,  [[0,400],[200,400],[100,300]],   [37, 380]],   // bottom-left corner
+  [9,  [[0,400],[0,200],[100,300]],     [16, 320]],   // left-lower
+  [10, [[0,200],[100,100],[100,300]],   [38, 200]],   // left-center
+  [11, [[0,0],[0,200],[100,100]],       [16, 80]],    // left-upper
+  [12, [[0,0],[200,0],[100,100]],       [37, 22]],    // top-left corner
 ]
-const CORNER_HOUSES = new Set([12,3,6,9])
+
+// Darker planet hues for visibility on the light chart background
+const PLANET_CHART_COLOR = {
+  Su: '#b45309', Mo: '#64748b', Ma: '#dc2626', Me: '#15803d',
+  Ju: '#c2410c', Ve: '#be185d', Sa: '#334155', Ra: '#7c3aed', Ke: '#0d9488',
+}
 
 const DEFAULT_CITY = { label: 'Mumbai, Maharashtra', lat: 19.0760, lon: 72.8777, tz: 'Asia/Kolkata' }
 
@@ -138,120 +153,90 @@ function computeKundali(swe, year, month, day, h24, min, city) {
 
 // ── SVG chart ─────────────────────────────────────────────────────────────────
 
-const CELL = 92
-const SVG_S = CELL * 4  // 368
-
 function NorthIndianChart({ chart }) {
-  const accent = '#6366f1'
+  const S = 400
+  const lineColor = 'rgba(100,90,160,0.38)'
+  const lineW = 0.85
 
   const planetsByHouse = {}
   for (let i = 1; i <= 12; i++) planetsByHouse[i] = []
-  chart.grahas.forEach(g => planetsByHouse[g.houseNum].push({ id: g.id, color: g.color }))
-
-  const rashiInHouse = h => (chart.lagnaRashi + h - 1) % 12
+  chart.grahas.forEach(g => planetsByHouse[g.houseNum].push(g.id))
 
   return (
-    <svg
-      width="100%"
-      viewBox={`0 0 ${SVG_S} ${SVG_S}`}
-      style={{ maxWidth: SVG_S, display: 'block' }}
-    >
-      <rect width={SVG_S} height={SVG_S} fill="rgba(4,3,14,0.98)" rx={2} />
+    <svg width="100%" viewBox={`0 0 ${S} ${S}`} style={{ maxWidth: S, display: 'block', borderRadius: 6 }}>
+      {/* Light cream background */}
+      <rect width={S} height={S} fill="#f5f3ee" rx={6} />
 
-      <rect x={1} y={1} width={SVG_S-2} height={SVG_S-2}
-        fill="none" stroke={accent} strokeWidth={1.5} opacity={0.55} rx={2} />
+      {/* H1 (Lagna) subtle tint */}
+      <polygon points="200,0 100,100 300,100" fill="rgba(99,102,241,0.08)" />
 
-      {[1,2,3].map(i => (
-        <g key={i}>
-          <line x1={i*CELL} y1={0} x2={i*CELL} y2={SVG_S}
-            stroke={accent} strokeWidth={0.5} opacity={0.2} />
-          <line x1={0} y1={i*CELL} x2={SVG_S} y2={i*CELL}
-            stroke={accent} strokeWidth={0.5} opacity={0.2} />
-        </g>
-      ))}
+      {/* Outer border */}
+      <rect x={0.5} y={0.5} width={S-1} height={S-1} fill="none" stroke={lineColor} strokeWidth={1.2} rx={5.5} />
 
-      <rect x={CELL+1} y={CELL+1} width={CELL*2-2} height={CELL*2-2}
-        fill={`${accent}08`} stroke={accent} strokeWidth={0.8} opacity={0.5} />
-      <text x={CELL*2} y={CELL*2 - 8}
-        textAnchor="middle" fill={accent} fontSize={30} opacity={0.25}
-        fontFamily="serif">ॐ</text>
-      <text x={CELL*2} y={CELL*2 + 14}
-        textAnchor="middle" fill={accent} fontSize={7.5}
-        letterSpacing="2.5" opacity={0.2} fontFamily="monospace">KUNDALI</text>
+      {/* 6 structural lines forming the 12 houses */}
+      <line x1={0}   y1={0}   x2={S}   y2={S}   stroke={lineColor} strokeWidth={lineW} />
+      <line x1={S}   y1={0}   x2={0}   y2={S}   stroke={lineColor} strokeWidth={lineW} />
+      <line x1={200} y1={0}   x2={0}   y2={200} stroke={lineColor} strokeWidth={lineW} />
+      <line x1={200} y1={0}   x2={S}   y2={200} stroke={lineColor} strokeWidth={lineW} />
+      <line x1={S}   y1={200} x2={200} y2={S}   stroke={lineColor} strokeWidth={lineW} />
+      <line x1={0}   y1={200} x2={200} y2={S}   stroke={lineColor} strokeWidth={lineW} />
 
-      <text x={CELL*2} y={CELL*2 + 32}
-        textAnchor="middle" fill={accent} fontSize={8} opacity={0.4} fontFamily="monospace">
-        {`${chart.lagnaRashiName}${chart.lagnaDegs != null ? ' ' + chart.lagnaDegs + '°' : ''}`}
+      {/* Center square */}
+      <rect x={100} y={100} width={200} height={200} fill="rgba(242,240,234,0.9)" stroke={lineColor} strokeWidth={lineW} />
+
+      {/* Center: lagna sign + degree */}
+      <text x={200} y={187} textAnchor="middle" fontSize={11} fill="#5048a8" fontFamily="monospace" fontWeight="bold">
+        {RASHI_SHORT[chart.lagnaRashi]}
+      </text>
+      <text x={200} y={203} textAnchor="middle" fontSize={9} fill="#7066aa" fontFamily="monospace">
+        {chart.lagnaDegs}°
+      </text>
+      <text x={200} y={218} textAnchor="middle" fontSize={7.5} fill="#9090bb" fontFamily="monospace">
+        {chart.lagnaRashiName}
       </text>
 
-      {HOUSE_GRID.map(([houseNum, row, col]) => {
-        const x = col * CELL
-        const y = row * CELL
-        const planets  = planetsByHouse[houseNum]
-        const rashiIdx = rashiInHouse(houseNum)
-        const isCorner = CORNER_HOUSES.has(houseNum)
-        const isLagna  = houseNum === 1
+      {/* House numbers + planet abbreviations */}
+      {HOUSE_TRIANGLES.map(([houseNum, pts, [lx, ly]]) => {
+        const isLagna = houseNum === 1
+        const planets = planetsByHouse[houseNum]
+        const cx = (pts[0][0] + pts[1][0] + pts[2][0]) / 3
+        const cy = (pts[0][1] + pts[1][1] + pts[2][1]) / 3
+        const cols   = planets.length > 2 ? 2 : 1
+        const lineH  = 13
+        const rows   = Math.ceil(planets.length / cols)
+        const totalH = rows * lineH
+        const baseY  = isLagna
+          ? cy + 10
+          : cy - totalH / 2 + lineH * 0.7
 
         return (
           <g key={houseNum}>
-            {isLagna && (
-              <rect x={x+1} y={y+1} width={CELL-2} height={CELL-2}
-                fill={`${accent}14`} />
-            )}
-
-            {isCorner && (
-              <>
-                <line x1={x} y1={y} x2={x+CELL} y2={y+CELL}
-                  stroke={accent} strokeWidth={0.6} opacity={0.22} />
-                <line x1={x+CELL} y1={y} x2={x} y2={y+CELL}
-                  stroke={accent} strokeWidth={0.6} opacity={0.22} />
-              </>
-            )}
-
-            <text x={x+5} y={y+13} fontSize={8}
-              fill={isLagna ? accent : `${accent}80`}
+            <text x={lx} y={ly} textAnchor="middle" fontSize={8}
+              fill={isLagna ? '#5048a8' : '#a8a8c8'}
               fontFamily="monospace" fontWeight={isLagna ? 'bold' : 'normal'}>
               {houseNum}
             </text>
 
-            <text x={x+CELL-5} y={y+13} fontSize={7.5}
-              fill={`${accent}60`} textAnchor="end" fontFamily="monospace">
-              {rashiIdx + 1}
-            </text>
-
-            <text x={x+CELL-4} y={y+CELL-4} fontSize={9}
-              fill={`${accent}40`} textAnchor="end">
-              {RASHI_SYMS[rashiIdx]}
-            </text>
-
             {isLagna && (
-              <text x={x+CELL/2} y={y+CELL-6} fontSize={7.5}
-                fill={accent} textAnchor="middle" fontWeight="bold"
-                fontFamily="monospace" opacity={0.8}>
+              <text x={cx} y={cy - (planets.length > 0 ? 3 : -4)}
+                textAnchor="middle" fontSize={8.5}
+                fill="#5048a8" fontFamily="monospace" fontWeight="bold" opacity={0.9}>
                 Asc
               </text>
             )}
 
-            {planets.map(({ id, color }, i) => {
-              const rows  = Math.ceil(planets.length / 2)
-              const col2  = i % 2
-              const row2  = Math.floor(i / 2)
-              const totalH = rows * 15
-              const startY = CELL / 2 - totalH / 2 + 18 + row2 * 15
-              const px = col2 === 0 && planets.length % 2 !== 0 && i === planets.length - 1
-                ? x + CELL / 2
-                : col2 === 0 ? x + CELL * 0.3 : x + CELL * 0.7
-
+            {planets.map((id, i) => {
+              const row = Math.floor(i / cols)
+              const col = i % cols
+              const xOdd = cols === 2 && planets.length % 2 !== 0 && i === planets.length - 1
+              const colOff = cols === 2 ? (col === 0 ? -10 : 10) : 0
               return (
                 <text key={id}
-                  x={planets.length <= 2 ? x + CELL / 2 - (planets.length === 2 ? (col2 === 0 ? 11 : -11) : 0) : px}
-                  y={y + startY}
-                  fontSize={10.5} fontWeight="bold"
-                  fill={color}
-                  textAnchor="middle"
-                  fontFamily="monospace"
-                  style={{ filter: `drop-shadow(0 0 3px ${color})` }}
-                >
+                  x={xOdd ? cx : cx + colOff}
+                  y={baseY + row * lineH}
+                  textAnchor="middle" fontSize={9.5} fontWeight="bold"
+                  fill={PLANET_CHART_COLOR[id] ?? '#334155'}
+                  fontFamily="monospace">
                   {id}
                 </text>
               )
