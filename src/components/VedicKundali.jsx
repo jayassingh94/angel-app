@@ -29,6 +29,24 @@ const RASHIS = [
 ]
 const RASHI_SHORT = ['Ar','Ta','Ge','Ca','Le','Vi','Li','Sc','Sg','Cp','Aq','Pi']
 const RASHI_SYMS  = ['♈','♉','♊','♋','♌','♍','♎','♏','♐','♑','♒','♓']
+const SIGN_LORDS  = ['Ma','Ve','Me','Mo','Su','Me','Ve','Ma','Ju','Sa','Sa','Ju']
+
+const NAKSHATRAS = [
+  'Ashwini','Bharani','Krittika','Rohini','Mrigashira','Ardra',
+  'Punarvasu','Pushya','Ashlesha','Magha','Purva Phalguni','Uttara Phalguni',
+  'Hasta','Chitra','Swati','Vishakha','Anuradha','Jyeshtha',
+  'Mula','Purva Ashadha','Uttara Ashadha','Shravana','Dhanishtha',
+  'Shatabhisha','Purva Bhadrapada','Uttara Bhadrapada','Revati',
+]
+// Vimshottari nakshatra lord cycle (repeats 3×9 = 27)
+const NK_LORDS = ['Ke','Ve','Su','Mo','Ma','Ra','Ju','Sa','Me']
+
+function getNakshatra(sidLon) {
+  const span = 360 / 27
+  const idx  = Math.floor(sidLon / span)
+  const pada = Math.floor((sidLon % span) / (span / 4)) + 1
+  return { idx, pada }
+}
 
 const GRAHAS = [
   { id: 'Su', name: 'Sun',     vName: 'Surya',   symbol: '☉', bodyKey: 'Sun',     color: '#facc15' },
@@ -353,6 +371,164 @@ function GrahaTable({ chart }) {
 
       <p className="text-[9px] text-slate-700 text-right mt-2 px-1">
         Lahiri Ayanamsha: {chart.ayanamsha}° · Whole-sign houses
+      </p>
+    </div>
+  )
+}
+
+// ── Planet data table (Sign / Nakshatra toggle) ───────────────────────────────
+
+// color for lord abbreviations in the dark table (original dark-bg palette)
+const GRAHA_DARK_COLOR = {
+  Su:'#facc15', Mo:'#94a3b8', Ma:'#f87171', Me:'#4ade80',
+  Ju:'#fb923c', Ve:'#f9a8d4', Sa:'#818cf8', Ra:'#a78bfa', Ke:'#6ee7b7',
+}
+
+const PT_COLS = '5.5rem 1fr 3rem 4.5rem 2.8rem'
+
+function PlanetTable({ chart }) {
+  const [view, setView] = useState('sign')
+
+  const ascRaw  = chart.lagnaSidLon % 30
+  const ascMins = Math.floor((ascRaw - Math.floor(ascRaw)) * 60)
+
+  const rows = [
+    {
+      id: 'Asc', name: 'Ascendant', symbol: '⬆', color: '#818cf8',
+      sidLon: chart.lagnaSidLon, rashiIdx: chart.lagnaRashi,
+      degs: chart.lagnaDegs, mins: ascMins, houseNum: 1,
+    },
+    ...chart.grahas,
+  ]
+
+  const headers = view === 'sign'
+    ? ['Planet', 'Sign', 'Lord', 'Degree', 'H']
+    : ['Planet', 'Nakshatra', 'Lord', 'Pada', 'H']
+
+  return (
+    <div
+      className="rounded-2xl overflow-hidden"
+      style={{
+        background: 'rgba(10,8,28,0.85)',
+        border: '1px solid rgba(99,102,241,0.18)',
+        boxShadow: '0 8px 32px rgba(0,0,0,0.4)',
+      }}
+    >
+      {/* Header + toggle */}
+      <div
+        className="flex items-center justify-between px-4 py-3"
+        style={{ borderBottom: '1px solid rgba(255,255,255,0.06)' }}
+      >
+        <p className="text-[10px] uppercase tracking-[0.22em] text-indigo-400/70 font-semibold">
+          Planetary Positions
+        </p>
+        <div
+          className="flex rounded-lg overflow-hidden"
+          style={{ border: '1px solid rgba(99,102,241,0.2)' }}
+        >
+          {['sign', 'nakshatra'].map(v => (
+            <button
+              key={v}
+              onClick={() => setView(v)}
+              className="px-3 py-1 text-[9px] uppercase tracking-wider font-semibold transition-colors"
+              style={{
+                background: view === v ? 'rgba(99,102,241,0.28)' : 'transparent',
+                color:      view === v ? '#a5b4fc' : '#475569',
+              }}
+            >
+              {v === 'sign' ? 'Sign' : 'Nakshatra'}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* Column headers */}
+      <div
+        className="grid px-4 py-2"
+        style={{
+          gridTemplateColumns: PT_COLS,
+          background: 'rgba(255,255,255,0.03)',
+          borderBottom: '1px solid rgba(255,255,255,0.05)',
+        }}
+      >
+        {headers.map(h => (
+          <span key={h} className="text-[9px] font-bold uppercase tracking-widest text-slate-600">
+            {h}
+          </span>
+        ))}
+      </div>
+
+      {/* Data rows */}
+      {rows.map((row, i) => {
+        const nak  = getNakshatra(row.sidLon)
+        const lord = view === 'sign' ? SIGN_LORDS[row.rashiIdx] : NK_LORDS[nak.idx % 9]
+        const isAsc = row.id === 'Asc'
+
+        return (
+          <div
+            key={row.id}
+            className="grid items-center px-4 py-2"
+            style={{
+              gridTemplateColumns: PT_COLS,
+              background: i % 2 === 0 ? 'rgba(255,255,255,0.022)' : 'transparent',
+              borderBottom: '1px solid rgba(255,255,255,0.03)',
+            }}
+          >
+            {/* Planet */}
+            <div className="flex items-center gap-1.5 min-w-0">
+              <span style={{ color: row.color, fontSize: 13 }}>{row.symbol}</span>
+              <div className="min-w-0">
+                <p className="text-[11px] font-bold font-mono leading-tight" style={{ color: row.color }}>
+                  {row.id}
+                </p>
+                <p className="text-[8.5px] text-slate-600 leading-tight truncate">{row.name}</p>
+              </div>
+            </div>
+
+            {/* Sign / Nakshatra */}
+            {view === 'sign' ? (
+              <div className="flex items-center gap-1 min-w-0">
+                <span className="text-sm text-slate-400">{RASHI_SYMS[row.rashiIdx]}</span>
+                <span className="text-[10px] text-slate-400 truncate">{RASHIS[row.rashiIdx]}</span>
+              </div>
+            ) : (
+              <span className="text-[10px] text-slate-400 truncate pr-1">
+                {NAKSHATRAS[nak.idx]}
+              </span>
+            )}
+
+            {/* Lord */}
+            <span
+              className="text-[10px] font-bold font-mono"
+              style={{ color: GRAHA_DARK_COLOR[lord] ?? '#94a3b8' }}
+            >
+              {lord}
+            </span>
+
+            {/* Degree / Pada */}
+            {view === 'sign' ? (
+              <span className="text-[10px] font-mono text-slate-500">
+                {String(row.degs).padStart(2,'0')}°{String(row.mins ?? 0).padStart(2,'0')}′
+              </span>
+            ) : (
+              <span className="text-[11px] font-mono font-bold text-slate-500">
+                {nak.pada}
+              </span>
+            )}
+
+            {/* House */}
+            <span
+              className="text-[11px] font-bold font-mono text-center"
+              style={{ color: isAsc ? '#818cf8' : '#475569' }}
+            >
+              {row.houseNum}
+            </span>
+          </div>
+        )
+      })}
+
+      <p className="text-[8.5px] text-slate-700 text-right px-4 py-2">
+        Lahiri ayanamsha · Whole-sign houses
       </p>
     </div>
   )
@@ -796,6 +972,9 @@ export default function VedicKundali() {
                   <GrahaTable chart={chart} />
                 </div>
               </div>
+
+              {/* Planet data table — Sign / Nakshatra toggle */}
+              <PlanetTable chart={chart} />
             </div>
 
             {/* ── Mahadasha tab ── */}
