@@ -198,16 +198,25 @@ function NorthIndianChart({ chart }) {
       {/* Outer border */}
       <rect x={0.5} y={0.5} width={S-1} height={S-1} fill="none" stroke={lineColor} strokeWidth={1.2} rx={5.5} />
 
-      {/* 6 structural lines forming the 12 houses */}
-      <line x1={0}   y1={0}   x2={S}   y2={S}   stroke={lineColor} strokeWidth={lineW} />
-      <line x1={S}   y1={0}   x2={0}   y2={S}   stroke={lineColor} strokeWidth={lineW} />
-      <line x1={200} y1={0}   x2={0}   y2={200} stroke={lineColor} strokeWidth={lineW} />
-      <line x1={200} y1={0}   x2={S}   y2={200} stroke={lineColor} strokeWidth={lineW} />
-      <line x1={S}   y1={200} x2={200} y2={S}   stroke={lineColor} strokeWidth={lineW} />
-      <line x1={0}   y1={200} x2={200} y2={S}   stroke={lineColor} strokeWidth={lineW} />
-
-      {/* Center square — intentionally empty */}
-      <rect x={100} y={100} width={200} height={200} fill="rgba(242,240,234,0.9)" stroke={lineColor} strokeWidth={lineW} />
+      {/* Corner diagonal segments — stop at inner square corners, don't cross center */}
+      <line x1={0}   y1={0}   x2={100} y2={100} stroke={lineColor} strokeWidth={lineW} />
+      <line x1={300} y1={300} x2={S}   y2={S}   stroke={lineColor} strokeWidth={lineW} />
+      <line x1={S}   y1={0}   x2={300} y2={100} stroke={lineColor} strokeWidth={lineW} />
+      <line x1={100} y1={300} x2={0}   y2={S}   stroke={lineColor} strokeWidth={lineW} />
+      {/* Edge-midpoint lines — from each side midpoint to the two adjacent inner corners */}
+      <line x1={200} y1={0}   x2={100} y2={100} stroke={lineColor} strokeWidth={lineW} />
+      <line x1={200} y1={0}   x2={300} y2={100} stroke={lineColor} strokeWidth={lineW} />
+      <line x1={S}   y1={200} x2={300} y2={100} stroke={lineColor} strokeWidth={lineW} />
+      <line x1={S}   y1={200} x2={300} y2={300} stroke={lineColor} strokeWidth={lineW} />
+      <line x1={200} y1={S}   x2={300} y2={300} stroke={lineColor} strokeWidth={lineW} />
+      <line x1={200} y1={S}   x2={100} y2={300} stroke={lineColor} strokeWidth={lineW} />
+      <line x1={0}   y1={200} x2={100} y2={300} stroke={lineColor} strokeWidth={lineW} />
+      <line x1={0}   y1={200} x2={100} y2={100} stroke={lineColor} strokeWidth={lineW} />
+      {/* Inner square boundary — same weight as all other structural lines, no fill */}
+      <line x1={100} y1={100} x2={300} y2={100} stroke={lineColor} strokeWidth={lineW} />
+      <line x1={300} y1={100} x2={300} y2={300} stroke={lineColor} strokeWidth={lineW} />
+      <line x1={300} y1={300} x2={100} y2={300} stroke={lineColor} strokeWidth={lineW} />
+      <line x1={100} y1={300} x2={100} y2={100} stroke={lineColor} strokeWidth={lineW} />
 
       {/* House numbers + planet abbreviations */}
       {HOUSE_TRIANGLES.map(([houseNum, pts, [lx, ly]]) => {
