@@ -378,65 +378,67 @@ function GrahaTable({ chart }) {
 
 // ── Planet data table (Sign / Nakshatra toggle) ───────────────────────────────
 
-// color for lord abbreviations in the dark table (original dark-bg palette)
-const GRAHA_DARK_COLOR = {
-  Su:'#facc15', Mo:'#94a3b8', Ma:'#f87171', Me:'#4ade80',
-  Ju:'#fb923c', Ve:'#f9a8d4', Sa:'#818cf8', Ra:'#a78bfa', Ke:'#6ee7b7',
+function getDMS(sidLon) {
+  const raw  = sidLon % 30
+  const d    = Math.floor(raw)
+  const mRaw = (raw - d) * 60
+  const m    = Math.floor(mRaw)
+  const s    = Math.floor((mRaw - m) * 60)
+  return { d, m, s }
 }
 
-const PT_COLS = '5.5rem 1fr 3rem 4.5rem 2.8rem'
+const PT_SIGN_COLS = '6.5rem 1fr 4.5rem 6.5rem 2.6rem'
+const PT_NAK_COLS  = '6.5rem 1fr 4.5rem 3rem  2.6rem'
 
 function PlanetTable({ chart }) {
   const [view, setView] = useState('sign')
 
-  const ascRaw  = chart.lagnaSidLon % 30
-  const ascMins = Math.floor((ascRaw - Math.floor(ascRaw)) * 60)
+  const { d: aD, m: aM, s: aS } = getDMS(chart.lagnaSidLon)
 
   const rows = [
     {
-      id: 'Asc', name: 'Ascendant', symbol: '⬆', color: '#818cf8',
+      id: 'Asc', name: 'Ascendant', symbol: '⬆', color: '#6366f1',
       sidLon: chart.lagnaSidLon, rashiIdx: chart.lagnaRashi,
-      degs: chart.lagnaDegs, mins: ascMins, houseNum: 1,
+      houseNum: 1,
     },
     ...chart.grahas,
   ]
 
+  const cols    = view === 'sign' ? PT_SIGN_COLS : PT_NAK_COLS
   const headers = view === 'sign'
-    ? ['Planet', 'Sign', 'Lord', 'Degree', 'H']
-    : ['Planet', 'Nakshatra', 'Lord', 'Pada', 'H']
+    ? ['Planet', 'Sign', 'Sign Lord', 'Degree', 'H']
+    : ['Planet', 'Nakshatra', 'Nak. Lord', 'Pada', 'H']
 
   return (
     <div
       className="rounded-2xl overflow-hidden"
       style={{
-        background: 'rgba(10,8,28,0.85)',
-        border: '1px solid rgba(99,102,241,0.18)',
-        boxShadow: '0 8px 32px rgba(0,0,0,0.4)',
+        background: '#f8f7f3',
+        border: '1px solid rgba(100,90,160,0.2)',
+        boxShadow: '0 4px 20px rgba(0,0,0,0.1)',
       }}
     >
-      {/* Header + toggle */}
+      {/* Section header + toggle */}
       <div
         className="flex items-center justify-between px-4 py-3"
-        style={{ borderBottom: '1px solid rgba(255,255,255,0.06)' }}
+        style={{ borderBottom: '1px solid rgba(100,90,160,0.14)' }}
       >
-        <p className="text-[10px] uppercase tracking-[0.22em] text-indigo-400/70 font-semibold">
-          Planetary Positions
-        </p>
+        <p className="text-sm font-bold text-slate-700 tracking-wide">Planets</p>
         <div
           className="flex rounded-lg overflow-hidden"
-          style={{ border: '1px solid rgba(99,102,241,0.2)' }}
+          style={{ border: '1px solid rgba(100,90,160,0.28)' }}
         >
-          {['sign', 'nakshatra'].map(v => (
+          {[{ v: 'sign', label: 'Sign' }, { v: 'nakshatra', label: 'Nakshatra' }].map(({ v, label }) => (
             <button
               key={v}
               onClick={() => setView(v)}
-              className="px-3 py-1 text-[9px] uppercase tracking-wider font-semibold transition-colors"
+              className="px-3 py-1 text-xs font-semibold transition-colors cursor-pointer"
               style={{
-                background: view === v ? 'rgba(99,102,241,0.28)' : 'transparent',
-                color:      view === v ? '#a5b4fc' : '#475569',
+                background: view === v ? 'rgba(99,102,241,0.14)' : 'transparent',
+                color:      view === v ? '#4f46e5' : '#94a3b8',
               }}
             >
-              {v === 'sign' ? 'Sign' : 'Nakshatra'}
+              {label}
             </button>
           ))}
         </div>
@@ -446,13 +448,13 @@ function PlanetTable({ chart }) {
       <div
         className="grid px-4 py-2"
         style={{
-          gridTemplateColumns: PT_COLS,
-          background: 'rgba(255,255,255,0.03)',
-          borderBottom: '1px solid rgba(255,255,255,0.05)',
+          gridTemplateColumns: cols,
+          background: 'rgba(99,102,241,0.07)',
+          borderBottom: '1px solid rgba(100,90,160,0.12)',
         }}
       >
         {headers.map(h => (
-          <span key={h} className="text-[9px] font-bold uppercase tracking-widest text-slate-600">
+          <span key={h} className="text-[9.5px] font-bold uppercase tracking-widest" style={{ color: '#6b7280' }}>
             {h}
           </span>
         ))}
@@ -460,74 +462,78 @@ function PlanetTable({ chart }) {
 
       {/* Data rows */}
       {rows.map((row, i) => {
-        const nak  = getNakshatra(row.sidLon)
-        const lord = view === 'sign' ? SIGN_LORDS[row.rashiIdx] : NK_LORDS[nak.idx % 9]
         const isAsc = row.id === 'Asc'
+        const nak   = getNakshatra(row.sidLon)
+        const lord  = view === 'sign' ? SIGN_LORDS[row.rashiIdx] : NK_LORDS[nak.idx % 9]
+        const { d, m, s } = getDMS(row.sidLon)
 
         return (
           <div
             key={row.id}
             className="grid items-center px-4 py-2"
             style={{
-              gridTemplateColumns: PT_COLS,
-              background: i % 2 === 0 ? 'rgba(255,255,255,0.022)' : 'transparent',
-              borderBottom: '1px solid rgba(255,255,255,0.03)',
+              gridTemplateColumns: cols,
+              background: i % 2 === 0 ? 'rgba(0,0,0,0.03)' : 'transparent',
+              borderBottom: '1px solid rgba(100,90,160,0.07)',
             }}
           >
             {/* Planet */}
             <div className="flex items-center gap-1.5 min-w-0">
-              <span style={{ color: row.color, fontSize: 13 }}>{row.symbol}</span>
+              <span style={{ color: isAsc ? '#6366f1' : row.color, fontSize: 14 }}>
+                {row.symbol}
+              </span>
               <div className="min-w-0">
-                <p className="text-[11px] font-bold font-mono leading-tight" style={{ color: row.color }}>
+                <p className="text-[11px] font-bold font-mono leading-tight"
+                  style={{ color: isAsc ? '#4f46e5' : '#1e293b' }}>
                   {row.id}
                 </p>
-                <p className="text-[8.5px] text-slate-600 leading-tight truncate">{row.name}</p>
+                <p className="text-[8.5px] leading-tight truncate" style={{ color: '#94a3b8' }}>
+                  {row.name}
+                </p>
               </div>
             </div>
 
             {/* Sign / Nakshatra */}
             {view === 'sign' ? (
               <div className="flex items-center gap-1 min-w-0">
-                <span className="text-sm text-slate-400">{RASHI_SYMS[row.rashiIdx]}</span>
-                <span className="text-[10px] text-slate-400 truncate">{RASHIS[row.rashiIdx]}</span>
+                <span className="text-sm" style={{ color: '#475569' }}>{RASHI_SYMS[row.rashiIdx]}</span>
+                <span className="text-[10px] font-medium truncate" style={{ color: '#334155' }}>
+                  {RASHIS[row.rashiIdx]}
+                </span>
               </div>
             ) : (
-              <span className="text-[10px] text-slate-400 truncate pr-1">
+              <span className="text-[10px] font-medium truncate pr-1" style={{ color: '#334155' }}>
                 {NAKSHATRAS[nak.idx]}
               </span>
             )}
 
-            {/* Lord */}
-            <span
-              className="text-[10px] font-bold font-mono"
-              style={{ color: GRAHA_DARK_COLOR[lord] ?? '#94a3b8' }}
-            >
+            {/* Sign Lord / Nak Lord */}
+            <span className="text-[10px] font-bold font-mono"
+              style={{ color: PLANET_CHART_COLOR[lord] ?? '#475569' }}>
               {lord}
             </span>
 
-            {/* Degree / Pada */}
+            {/* Degree DD°MM′SS″ / Pada */}
             {view === 'sign' ? (
-              <span className="text-[10px] font-mono text-slate-500">
-                {String(row.degs).padStart(2,'0')}°{String(row.mins ?? 0).padStart(2,'0')}′
+              <span className="text-[10px] font-mono" style={{ color: '#475569' }}>
+                {String(d).padStart(2,'0')}°{String(m).padStart(2,'0')}′{String(s).padStart(2,'0')}″
               </span>
             ) : (
-              <span className="text-[11px] font-mono font-bold text-slate-500">
+              <span className="text-sm font-bold font-mono" style={{ color: '#475569' }}>
                 {nak.pada}
               </span>
             )}
 
             {/* House */}
-            <span
-              className="text-[11px] font-bold font-mono text-center"
-              style={{ color: isAsc ? '#818cf8' : '#475569' }}
-            >
+            <span className="text-xs font-bold font-mono text-center"
+              style={{ color: isAsc ? '#6366f1' : '#64748b' }}>
               {row.houseNum}
             </span>
           </div>
         )
       })}
 
-      <p className="text-[8.5px] text-slate-700 text-right px-4 py-2">
+      <p className="text-[8.5px] text-right px-4 py-2" style={{ color: '#c4c4d4' }}>
         Lahiri ayanamsha · Whole-sign houses
       </p>
     </div>
