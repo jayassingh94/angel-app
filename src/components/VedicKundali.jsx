@@ -4,6 +4,7 @@ import VedicDasha from './VedicDasha.jsx'
 import MangalDosha from './MangalDosha.jsx'
 import KalsarpaDosha from './KalsarpaDosha.jsx'
 import { computeNavamsa } from '../utils/navamsa.js'
+import { computeDashamsha } from '../utils/dashamsha.js'
 import Transit from './Transit.jsx'
 
 // ── WASM singleton — initialised once at module load ──────────────────────────
@@ -781,7 +782,9 @@ export default function VedicKundali() {
   }
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  const navamsaChart = useMemo(() => chart ? computeNavamsa(chart) : null, [chart])
+  const navamsaChart  = useMemo(() => chart ? computeNavamsa(chart)   : null, [chart])
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const dashamshaChart = useMemo(() => chart ? computeDashamsha(chart) : null, [chart])
   const moon         = useMemo(() => chart?.grahas.find(g => g.id === 'Mo') ?? null, [chart])
 
   return (
@@ -1066,6 +1069,7 @@ export default function VedicKundali() {
                     {[
                       { key: 'lagna',      label: 'Lagna' },
                       { key: 'navamsa',    label: 'Navamsa' },
+                      { key: 'dashamsha',  label: 'D10' },
                       { key: 'transit',    label: 'Transit' },
                       { key: 'divisional', label: 'Divisional' },
                     ].map(({ key, label }) => (
@@ -1085,8 +1089,8 @@ export default function VedicKundali() {
                     ))}
                   </div>
 
-                  {/* Chart style toggle (Lagna + Navamsa only) */}
-                  {(subTab === 'lagna' || subTab === 'navamsa') && (
+                  {/* Chart style toggle (Lagna + Navamsa + D10 only) */}
+                  {(subTab === 'lagna' || subTab === 'navamsa' || subTab === 'dashamsha') && (
                     <div className="flex items-center gap-2">
                       <span className="text-[9px] uppercase tracking-widest text-slate-600">Chart Style</span>
                       <div className="flex rounded-lg overflow-hidden" style={{ border: '1px solid rgba(99,102,241,0.22)' }}>
@@ -1172,6 +1176,34 @@ export default function VedicKundali() {
                       </div>
                       <PlanetTable chart={navamsaChart} />
                       <p className="text-[9px] text-slate-700 text-center">Navamsa reflects the strength of planets and matters related to marriage and inner life.</p>
+                    </div>
+                  )}
+
+                  {/* D10 Dashamsha */}
+                  {subTab === 'dashamsha' && dashamshaChart && (
+                    <div className="flex flex-col gap-5">
+                      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
+                        <div className="flex flex-col gap-0">
+                          <div
+                            className="rounded-2xl overflow-hidden"
+                            style={{ background: '#fff', border: '1px solid #d1cfe8', boxShadow: '0 4px 24px rgba(45,42,80,0.18)' }}
+                          >
+                            {chartStyle === 'north' ? <NorthIndianChart chart={dashamshaChart} /> : <SouthIndianChart chart={dashamshaChart} />}
+                          </div>
+                          <p className="text-[9px] text-center mt-2" style={{ color: '#6060a0' }}>
+                            D10 · Dashamsha &nbsp;·&nbsp; Lagna {dashamshaChart.lagnaSymbol} {dashamshaChart.lagnaRashiName}
+                          </p>
+                        </div>
+                        <div className="rounded-2xl p-4"
+                          style={{ background: 'rgba(10,8,28,0.88)', border: '1px solid rgba(99,102,241,0.2)', boxShadow: '0 4px 24px rgba(0,0,0,0.35)' }}>
+                          <p className="text-[10px] uppercase tracking-[0.2em] text-slate-600 mb-3 text-center">Dashamsha Positions</p>
+                          <GrahaTable chart={dashamshaChart} />
+                        </div>
+                      </div>
+                      <PlanetTable chart={dashamshaChart} />
+                      <p className="text-[9px] text-slate-700 text-center">
+                        Dashamsha reflects career, profession, and public standing.
+                      </p>
                     </div>
                   )}
 
