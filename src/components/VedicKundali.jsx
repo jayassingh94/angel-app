@@ -188,92 +188,98 @@ function computeKundali(swe, year, month, day, h24, min, city) {
 
 function NorthIndianChart({ chart }) {
   const S = 400
-  const lineColor = 'rgba(100,90,160,0.38)'
-  const lineW = 0.85
+  const lineC = '#2d2a50'
+  const lineW = 1.2
 
   const planetsByHouse = {}
   for (let i = 1; i <= 12; i++) planetsByHouse[i] = []
   chart.grahas.forEach(g => planetsByHouse[g.houseNum].push(g.id))
 
   return (
-    <svg width="100%" viewBox={`0 0 ${S} ${S}`} style={{ maxWidth: S, display: 'block', borderRadius: 6 }}>
-      {/* Light cream background */}
-      <rect width={S} height={S} fill="#f5f3ee" rx={6} />
+    <svg width="100%" viewBox={`0 0 ${S} ${S}`} style={{ maxWidth: S, display: 'block' }}>
+      {/* White background */}
+      <rect width={S} height={S} fill="#fff" />
 
-      {/* H1 (Lagna) subtle tint */}
-      <polygon points="200,0 100,100 300,100" fill="rgba(99,102,241,0.08)" />
+      {/* H1 Lagna accent */}
+      <polygon points="200,0 100,100 300,100" fill="rgba(79,70,229,0.08)" />
 
       {/* Outer border */}
-      <rect x={0.5} y={0.5} width={S-1} height={S-1} fill="none" stroke={lineColor} strokeWidth={1.2} rx={5.5} />
+      <rect x={0.5} y={0.5} width={S-1} height={S-1} fill="none" stroke={lineC} strokeWidth={1.5} />
 
-      {/* Corner diagonal segments — stop at inner square corners, don't cross center */}
-      <line x1={0}   y1={0}   x2={100} y2={100} stroke={lineColor} strokeWidth={lineW} />
-      <line x1={300} y1={300} x2={S}   y2={S}   stroke={lineColor} strokeWidth={lineW} />
-      <line x1={S}   y1={0}   x2={300} y2={100} stroke={lineColor} strokeWidth={lineW} />
-      <line x1={100} y1={300} x2={0}   y2={S}   stroke={lineColor} strokeWidth={lineW} />
-      {/* Edge-midpoint lines — from each side midpoint to the two adjacent inner corners */}
-      <line x1={200} y1={0}   x2={100} y2={100} stroke={lineColor} strokeWidth={lineW} />
-      <line x1={200} y1={0}   x2={300} y2={100} stroke={lineColor} strokeWidth={lineW} />
-      <line x1={S}   y1={200} x2={300} y2={100} stroke={lineColor} strokeWidth={lineW} />
-      <line x1={S}   y1={200} x2={300} y2={300} stroke={lineColor} strokeWidth={lineW} />
-      <line x1={200} y1={S}   x2={300} y2={300} stroke={lineColor} strokeWidth={lineW} />
-      <line x1={200} y1={S}   x2={100} y2={300} stroke={lineColor} strokeWidth={lineW} />
-      <line x1={0}   y1={200} x2={100} y2={300} stroke={lineColor} strokeWidth={lineW} />
-      <line x1={0}   y1={200} x2={100} y2={100} stroke={lineColor} strokeWidth={lineW} />
-      {/* Inner square boundary — same weight as all other structural lines, no fill */}
-      <line x1={100} y1={100} x2={300} y2={100} stroke={lineColor} strokeWidth={lineW} />
-      <line x1={300} y1={100} x2={300} y2={300} stroke={lineColor} strokeWidth={lineW} />
-      <line x1={300} y1={300} x2={100} y2={300} stroke={lineColor} strokeWidth={lineW} />
-      <line x1={100} y1={300} x2={100} y2={100} stroke={lineColor} strokeWidth={lineW} />
+      {/* Corner diagonals — split at inner corners */}
+      <line x1={0}   y1={0}   x2={100} y2={100} stroke={lineC} strokeWidth={lineW} />
+      <line x1={300} y1={300} x2={S}   y2={S}   stroke={lineC} strokeWidth={lineW} />
+      <line x1={S}   y1={0}   x2={300} y2={100} stroke={lineC} strokeWidth={lineW} />
+      <line x1={100} y1={300} x2={0}   y2={S}   stroke={lineC} strokeWidth={lineW} />
 
-      {/* House numbers + planet abbreviations */}
+      {/* Edge-midpoint → inner-corner lines */}
+      <line x1={200} y1={0}   x2={100} y2={100} stroke={lineC} strokeWidth={lineW} />
+      <line x1={200} y1={0}   x2={300} y2={100} stroke={lineC} strokeWidth={lineW} />
+      <line x1={S}   y1={200} x2={300} y2={100} stroke={lineC} strokeWidth={lineW} />
+      <line x1={S}   y1={200} x2={300} y2={300} stroke={lineC} strokeWidth={lineW} />
+      <line x1={200} y1={S}   x2={300} y2={300} stroke={lineC} strokeWidth={lineW} />
+      <line x1={200} y1={S}   x2={100} y2={300} stroke={lineC} strokeWidth={lineW} />
+      <line x1={0}   y1={200} x2={100} y2={300} stroke={lineC} strokeWidth={lineW} />
+      <line x1={0}   y1={200} x2={100} y2={100} stroke={lineC} strokeWidth={lineW} />
+
+      {/* Inner square */}
+      <line x1={100} y1={100} x2={300} y2={100} stroke={lineC} strokeWidth={lineW} />
+      <line x1={300} y1={100} x2={300} y2={300} stroke={lineC} strokeWidth={lineW} />
+      <line x1={300} y1={300} x2={100} y2={300} stroke={lineC} strokeWidth={lineW} />
+      <line x1={100} y1={300} x2={100} y2={100} stroke={lineC} strokeWidth={lineW} />
+
       {HOUSE_TRIANGLES.map(([houseNum, pts, [lx, ly]]) => {
         const isLagna = houseNum === 1
         const planets = planetsByHouse[houseNum]
         const cx = (pts[0][0] + pts[1][0] + pts[2][0]) / 3
         const cy = (pts[0][1] + pts[1][1] + pts[2][1]) / 3
-        const cols   = planets.length > 2 ? 2 : 1
-        const lineH  = 13
-        const rows   = Math.ceil(planets.length / cols)
-        const totalH = rows * lineH
-        const baseY  = isLagna
-          ? cy + 10
-          : cy - totalH / 2 + lineH * 0.7
-
         const signIdx = (chart.lagnaRashi + houseNum - 1) % 12
+
+        const cols  = planets.length > 2 ? 2 : 1
+        const lineH = 13
+        const rows  = Math.ceil(planets.length / cols)
+        const totalH = rows * lineH
+        const baseY = isLagna
+          ? cy + 13
+          : cy - totalH / 2 + lineH * 0.75
+
         return (
           <g key={houseNum}>
-            <text x={lx} y={ly} textAnchor="middle" fontSize={7.5}
-              fill={isLagna ? '#5048a8' : '#9898b8'}
-              fontFamily="monospace" fontWeight={isLagna ? 'bold' : 'normal'}>
+            {/* Sign number — at the outer apex of each house triangle */}
+            <text x={lx} y={ly} textAnchor="middle" fontSize={9}
+              fontFamily="Georgia, 'Times New Roman', serif" fontWeight="600"
+              fill={isLagna ? '#3730a3' : '#6b64a8'}>
               {signIdx + 1}
             </text>
-            <text x={lx} y={ly + 9} textAnchor="middle" fontSize={6}
-              fill={isLagna ? '#7068c0' : '#7878a0'}
-              fontFamily="monospace">
+            {/* Rashi abbreviation — small label below sign number */}
+            <text x={lx} y={ly + 10} textAnchor="middle" fontSize={6.5}
+              fontFamily="monospace"
+              fill={isLagna ? '#4f46e5' : '#9090c0'}>
               {RASHI_SHORT[signIdx]}
             </text>
 
+            {/* "Asc" marker in Lagna house */}
             {isLagna && (
-              <text x={cx} y={cy - (planets.length > 0 ? 3 : -4)}
-                textAnchor="middle" fontSize={8}
-                fill="#5048a8" fontFamily="monospace" fontWeight="bold" opacity={0.9}>
+              <text x={cx} y={planets.length > 0 ? cy - 1 : cy + 5}
+                textAnchor="middle" fontSize={9} fontWeight="bold"
+                fontFamily="monospace" fill="#3730a3">
                 Asc
               </text>
             )}
 
+            {/* Planet abbreviations */}
             {planets.map((id, i) => {
               const row = Math.floor(i / cols)
               const col = i % cols
               const xOdd = cols === 2 && planets.length % 2 !== 0 && i === planets.length - 1
-              const colOff = cols === 2 ? (col === 0 ? -10 : 10) : 0
+              const colOff = cols === 2 ? (col === 0 ? -11 : 11) : 0
               return (
                 <text key={id}
                   x={xOdd ? cx : cx + colOff}
                   y={baseY + row * lineH}
-                  textAnchor="middle" fontSize={9.5} fontWeight="bold"
-                  fill={PLANET_CHART_COLOR[id] ?? '#334155'}
-                  fontFamily="monospace">
+                  textAnchor="middle" fontSize={10.5} fontWeight="bold"
+                  fontFamily="monospace"
+                  fill={PLANET_CHART_COLOR[id] ?? '#1e293b'}>
                   {id}
                 </text>
               )
@@ -521,17 +527,17 @@ function PlanetTable({ chart }) {
     <div
       className="rounded-2xl overflow-hidden"
       style={{
-        background: '#f8f7f3',
-        border: '1px solid rgba(100,90,160,0.2)',
-        boxShadow: '0 4px 20px rgba(0,0,0,0.1)',
+        background: '#ffffff',
+        border: '1px solid #d1cfe8',
+        boxShadow: '0 4px 20px rgba(45,42,80,0.12)',
       }}
     >
       {/* Section header + toggle */}
       <div
         className="flex items-center justify-between px-4 py-3"
-        style={{ borderBottom: '1px solid rgba(100,90,160,0.14)' }}
+        style={{ background: '#f7f6fc', borderBottom: '1px solid #e2dff0' }}
       >
-        <p className="text-sm font-bold text-slate-700 tracking-wide">Planets</p>
+        <p className="text-sm font-bold tracking-wide" style={{ color: '#2d2a50' }}>Planets</p>
         <div
           className="flex rounded-lg overflow-hidden"
           style={{ border: '1px solid rgba(100,90,160,0.28)' }}
@@ -557,12 +563,12 @@ function PlanetTable({ chart }) {
         className="grid px-4 py-2"
         style={{
           gridTemplateColumns: cols,
-          background: 'rgba(99,102,241,0.07)',
-          borderBottom: '1px solid rgba(100,90,160,0.12)',
+          background: '#eeedf8',
+          borderBottom: '1px solid #d1cfe8',
         }}
       >
         {headers.map(h => (
-          <span key={h} className="text-[9.5px] font-bold uppercase tracking-widest" style={{ color: '#6b7280' }}>
+          <span key={h} className="text-[9px] font-bold uppercase tracking-widest" style={{ color: '#4338ca' }}>
             {h}
           </span>
         ))}
@@ -581,8 +587,8 @@ function PlanetTable({ chart }) {
             className="grid items-center px-4 py-2"
             style={{
               gridTemplateColumns: cols,
-              background: i % 2 === 0 ? 'rgba(0,0,0,0.03)' : 'transparent',
-              borderBottom: '1px solid rgba(100,90,160,0.07)',
+              background: i % 2 === 0 ? '#f3f2fa' : '#ffffff',
+              borderBottom: '1px solid #e8e6f4',
             }}
           >
             {/* Planet */}
@@ -1110,37 +1116,63 @@ export default function VedicKundali() {
 
                   {/* Lagna */}
                   {subTab === 'lagna' && (
-                    <div className="flex flex-col gap-4">
+                    <div className="flex flex-col gap-5">
                       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
-                        <div className="rounded-2xl overflow-hidden p-4"
-                          style={{ background: 'rgba(4,3,14,0.9)', border: '1px solid rgba(99,102,241,0.25)', boxShadow: '0 0 48px rgba(99,102,241,0.12), 0 8px 32px rgba(0,0,0,0.5)' }}>
-                          {chartStyle === 'north' ? <NorthIndianChart chart={chart} /> : <SouthIndianChart chart={chart} />}
+                        {/* Chart canvas */}
+                        <div className="flex flex-col gap-0">
+                          <div
+                            className="rounded-2xl overflow-hidden"
+                            style={{
+                              background: '#fff',
+                              border: '1px solid #d1cfe8',
+                              boxShadow: '0 4px 24px rgba(45,42,80,0.18)',
+                            }}
+                          >
+                            {chartStyle === 'north' ? <NorthIndianChart chart={chart} /> : <SouthIndianChart chart={chart} />}
+                          </div>
+                          <p className="text-[9px] text-center mt-2" style={{ color: '#6060a0' }}>
+                            D1 · Rashi Chart &nbsp;·&nbsp; Lahiri Ayanamsha &nbsp;·&nbsp; Whole-Sign Houses
+                          </p>
                         </div>
-                        <div className="rounded-2xl p-4"
-                          style={{ background: 'rgba(10,8,28,0.85)', border: '1px solid rgba(99,102,241,0.18)', boxShadow: '0 8px 32px rgba(0,0,0,0.4)' }}>
-                          <p className="text-[10px] uppercase tracking-[0.2em] text-slate-600 mb-3 text-center">Graha Positions · Sidereal</p>
+
+                        {/* Graha table */}
+                        <div
+                          className="rounded-2xl p-4"
+                          style={{
+                            background: 'rgba(10,8,28,0.88)',
+                            border: '1px solid rgba(99,102,241,0.2)',
+                            boxShadow: '0 4px 24px rgba(0,0,0,0.35)',
+                          }}
+                        >
+                          <p className="text-[10px] uppercase tracking-[0.2em] text-slate-600 mb-3 text-center">
+                            Graha Positions · Sidereal
+                          </p>
                           <GrahaTable chart={chart} />
                         </div>
                       </div>
+
+                      {/* Planet data table */}
                       <PlanetTable chart={chart} />
                     </div>
                   )}
 
                   {/* Navamsa */}
                   {subTab === 'navamsa' && navamsaChart && (
-                    <div className="flex flex-col gap-4">
+                    <div className="flex flex-col gap-5">
                       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
-                        <div className="rounded-2xl overflow-hidden p-4"
-                          style={{ background: 'rgba(4,3,14,0.9)', border: '1px solid rgba(99,102,241,0.25)', boxShadow: '0 0 48px rgba(99,102,241,0.12), 0 8px 32px rgba(0,0,0,0.5)' }}>
-                          <div className="flex items-center justify-between mb-3">
-                            <span className="text-[9px] font-mono" style={{ color: 'rgba(99,102,241,0.6)' }}>
-                              D9 · Navamsa — Lagna {navamsaChart.lagnaSymbol} {navamsaChart.lagnaRashiName}
-                            </span>
+                        <div className="flex flex-col gap-0">
+                          <div
+                            className="rounded-2xl overflow-hidden"
+                            style={{ background: '#fff', border: '1px solid #d1cfe8', boxShadow: '0 4px 24px rgba(45,42,80,0.18)' }}
+                          >
+                            {chartStyle === 'north' ? <NorthIndianChart chart={navamsaChart} /> : <SouthIndianChart chart={navamsaChart} />}
                           </div>
-                          {chartStyle === 'north' ? <NorthIndianChart chart={navamsaChart} /> : <SouthIndianChart chart={navamsaChart} />}
+                          <p className="text-[9px] text-center mt-2" style={{ color: '#6060a0' }}>
+                            D9 · Navamsa &nbsp;·&nbsp; Lagna {navamsaChart.lagnaSymbol} {navamsaChart.lagnaRashiName}
+                          </p>
                         </div>
                         <div className="rounded-2xl p-4"
-                          style={{ background: 'rgba(10,8,28,0.85)', border: '1px solid rgba(99,102,241,0.18)' }}>
+                          style={{ background: 'rgba(10,8,28,0.88)', border: '1px solid rgba(99,102,241,0.2)', boxShadow: '0 4px 24px rgba(0,0,0,0.35)' }}>
                           <p className="text-[10px] uppercase tracking-[0.2em] text-slate-600 mb-3 text-center">Navamsa Positions</p>
                           <GrahaTable chart={navamsaChart} />
                         </div>
