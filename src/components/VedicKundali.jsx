@@ -206,11 +206,9 @@ function NorthIndianChart({ chart }) {
       {/* Outer border */}
       <rect x={0.5} y={0.5} width={S-1} height={S-1} fill="none" stroke={lineC} strokeWidth={1.5} />
 
-      {/* Corner diagonals — split at inner corners */}
-      <line x1={0}   y1={0}   x2={100} y2={100} stroke={lineC} strokeWidth={lineW} />
-      <line x1={300} y1={300} x2={S}   y2={S}   stroke={lineC} strokeWidth={lineW} />
-      <line x1={S}   y1={0}   x2={300} y2={100} stroke={lineC} strokeWidth={lineW} />
-      <line x1={100} y1={300} x2={0}   y2={S}   stroke={lineC} strokeWidth={lineW} />
+      {/* Full corner-to-corner diagonals — continuous through center */}
+      <line x1={0} y1={0} x2={S} y2={S} stroke={lineC} strokeWidth={lineW} />
+      <line x1={S} y1={0} x2={0} y2={S} stroke={lineC} strokeWidth={lineW} />
 
       {/* Edge-midpoint → inner-corner lines */}
       <line x1={200} y1={0}   x2={100} y2={100} stroke={lineC} strokeWidth={lineW} />
