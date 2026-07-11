@@ -124,11 +124,11 @@ function FeaturedCard({ card }) {
       <div className="text-4xl mb-4" style={{ color: '#a78bfa' }}>{card.glyph}</div>
       <h3
         className="mb-2"
-        style={{ fontFamily: SERIF, fontSize: '1.4rem', fontWeight: 500, color: '#e2e8f0', lineHeight: 1.15 }}
+        style={{ fontFamily: SERIF, fontSize: '1.4rem', fontWeight: 500, color: 'var(--text-h)', lineHeight: 1.15 }}
       >
         {card.label}
       </h3>
-      <p style={{ fontFamily: SANS, fontSize: '0.875rem', color: '#64748b', lineHeight: 1.6 }}>
+      <p style={{ fontFamily: SANS, fontSize: '0.875rem', color: 'var(--text-soft)', lineHeight: 1.6 }}>
         {card.desc}
       </p>
     </button>
@@ -145,8 +145,8 @@ function Card({ card }) {
       onMouseLeave={() => setHovered(false)}
       onClick={() => !card.soon && navigate(card.id)}
       style={{
-        background: hovered ? 'rgba(255,255,255,0.055)' : 'rgba(255,255,255,0.028)',
-        border: `1px solid ${hovered ? 'rgba(99,102,241,0.4)' : 'rgba(255,255,255,0.07)'}`,
+        background: hovered ? 'var(--card-subtle-hover)' : 'var(--card-subtle)',
+        border: `1px solid ${hovered ? 'var(--card-border-hover)' : 'var(--card-border-subtle)'}`,
         transform: hovered ? 'translateY(-4px)' : 'none',
         boxShadow: hovered ? '0 10px 28px rgba(99,102,241,0.22)' : '0 2px 8px rgba(0,0,0,0.3)',
         cursor: card.soon ? 'not-allowed' : 'pointer',
@@ -162,7 +162,7 @@ function Card({ card }) {
           fontFamily: SERIF,
           fontSize: '1.05rem',
           fontWeight: 500,
-          color: card.soon ? '#334155' : '#cbd5e1',
+          color: card.soon ? 'var(--text-faint)' : 'var(--text-2)',
           lineHeight: 1.2,
         }}
       >
@@ -175,7 +175,7 @@ function Card({ card }) {
           Coming Soon
         </span>
       ) : (
-        <p style={{ fontFamily: SANS, fontSize: '0.8125rem', color: '#475569', lineHeight: 1.55 }}>
+        <p style={{ fontFamily: SANS, fontSize: '0.8125rem', color: 'var(--text-soft)', lineHeight: 1.55 }}>
           {card.desc}
         </p>
       )}
@@ -253,7 +253,7 @@ export default function Home() {
           style={{
             fontFamily: SANS,
             fontSize: '1rem',
-            color: '#475569',
+            color: 'var(--text-soft)',
             lineHeight: 1.7,
             maxWidth: '360px',
           }}
@@ -275,7 +275,7 @@ export default function Home() {
                   letterSpacing: '0.28em',
                   textTransform: 'uppercase',
                   fontWeight: 600,
-                  color: '#475569',
+                  color: 'var(--text-soft)',
                 }}
               >
                 {cat.heading}

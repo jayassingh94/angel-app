@@ -20,7 +20,7 @@ const DIR_POSITIONS = DIRS.map((dir, i) => {
 
 const STATUS_STYLE = {
   favorable:         { label: 'Well-placed',    color: '#4ade80', bg: 'rgba(74,222,128,0.08)',  border: 'rgba(74,222,128,0.22)' },
-  neutral:           { label: 'Neutral',         color: '#94a3b8', bg: 'rgba(148,163,184,0.06)', border: 'rgba(148,163,184,0.18)' },
+  neutral:           { label: 'Neutral',         color: 'var(--text-body)', bg: 'rgba(148,163,184,0.06)', border: 'rgba(148,163,184,0.18)' },
   'needs attention': { label: 'Worth adjusting', color: '#fb923c', bg: 'rgba(251,146,60,0.08)',  border: 'rgba(251,146,60,0.22)' },
 }
 
@@ -51,7 +51,7 @@ function CompassPicker({ selected, onSelect }) {
         transform: 'translate(-50%, -50%)',
         width: '54px', height: '54px', borderRadius: '50%',
         border: '1px solid rgba(99,102,241,0.2)',
-        background: 'rgba(10,8,28,0.75)',
+        background: 'var(--compass-bg)',
         display: 'flex', alignItems: 'center', justifyContent: 'center',
       }}>
         <span style={{
@@ -76,9 +76,9 @@ function CompassPicker({ selected, onSelect }) {
               width: '34px', height: '34px', borderRadius: '50%',
               fontFamily: SANS, fontSize: '9.5px', fontWeight: on ? 700 : 500,
               letterSpacing: '0.04em',
-              background: on ? 'rgba(99,102,241,0.28)' : 'rgba(255,255,255,0.04)',
-              border: `1px solid ${on ? 'rgba(139,92,246,0.65)' : 'rgba(255,255,255,0.1)'}`,
-              color: on ? '#c4b5fd' : '#475569',
+              background: on ? 'rgba(99,102,241,0.18)' : 'var(--btn-subtle-bg)',
+              border: `1px solid ${on ? 'rgba(139,92,246,0.65)' : 'var(--btn-subtle-border)'}`,
+              color: on ? '#c4b5fd' : 'var(--text-muted)',
               cursor: 'pointer',
               transition: 'all 0.15s',
               boxShadow: on ? '0 0 12px rgba(139,92,246,0.38)' : 'none',
@@ -101,7 +101,7 @@ function QuizStep({ step, answers, selected, onSelect, onConfirm, onSkip }) {
           style={{ fontFamily: SANS, fontSize: '0.75rem', letterSpacing: '0.32em', color: 'rgba(167,139,250,0.55)', fontWeight: 500 }}>
           Vastu Check
         </p>
-        <h1 style={{ fontFamily: SERIF, fontSize: 'clamp(1.8rem, 5vw, 2.5rem)', fontWeight: 500, color: '#e2e8f0', lineHeight: 1.1 }}>
+        <h1 style={{ fontFamily: SERIF, fontSize: 'clamp(1.8rem, 5vw, 2.5rem)', fontWeight: 500, color: 'var(--text-h)', lineHeight: 1.1 }}>
           Space &amp; Direction
         </h1>
       </div>
@@ -109,7 +109,7 @@ function QuizStep({ step, answers, selected, onSelect, onConfirm, onSkip }) {
       {/* Progress */}
       <div className="w-full flex flex-col gap-2">
         <div className="flex justify-between items-center">
-          <span style={{ fontFamily: SANS, fontSize: '0.75rem', color: '#475569', letterSpacing: '0.15em', textTransform: 'uppercase', fontWeight: 600 }}>
+          <span style={{ fontFamily: SANS, fontSize: '0.75rem', color: 'var(--text-soft)', letterSpacing: '0.15em', textTransform: 'uppercase', fontWeight: 600 }}>
             {q.label}
           </span>
           <span style={{ fontFamily: SANS, fontSize: '0.75rem', color: '#334155' }}>{step + 1} / 4</span>
@@ -117,16 +117,16 @@ function QuizStep({ step, answers, selected, onSelect, onConfirm, onSkip }) {
         <div className="flex gap-1.5">
           {[0, 1, 2, 3].map(i => (
             <div key={i} className="flex-1 h-0.5 rounded-full transition-all duration-500"
-              style={{ background: i <= step ? 'rgba(139,92,246,0.65)' : 'rgba(255,255,255,0.07)' }} />
+              style={{ background: i <= step ? 'rgba(139,92,246,0.65)' : 'var(--btn-subtle-border)' }} />
           ))}
         </div>
       </div>
 
       {/* Question card */}
       <div className="w-full rounded-2xl p-6 flex flex-col gap-8 items-center"
-        style={{ background: 'rgba(10,8,28,0.85)', border: '1px solid rgba(99,102,241,0.18)', boxShadow: '0 8px 32px rgba(0,0,0,0.4)' }}>
+        style={{ background: 'var(--card-bg)', border: '1px solid rgba(99,102,241,0.18)', boxShadow: '0 8px 32px rgba(0,0,0,0.4)' }}>
 
-        <p style={{ fontFamily: SERIF, fontSize: '1.15rem', fontWeight: 400, color: '#cbd5e1', lineHeight: 1.55, textAlign: 'center' }}>
+        <p style={{ fontFamily: SERIF, fontSize: '1.15rem', fontWeight: 400, color: 'var(--text-2)', lineHeight: 1.55, textAlign: 'center' }}>
           {q.question}
         </p>
 
@@ -159,7 +159,7 @@ function QuizStep({ step, answers, selected, onSelect, onConfirm, onSkip }) {
         </div>
       </div>
 
-      <p style={{ fontFamily: SANS, fontSize: '0.75rem', letterSpacing: '0.18em', textTransform: 'uppercase', color: '#1e293b', textAlign: 'center' }}>
+      <p style={{ fontFamily: SANS, fontSize: '0.75rem', letterSpacing: '0.18em', textTransform: 'uppercase', color: 'var(--text-faint)', textAlign: 'center' }}>
         Classical Vastu Shastra directional principles
       </p>
     </div>
@@ -175,15 +175,15 @@ function ResultsScreen({ answers, onRestart }) {
           style={{ fontFamily: SANS, fontSize: '0.75rem', letterSpacing: '0.32em', color: 'rgba(167,139,250,0.55)', fontWeight: 500 }}>
           Vastu Analysis
         </p>
-        <h1 style={{ fontFamily: SERIF, fontSize: 'clamp(1.9rem, 5vw, 2.6rem)', fontWeight: 500, color: '#e2e8f0', lineHeight: 1.1 }}>
+        <h1 style={{ fontFamily: SERIF, fontSize: 'clamp(1.9rem, 5vw, 2.6rem)', fontWeight: 500, color: 'var(--text-h)', lineHeight: 1.1 }}>
           Your Space Report
         </h1>
       </div>
 
       {summary && (
         <div className="rounded-xl px-5 py-4"
-          style={{ background: 'rgba(10,8,28,0.85)', border: '1px solid rgba(99,102,241,0.2)', boxShadow: '0 4px 20px rgba(0,0,0,0.3)' }}>
-          <p style={{ fontFamily: SANS, fontSize: '0.875rem', color: '#94a3b8', lineHeight: 1.8 }}>{summary}</p>
+          style={{ background: 'var(--card-bg)', border: '1px solid rgba(99,102,241,0.2)', boxShadow: '0 4px 20px rgba(0,0,0,0.3)' }}>
+          <p style={{ fontFamily: SANS, fontSize: '0.875rem', color: 'var(--text-body)', lineHeight: 1.8 }}>{summary}</p>
         </div>
       )}
 
@@ -194,13 +194,13 @@ function ResultsScreen({ answers, onRestart }) {
             const sty = STATUS_STYLE[ans.status]
             return (
               <div key={i} className="rounded-2xl p-5 flex flex-col gap-3"
-                style={{ background: 'rgba(10,8,28,0.85)', border: '1px solid rgba(99,102,241,0.18)', boxShadow: '0 4px 16px rgba(0,0,0,0.35)' }}>
+                style={{ background: 'var(--card-bg)', border: '1px solid rgba(99,102,241,0.18)', boxShadow: '0 4px 16px rgba(0,0,0,0.35)' }}>
                 <div className="flex items-center justify-between gap-3">
                   <div>
-                    <p style={{ fontFamily: SANS, fontSize: '0.75rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: '#4f5d7a', fontWeight: 600, marginBottom: '0.25rem' }}>
+                    <p style={{ fontFamily: SANS, fontSize: '0.75rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'var(--text-soft)', fontWeight: 600, marginBottom: '0.25rem' }}>
                       {ans.room}
                     </p>
-                    <p style={{ fontFamily: SERIF, fontSize: '1.15rem', fontWeight: 500, color: '#cbd5e1' }}>
+                    <p style={{ fontFamily: SERIF, fontSize: '1.15rem', fontWeight: 500, color: 'var(--text-2)' }}>
                       {ans.direction}
                     </p>
                   </div>
@@ -209,15 +209,15 @@ function ResultsScreen({ answers, onRestart }) {
                     {sty.label}
                   </span>
                 </div>
-                <p style={{ fontFamily: SANS, fontSize: '1rem', color: '#475569', lineHeight: 1.75, fontStyle: 'italic' }}>
+                <p style={{ fontFamily: SANS, fontSize: '1rem', color: 'var(--text-soft)', lineHeight: 1.75, fontStyle: 'italic' }}>
                   {ans.note}
                 </p>
                 <div className="rounded-xl px-4 py-3"
-                  style={{ background: 'rgba(255,255,255,0.02)', borderLeft: `2px solid ${sty.border}` }}>
+                  style={{ background: 'var(--card-inner)', borderLeft: `2px solid ${sty.border}` }}>
                   <p style={{ fontFamily: SANS, fontSize: '0.8125rem', letterSpacing: '0.12em', textTransform: 'uppercase', color: sty.color, fontWeight: 600, marginBottom: '0.4rem' }}>
                     Remedy
                   </p>
-                  <p style={{ fontFamily: SANS, fontSize: '1rem', color: '#64748b', lineHeight: 1.8 }}>
+                  <p style={{ fontFamily: SANS, fontSize: '1rem', color: 'var(--text-soft)', lineHeight: 1.8 }}>
                     {ans.remedy}
                   </p>
                 </div>
@@ -227,8 +227,8 @@ function ResultsScreen({ answers, onRestart }) {
         </div>
       ) : (
         <div className="rounded-xl px-5 py-4"
-          style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.06)' }}>
-          <p style={{ fontFamily: SANS, fontSize: '1rem', color: '#475569', lineHeight: 1.7 }}>
+          style={{ background: 'var(--card-inner)', border: '1px solid rgba(255,255,255,0.06)' }}>
+          <p style={{ fontFamily: SANS, fontSize: '1rem', color: 'var(--text-soft)', lineHeight: 1.7 }}>
             No directions were entered. Try again and answer at least one question to see your space report.
           </p>
         </div>
@@ -245,7 +245,7 @@ function ResultsScreen({ answers, onRestart }) {
       </button>
 
       <p className="text-center"
-        style={{ fontFamily: SANS, fontSize: '0.75rem', letterSpacing: '0.18em', textTransform: 'uppercase', color: '#1e293b' }}>
+        style={{ fontFamily: SANS, fontSize: '0.75rem', letterSpacing: '0.18em', textTransform: 'uppercase', color: 'var(--text-faint)' }}>
         Classical Vastu Shastra directional principles · remedies are optional, not prescriptive
       </p>
     </div>

@@ -47,8 +47,8 @@ function Card({ card }) {
       onMouseLeave={() => setHovered(false)}
       onClick={() => !card.soon && navigate(card.id)}
       style={{
-        background: hovered ? 'rgba(255,255,255,0.055)' : 'rgba(255,255,255,0.028)',
-        border: `1px solid ${hovered ? 'rgba(99,102,241,0.4)' : 'rgba(255,255,255,0.07)'}`,
+        background: hovered ? 'var(--card-subtle-hover)' : 'var(--card-subtle)',
+        border: `1px solid ${hovered ? 'var(--card-border-hover)' : 'var(--card-border-subtle)'}`,
         transform: hovered ? 'translateY(-4px)' : 'none',
         boxShadow: hovered ? '0 10px 28px rgba(99,102,241,0.22)' : '0 2px 8px rgba(0,0,0,0.3)',
         cursor: card.soon ? 'not-allowed' : 'pointer',
@@ -60,16 +60,16 @@ function Card({ card }) {
       </div>
       <h3
         className="mb-1.5"
-        style={{ fontFamily: SERIF, fontSize: '1.05rem', fontWeight: 500, color: card.soon ? '#334155' : '#cbd5e1', lineHeight: 1.2 }}
+        style={{ fontFamily: SERIF, fontSize: '1.05rem', fontWeight: 500, color: card.soon ? 'var(--text-faint)' : 'var(--text-2)', lineHeight: 1.2 }}
       >
         {card.label}
       </h3>
       {card.soon ? (
-        <span style={{ fontFamily: SANS, fontSize: '0.75rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: '#334155', fontWeight: 600 }}>
+        <span style={{ fontFamily: SANS, fontSize: '0.75rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'var(--text-faint)', fontWeight: 600 }}>
           Coming Soon
         </span>
       ) : (
-        <p style={{ fontFamily: SANS, fontSize: '0.8125rem', color: '#475569', lineHeight: 1.55 }}>
+        <p style={{ fontFamily: SANS, fontSize: '0.8125rem', color: 'var(--text-soft)', lineHeight: 1.55 }}>
           {card.desc}
         </p>
       )}
@@ -88,10 +88,10 @@ export default function NumerologyHub() {
         >
           Numbers &amp; Vibration
         </p>
-        <h1 style={{ fontFamily: SERIF, fontSize: 'clamp(1.9rem, 5vw, 2.9rem)', fontWeight: 500, color: '#e2e8f0', lineHeight: 1.1 }}>
+        <h1 style={{ fontFamily: SERIF, fontSize: 'clamp(1.9rem, 5vw, 2.9rem)', fontWeight: 500, color: 'var(--text-h)', lineHeight: 1.1 }}>
           Numerology &amp; Name Correction
         </h1>
-        <p style={{ fontFamily: SANS, fontSize: '1rem', color: '#475569', marginTop: '0.9rem', lineHeight: 1.7, maxWidth: '380px', margin: '0.9rem auto 0' }}>
+        <p style={{ fontFamily: SANS, fontSize: '1rem', color: 'var(--text-soft)', marginTop: '0.9rem', lineHeight: 1.7, maxWidth: '380px', margin: '0.9rem auto 0' }}>
           Your Life Path Number, and how your name&apos;s numerology aligns with it.
         </p>
       </div>
@@ -99,7 +99,7 @@ export default function NumerologyHub() {
       {/* Divider */}
       <div className="flex items-center gap-4 mb-6">
         <div className="flex-1 h-px" style={{ background: 'linear-gradient(90deg, transparent, rgba(99,102,241,0.3))' }} />
-        <span style={{ fontFamily: SANS, fontSize: '0.75rem', letterSpacing: '0.25em', textTransform: 'uppercase', color: '#334155' }}>Tools</span>
+        <span style={{ fontFamily: SANS, fontSize: '0.75rem', letterSpacing: '0.25em', textTransform: 'uppercase', color: 'var(--text-faint)' }}>Tools</span>
         <div className="flex-1 h-px" style={{ background: 'linear-gradient(90deg, rgba(99,102,241,0.3), transparent)' }} />
       </div>
 

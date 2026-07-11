@@ -27,9 +27,9 @@ export default function LifePath() {
   const interp = result != null ? lifePathInterpretations[result] : null
 
   const selectStyle = {
-    background: 'rgba(255,255,255,0.04)',
-    border: '1px solid rgba(99,102,241,0.22)',
-    color: '#94a3b8',
+    background: 'var(--input-bg)',
+    border: '1px solid var(--input-border)',
+    color: 'var(--select-color)',
     borderRadius: '0.75rem',
     padding: '0.6rem 0.75rem',
     fontFamily: SANS,
@@ -47,25 +47,25 @@ export default function LifePath() {
           style={{ fontFamily: SANS, fontSize: '0.75rem', letterSpacing: '0.32em', color: 'rgba(167,139,250,0.55)', fontWeight: 500 }}>
           Numerology
         </p>
-        <h1 style={{ fontFamily: SERIF, fontSize: 'clamp(1.9rem, 5vw, 2.8rem)', fontWeight: 500, color: '#e2e8f0', lineHeight: 1.1 }}>
+        <h1 style={{ fontFamily: SERIF, fontSize: 'clamp(1.9rem, 5vw, 2.8rem)', fontWeight: 500, color: 'var(--text-h)', lineHeight: 1.1 }}>
           Life Path Number
         </h1>
-        <p style={{ fontFamily: SANS, fontSize: '1rem', color: '#475569', marginTop: '0.75rem', lineHeight: 1.7 }}>
+        <p style={{ fontFamily: SANS, fontSize: '1rem', color: 'var(--text-soft)', marginTop: '0.75rem', lineHeight: 1.7 }}>
           Your core numerological blueprint, derived from your date of birth.
         </p>
       </div>
 
       {/* Form */}
       <div className="rounded-2xl p-6 flex flex-col gap-5"
-        style={{ background: 'rgba(10,8,28,0.85)', border: '1px solid rgba(99,102,241,0.18)', boxShadow: '0 8px 32px rgba(0,0,0,0.4)' }}>
-        <p style={{ fontFamily: SANS, fontSize: '0.75rem', letterSpacing: '0.22em', textTransform: 'uppercase', color: '#4f5d7a', fontWeight: 600 }}>
+        style={{ background: 'var(--card-bg)', border: '1px solid rgba(99,102,241,0.18)', boxShadow: '0 8px 32px rgba(0,0,0,0.4)' }}>
+        <p style={{ fontFamily: SANS, fontSize: '0.75rem', letterSpacing: '0.22em', textTransform: 'uppercase', color: 'var(--text-soft)', fontWeight: 600 }}>
           Date of Birth
         </p>
 
         <div className="grid grid-cols-3 gap-3">
           {/* Day */}
           <div className="flex flex-col gap-1.5">
-            <label style={{ fontFamily: SANS, fontSize: '0.75rem', color: '#475569', letterSpacing: '0.1em', textTransform: 'uppercase' }}>Day</label>
+            <label style={{ fontFamily: SANS, fontSize: '0.75rem', color: 'var(--text-soft)', letterSpacing: '0.1em', textTransform: 'uppercase' }}>Day</label>
             <select value={day} onChange={e => setDay(e.target.value)} style={selectStyle}>
               <option value="">—</option>
               {DAYS.map(d => <option key={d} value={d}>{String(d).padStart(2,'0')}</option>)}
@@ -74,7 +74,7 @@ export default function LifePath() {
 
           {/* Month */}
           <div className="flex flex-col gap-1.5">
-            <label style={{ fontFamily: SANS, fontSize: '0.75rem', color: '#475569', letterSpacing: '0.1em', textTransform: 'uppercase' }}>Month</label>
+            <label style={{ fontFamily: SANS, fontSize: '0.75rem', color: 'var(--text-soft)', letterSpacing: '0.1em', textTransform: 'uppercase' }}>Month</label>
             <select value={month} onChange={e => setMonth(e.target.value)} style={selectStyle}>
               <option value="">—</option>
               {MONTHS.map((m, i) => <option key={m} value={i + 1}>{m}</option>)}
@@ -83,7 +83,7 @@ export default function LifePath() {
 
           {/* Year */}
           <div className="flex flex-col gap-1.5">
-            <label style={{ fontFamily: SANS, fontSize: '0.75rem', color: '#475569', letterSpacing: '0.1em', textTransform: 'uppercase' }}>Year</label>
+            <label style={{ fontFamily: SANS, fontSize: '0.75rem', color: 'var(--text-soft)', letterSpacing: '0.1em', textTransform: 'uppercase' }}>Year</label>
             <select value={year} onChange={e => setYear(e.target.value)} style={selectStyle}>
               <option value="">—</option>
               {YEARS.map(y => <option key={y} value={y}>{y}</option>)}
@@ -115,7 +115,7 @@ export default function LifePath() {
       {/* Result */}
       {result != null && interp && (
         <div className="rounded-2xl p-6 flex flex-col gap-5"
-          style={{ background: 'rgba(10,8,28,0.85)', border: '1px solid rgba(99,102,241,0.25)', boxShadow: '0 8px 32px rgba(0,0,0,0.4)' }}>
+          style={{ background: 'var(--card-bg)', border: '1px solid rgba(99,102,241,0.25)', boxShadow: '0 8px 32px rgba(0,0,0,0.4)' }}>
 
           {/* Number display */}
           <div className="flex items-center gap-5">
@@ -130,10 +130,10 @@ export default function LifePath() {
                   {MASTER_LABEL[result]}
                 </span>
               )}
-              <p style={{ fontFamily: SANS, fontSize: '0.75rem', letterSpacing: '0.22em', textTransform: 'uppercase', color: '#4f5d7a', fontWeight: 600 }}>
+              <p style={{ fontFamily: SANS, fontSize: '0.75rem', letterSpacing: '0.22em', textTransform: 'uppercase', color: 'var(--text-soft)', fontWeight: 600 }}>
                 Your Life Path Number
               </p>
-              <p style={{ fontFamily: SERIF, fontSize: '1.4rem', color: '#e2e8f0', fontWeight: 500, marginTop: '0.2rem' }}>
+              <p style={{ fontFamily: SERIF, fontSize: '1.4rem', color: 'var(--text-h)', fontWeight: 500, marginTop: '0.2rem' }}>
                 Life Path {result}
               </p>
             </div>
@@ -141,20 +141,20 @@ export default function LifePath() {
 
           {/* Theme */}
           <div className="rounded-xl px-5 py-4"
-            style={{ background: 'rgba(255,255,255,0.02)', borderLeft: '2px solid rgba(99,102,241,0.35)' }}>
-            <p className="mb-2" style={{ fontFamily: SANS, fontSize: '0.75rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: '#4f5d7a', fontWeight: 600 }}>
+            style={{ background: 'var(--card-inner)', borderLeft: '2px solid rgba(99,102,241,0.35)' }}>
+            <p className="mb-2" style={{ fontFamily: SANS, fontSize: '0.75rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'var(--text-soft)', fontWeight: 600 }}>
               Core Theme
             </p>
-            <p style={{ fontFamily: SANS, fontSize: '1rem', color: '#94a3b8', lineHeight: 1.75 }}>{interp.theme}</p>
+            <p style={{ fontFamily: SANS, fontSize: '1rem', color: 'var(--text-body)', lineHeight: 1.75 }}>{interp.theme}</p>
           </div>
 
           {/* Challenges */}
           <div className="rounded-xl px-5 py-4"
-            style={{ background: 'rgba(255,255,255,0.02)', borderLeft: '2px solid rgba(168,85,247,0.3)' }}>
-            <p className="mb-2" style={{ fontFamily: SANS, fontSize: '0.75rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: '#4f5d7a', fontWeight: 600 }}>
+            style={{ background: 'var(--card-inner)', borderLeft: '2px solid rgba(168,85,247,0.3)' }}>
+            <p className="mb-2" style={{ fontFamily: SANS, fontSize: '0.75rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'var(--text-soft)', fontWeight: 600 }}>
               Growth Area
             </p>
-            <p style={{ fontFamily: SANS, fontSize: '1rem', color: '#94a3b8', lineHeight: 1.75 }}>{interp.challenges}</p>
+            <p style={{ fontFamily: SANS, fontSize: '1rem', color: 'var(--text-body)', lineHeight: 1.75 }}>{interp.challenges}</p>
           </div>
         </div>
       )}

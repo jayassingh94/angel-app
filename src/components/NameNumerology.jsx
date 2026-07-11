@@ -13,9 +13,9 @@ const YEARS  = Array.from({ length: 126 }, (_, i) => 2025 - i)
 const MASTER_LABEL = { 11: 'Master Number', 22: 'Master Number', 33: 'Master Number' }
 
 const selectStyle = {
-  background: 'rgba(255,255,255,0.04)',
-  border: '1px solid rgba(99,102,241,0.22)',
-  color: '#94a3b8',
+  background: 'var(--input-bg)',
+  border: '1px solid var(--input-border)',
+  color: 'var(--select-color)',
   borderRadius: '0.75rem',
   padding: '0.6rem 0.75rem',
   fontFamily: SANS,
@@ -43,7 +43,7 @@ const ALIGN_STYLE = {
 function NumberCard({ label, number, isMaster }) {
   return (
     <div className="flex items-center gap-4 rounded-xl p-4"
-      style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(99,102,241,0.15)' }}>
+      style={{ background: 'var(--card-inner)', border: '1px solid rgba(99,102,241,0.15)' }}>
       <div className="w-14 h-14 shrink-0 rounded-xl flex items-center justify-center"
         style={{ background: 'linear-gradient(135deg, rgba(79,70,229,0.28), rgba(124,58,237,0.28))', border: '1px solid rgba(139,92,246,0.3)' }}>
         <span style={{ fontFamily: SERIF, fontSize: '1.9rem', fontWeight: 600, color: '#c4b5fd' }}>{number}</span>
@@ -55,8 +55,8 @@ function NumberCard({ label, number, isMaster }) {
             Master Number
           </span>
         )}
-        <p style={{ fontFamily: SANS, fontSize: '0.75rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: '#4f5d7a', fontWeight: 600 }}>{label}</p>
-        <p style={{ fontFamily: SERIF, fontSize: '1.15rem', color: '#e2e8f0', fontWeight: 500, marginTop: '0.15rem' }}>
+        <p style={{ fontFamily: SANS, fontSize: '0.75rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'var(--text-soft)', fontWeight: 600 }}>{label}</p>
+        <p style={{ fontFamily: SERIF, fontSize: '1.15rem', color: 'var(--text-h)', fontWeight: 500, marginTop: '0.15rem' }}>
           {label.split(' ')[0]} {number}
         </p>
       </div>
@@ -70,10 +70,10 @@ function SuggestionCard({ suggestion, lifePath }) {
   const snippet = interp?.theme?.slice(0, 110).trimEnd() + (interp?.theme?.length > 110 ? '…' : '')
   return (
     <div className="rounded-xl p-4 flex flex-col gap-2.5"
-      style={{ background: 'rgba(255,255,255,0.025)', border: '1px solid rgba(99,102,241,0.18)' }}>
+      style={{ background: 'var(--card-subtle)', border: '1px solid rgba(99,102,241,0.18)' }}>
       {/* Spelling + number badge */}
       <div className="flex items-center justify-between gap-3">
-        <span style={{ fontFamily: SERIF, fontSize: '1.2rem', fontWeight: 500, color: '#e2e8f0' }}>
+        <span style={{ fontFamily: SERIF, fontSize: '1.2rem', fontWeight: 500, color: 'var(--text-h)' }}>
           {suggestion.spelling}
         </span>
         <span className="shrink-0 text-[10px] font-bold px-2.5 py-1 rounded-full"
@@ -82,10 +82,10 @@ function SuggestionCard({ suggestion, lifePath }) {
         </span>
       </div>
       {/* Reason */}
-      <p style={{ fontFamily: SANS, fontSize: '1rem', color: '#64748b', lineHeight: 1.6 }}>
+      <p style={{ fontFamily: SANS, fontSize: '1rem', color: 'var(--text-soft)', lineHeight: 1.6 }}>
         {snippet}
       </p>
-      <p style={{ fontFamily: SANS, fontSize: '0.75rem', color: '#334155', lineHeight: 1.5 }}>
+      <p style={{ fontFamily: SANS, fontSize: '0.75rem', color: 'var(--text-faint)', lineHeight: 1.5 }}>
         Name Number {suggestion.nameNumber} is compatible with Life Path {lifePath}.
       </p>
     </div>
@@ -124,33 +124,33 @@ export default function NameNumerology() {
           style={{ fontFamily: SANS, fontSize: '0.75rem', letterSpacing: '0.32em', color: 'rgba(167,139,250,0.55)', fontWeight: 500 }}>
           Name Correction
         </p>
-        <h1 style={{ fontFamily: SERIF, fontSize: 'clamp(1.9rem, 5vw, 2.8rem)', fontWeight: 500, color: '#e2e8f0', lineHeight: 1.1 }}>
+        <h1 style={{ fontFamily: SERIF, fontSize: 'clamp(1.9rem, 5vw, 2.8rem)', fontWeight: 500, color: 'var(--text-h)', lineHeight: 1.1 }}>
           Name Numerology
         </h1>
-        <p style={{ fontFamily: SANS, fontSize: '1rem', color: '#475569', marginTop: '0.75rem', lineHeight: 1.7 }}>
+        <p style={{ fontFamily: SANS, fontSize: '1rem', color: 'var(--text-soft)', marginTop: '0.75rem', lineHeight: 1.7 }}>
           How your name&apos;s vibrational number aligns with your Life Path.
         </p>
       </div>
 
       {/* Form */}
       <div className="rounded-2xl p-6 flex flex-col gap-5"
-        style={{ background: 'rgba(10,8,28,0.85)', border: '1px solid rgba(99,102,241,0.18)', boxShadow: '0 8px 32px rgba(0,0,0,0.4)' }}>
+        style={{ background: 'var(--card-bg)', border: '1px solid rgba(99,102,241,0.18)', boxShadow: '0 8px 32px rgba(0,0,0,0.4)' }}>
 
         <div className="flex flex-col gap-1.5">
-          <label style={{ fontFamily: SANS, fontSize: '0.75rem', color: '#475569', letterSpacing: '0.15em', textTransform: 'uppercase', fontWeight: 600 }}>
-            Full Name <span style={{ color: '#334155', fontWeight: 400 }}>(as used in daily life)</span>
+          <label style={{ fontFamily: SANS, fontSize: '0.75rem', color: 'var(--text-soft)', letterSpacing: '0.15em', textTransform: 'uppercase', fontWeight: 600 }}>
+            Full Name <span style={{ color: 'var(--text-faint)', fontWeight: 400 }}>(as used in daily life)</span>
           </label>
           <input
             type="text"
             value={name}
             onChange={e => setName(e.target.value)}
             placeholder="Enter your name"
-            style={{ ...selectStyle, padding: '0.65rem 0.85rem', fontSize: '1rem', color: name ? '#e2e8f0' : '#334155' }}
+            style={{ ...selectStyle, padding: '0.65rem 0.85rem', fontSize: '1rem', color: name ? 'var(--input-text)' : 'var(--text-faint)' }}
           />
         </div>
 
         <div>
-          <p style={{ fontFamily: SANS, fontSize: '0.75rem', color: '#334155', letterSpacing: '0.15em', textTransform: 'uppercase', fontWeight: 600, marginBottom: '0.75rem' }}>
+          <p style={{ fontFamily: SANS, fontSize: '0.75rem', color: 'var(--text-faint)', letterSpacing: '0.15em', textTransform: 'uppercase', fontWeight: 600, marginBottom: '0.75rem' }}>
             Date of Birth <span style={{ fontWeight: 400, letterSpacing: '0.05em' }}>· optional — adds Life Path alignment &amp; spelling suggestions</span>
           </p>
           <div className="grid grid-cols-3 gap-3">
@@ -191,7 +191,7 @@ export default function NameNumerology() {
       {/* Results */}
       {(nameNum != null || lifePath != null) && (
         <div className="rounded-2xl p-6 flex flex-col gap-5"
-          style={{ background: 'rgba(10,8,28,0.85)', border: '1px solid rgba(99,102,241,0.22)', boxShadow: '0 8px 32px rgba(0,0,0,0.4)' }}>
+          style={{ background: 'var(--card-bg)', border: '1px solid rgba(99,102,241,0.22)', boxShadow: '0 8px 32px rgba(0,0,0,0.4)' }}>
 
           <div className="flex flex-col sm:flex-row gap-3">
             {nameNum   != null && <div className="flex-1"><NumberCard label="Name Number" number={nameNum}  isMaster={!!MASTER_LABEL[nameNum]}  /></div>}
@@ -212,11 +212,11 @@ export default function NameNumerology() {
 
           {nnInterp && (
             <div className="flex flex-col gap-2">
-              <p style={{ fontFamily: SANS, fontSize: '0.75rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: '#4f5d7a', fontWeight: 600 }}>
+              <p style={{ fontFamily: SANS, fontSize: '0.75rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'var(--text-soft)', fontWeight: 600 }}>
                 Name Number {nameNum} · Vibration
               </p>
               <div className="rounded-xl px-5 py-4"
-                style={{ background: 'rgba(255,255,255,0.02)', borderLeft: '2px solid rgba(99,102,241,0.35)' }}>
+                style={{ background: 'var(--card-inner)', borderLeft: '2px solid rgba(99,102,241,0.35)' }}>
                 <p style={{ fontFamily: SANS, fontSize: '1rem', color: '#94a3b8', lineHeight: 1.75 }}>{nnInterp.theme}</p>
               </div>
             </div>
@@ -224,11 +224,11 @@ export default function NameNumerology() {
 
           {lpInterp && (
             <div className="flex flex-col gap-2">
-              <p style={{ fontFamily: SANS, fontSize: '0.75rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: '#4f5d7a', fontWeight: 600 }}>
+              <p style={{ fontFamily: SANS, fontSize: '0.75rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'var(--text-soft)', fontWeight: 600 }}>
                 Life Path {lifePath} · Core Theme
               </p>
               <div className="rounded-xl px-5 py-4"
-                style={{ background: 'rgba(255,255,255,0.02)', borderLeft: '2px solid rgba(168,85,247,0.3)' }}>
+                style={{ background: 'var(--card-inner)', borderLeft: '2px solid rgba(168,85,247,0.3)' }}>
                 <p style={{ fontFamily: SANS, fontSize: '1rem', color: '#94a3b8', lineHeight: 1.75 }}>{lpInterp.theme}</p>
               </div>
             </div>
@@ -247,7 +247,7 @@ export default function NameNumerology() {
                 : 'A few spelling variations that align more closely with your Life Path'}
             </p>
             {!isAlreadyHarmonious && (
-              <p style={{ fontFamily: SANS, fontSize: '0.8125rem', color: '#334155', lineHeight: 1.6 }}>
+              <p style={{ fontFamily: SANS, fontSize: '0.8125rem', color: 'var(--text-faint)', lineHeight: 1.6 }}>
                 These are traditional numerology suggestions to consider, not a requirement — many people keep their name exactly as is.
               </p>
             )}
@@ -261,8 +261,8 @@ export default function NameNumerology() {
             </div>
           ) : (
             <div className="rounded-xl px-5 py-4"
-              style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.06)' }}>
-              <p style={{ fontFamily: SANS, fontSize: '0.875rem', color: '#475569', lineHeight: 1.7 }}>
+              style={{ background: 'var(--card-inner)', border: '1px solid rgba(255,255,255,0.06)' }}>
+              <p style={{ fontFamily: SANS, fontSize: '0.875rem', color: 'var(--text-soft)', lineHeight: 1.7 }}>
                 No close spelling variations were found that shift the name number into a more compatible range for Life Path {lifePath}. Your current spelling may already be the most natural form.
               </p>
             </div>
