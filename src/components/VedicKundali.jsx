@@ -661,7 +661,7 @@ const K_MINUTES = Array.from({ length: 60 }, (_, i) => String(i).padStart(2, '0'
 const KSEL_CLS =
   'w-full px-2 py-3.5 rounded-2xl border text-white appearance-none cursor-pointer ' +
   'focus:outline-none transition-all duration-200 text-sm text-center'
-const KSEL_BASE = { background: 'rgba(255,255,255,0.04)', borderColor: 'rgba(99,102,241,0.28)' }
+const KSEL_BASE = { background: 'var(--input-bg)', borderColor: 'var(--input-border)' }
 
 function KSel({ value, onChange, placeholder, children }) {
   const hasPlaceholder = placeholder !== undefined
@@ -671,10 +671,10 @@ function KSel({ value, onChange, placeholder, children }) {
         value={value}
         onChange={e => onChange(e.target.value)}
         className={KSEL_CLS}
-        style={{ ...KSEL_BASE, color: (!hasPlaceholder || value !== '') ? '#e2e8f0' : '#64748b' }}
+        style={{ ...KSEL_BASE, color: (!hasPlaceholder || value !== '') ? 'var(--input-text)' : '#64748b' }}
       >
         {hasPlaceholder && (
-          <option value="" disabled style={{ color: '#64748b', background: '#0a081c' }}>
+          <option value="" disabled style={{ color: '#64748b', background: 'var(--option-bg)' }}>
             {placeholder}
           </option>
         )}
@@ -809,7 +809,7 @@ export default function VedicKundali() {
         <div
           className="rounded-2xl px-5 py-6 flex flex-col gap-5"
           style={{
-            background: 'rgba(10,8,28,0.8)',
+            background: 'var(--panel-bg)',
             border: '1px solid rgba(99,102,241,0.2)',
             backdropFilter: 'blur(12px)',
             boxShadow: '0 8px 32px rgba(0,0,0,0.4), 0 0 40px rgba(99,102,241,0.06)',
@@ -827,7 +827,7 @@ export default function VedicKundali() {
             <div className="grid grid-cols-3 gap-2">
               <KSel value={day} onChange={v => { setDay(v); setChart(null) }} placeholder="Day">
                 {K_DAYS.map(d => (
-                  <option key={d} value={d} style={{ background: '#0a081c' }}>
+                  <option key={d} value={d} style={{ background: 'var(--option-bg)' }}>
                     {String(d).padStart(2, '0')}
                   </option>
                 ))}
@@ -835,7 +835,7 @@ export default function VedicKundali() {
 
               <KSel value={month} onChange={v => { setMonth(v); setChart(null) }} placeholder="Month">
                 {K_MONTHS.map((m, i) => (
-                  <option key={m} value={i + 1} style={{ background: '#0a081c' }}>
+                  <option key={m} value={i + 1} style={{ background: 'var(--option-bg)' }}>
                     {m}
                   </option>
                 ))}
@@ -843,7 +843,7 @@ export default function VedicKundali() {
 
               <KSel value={year} onChange={v => { setYear(v); setChart(null) }} placeholder="Year">
                 {K_YEARS.map(y => (
-                  <option key={y} value={y} style={{ background: '#0a081c' }}>
+                  <option key={y} value={y} style={{ background: 'var(--option-bg)' }}>
                     {y}
                   </option>
                 ))}
@@ -863,7 +863,7 @@ export default function VedicKundali() {
               <div className="grid grid-cols-3 gap-2">
                 <KSel value={hour} onChange={setHour}>
                   {K_HOURS.map(h => (
-                    <option key={h} value={h} style={{ background: '#0a081c' }}>
+                    <option key={h} value={h} style={{ background: 'var(--option-bg)' }}>
                       {h.padStart(2, '0')}
                     </option>
                   ))}
@@ -871,7 +871,7 @@ export default function VedicKundali() {
 
                 <KSel value={minute} onChange={setMinute}>
                   {K_MINUTES.map(m => (
-                    <option key={m} value={m} style={{ background: '#0a081c' }}>
+                    <option key={m} value={m} style={{ background: 'var(--option-bg)' }}>
                       {m}
                     </option>
                   ))}
@@ -879,7 +879,7 @@ export default function VedicKundali() {
 
                 <KSel value={period} onChange={setPeriod}>
                   {['AM', 'PM'].map(p => (
-                    <option key={p} value={p} style={{ background: '#0a081c' }}>
+                    <option key={p} value={p} style={{ background: 'var(--option-bg)' }}>
                       {p}
                     </option>
                   ))}
@@ -902,7 +902,7 @@ export default function VedicKundali() {
                   onBlur={() => setTimeout(() => setShowDropdown(false), 160)}
                   placeholder="Search any Indian city…"
                   className={KSEL_CLS}
-                  style={{ ...KSEL_BASE, color: '#e2e8f0', textAlign: 'left', paddingLeft: '0.85rem' }}
+                  style={{ ...KSEL_BASE, color: 'var(--input-text)', textAlign: 'left', paddingLeft: '0.85rem' }}
                   autoComplete="off"
                   spellCheck={false}
                 />
@@ -914,7 +914,7 @@ export default function VedicKundali() {
                   <div
                     className="absolute top-full left-0 right-0 mt-1.5 z-50 rounded-2xl overflow-hidden"
                     style={{
-                      background: 'rgba(8,6,22,0.97)',
+                      background: 'var(--dropdown-bg)',
                       border: '1px solid rgba(99,102,241,0.35)',
                       backdropFilter: 'blur(20px)',
                       boxShadow: '0 12px 40px rgba(0,0,0,0.7), 0 0 28px rgba(99,102,241,0.1)',
@@ -1038,12 +1038,12 @@ export default function VedicKundali() {
               {topTab === 'basic' && (
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
                   <div className="rounded-2xl p-4"
-                    style={{ background: 'rgba(10,8,28,0.85)', border: '1px solid rgba(99,102,241,0.18)', boxShadow: '0 8px 32px rgba(0,0,0,0.4)' }}>
+                    style={{ background: 'var(--panel-bg-deep)', border: '1px solid rgba(99,102,241,0.18)', boxShadow: '0 8px 32px rgba(0,0,0,0.4)' }}>
                     <p className="text-[10px] uppercase tracking-[0.2em] text-slate-600 mb-3 text-center">Graha Positions · Sidereal</p>
                     <GrahaTable chart={chart} />
                   </div>
                   <div className="rounded-2xl p-4 flex flex-col gap-3"
-                    style={{ background: 'rgba(10,8,28,0.85)', border: '1px solid rgba(99,102,241,0.18)' }}>
+                    style={{ background: 'var(--panel-bg-deep)', border: '1px solid rgba(99,102,241,0.18)' }}>
                     <p className="text-[10px] uppercase tracking-[0.2em] text-slate-600 text-center">Birth Summary</p>
                     {[
                       ['Lagna',       `${chart.lagnaSymbol} ${chart.lagnaRashiName}  ${chart.lagnaDegs}°`],
@@ -1136,7 +1136,7 @@ export default function VedicKundali() {
                         <div
                           className="rounded-2xl p-4"
                           style={{
-                            background: 'rgba(10,8,28,0.88)',
+                            background: 'var(--panel-bg-deep)',
                             border: '1px solid rgba(99,102,241,0.2)',
                             boxShadow: '0 4px 24px rgba(0,0,0,0.35)',
                           }}
@@ -1169,7 +1169,7 @@ export default function VedicKundali() {
                           </p>
                         </div>
                         <div className="rounded-2xl p-4"
-                          style={{ background: 'rgba(10,8,28,0.88)', border: '1px solid rgba(99,102,241,0.2)', boxShadow: '0 4px 24px rgba(0,0,0,0.35)' }}>
+                          style={{ background: 'var(--panel-bg-deep)', border: '1px solid rgba(99,102,241,0.2)', boxShadow: '0 4px 24px rgba(0,0,0,0.35)' }}>
                           <p className="text-[10px] uppercase tracking-[0.2em] text-slate-600 mb-3 text-center">Navamsa Positions</p>
                           <GrahaTable chart={navamsaChart} />
                         </div>
@@ -1195,7 +1195,7 @@ export default function VedicKundali() {
                           </p>
                         </div>
                         <div className="rounded-2xl p-4"
-                          style={{ background: 'rgba(10,8,28,0.88)', border: '1px solid rgba(99,102,241,0.2)', boxShadow: '0 4px 24px rgba(0,0,0,0.35)' }}>
+                          style={{ background: 'var(--panel-bg-deep)', border: '1px solid rgba(99,102,241,0.2)', boxShadow: '0 4px 24px rgba(0,0,0,0.35)' }}>
                           <p className="text-[10px] uppercase tracking-[0.2em] text-slate-600 mb-3 text-center">Dashamsha Positions</p>
                           <GrahaTable chart={dashamshaChart} />
                         </div>

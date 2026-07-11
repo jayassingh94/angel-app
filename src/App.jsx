@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route, useLocation, useNavigate } from 'react-router-dom'
 import { STARS } from './data.js'
+import { ThemeProvider, useTheme } from './context/ThemeContext.jsx'
 import Home from './components/Home.jsx'
 import DailyOracle from './components/DailyOracle.jsx'
 import AngelDictionary from './components/AngelDictionary.jsx'
@@ -17,7 +18,7 @@ const SANS  = "'Inter', system-ui, sans-serif"
 
 function Stars() {
   return (
-    <div className="fixed inset-0 overflow-hidden pointer-events-none z-0">
+    <div className="stars-layer fixed inset-0 overflow-hidden pointer-events-none z-0">
       {STARS.map((s) => (
         <div
           key={s.id}
@@ -40,13 +41,12 @@ function AppShell() {
   const location = useLocation()
   const navigate  = useNavigate()
   const isHome    = location.pathname === '/'
+  const { isDark, toggle } = useTheme()
 
   return (
     <div
       className="relative min-h-screen w-full flex flex-col"
-      style={{
-        background: 'radial-gradient(ellipse at 50% 0%, #1e1040 0%, #0f0a1e 40%, #060412 100%)',
-      }}
+      style={{ background: 'var(--bg-gradient)' }}
     >
       <Stars />
 
@@ -65,9 +65,9 @@ function AppShell() {
         <nav
           className="sticky top-0 z-40 px-5 sm:px-8 py-3.5 flex items-center gap-4 border-b"
           style={{
-            background: 'rgba(6,4,18,0.88)',
+            background: 'var(--nav-bg)',
             backdropFilter: 'blur(14px)',
-            borderColor: 'rgba(255,255,255,0.05)',
+            borderColor: 'var(--nav-border)',
           }}
         >
           <button
@@ -83,6 +83,22 @@ function AppShell() {
           <span style={{ fontFamily: SERIF, color: 'rgba(167,139,250,0.45)', fontSize: '1rem', letterSpacing: '0.06em' }}>
             ✦ Angel App
           </span>
+          <button
+            onClick={toggle}
+            title={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
+            style={{
+              background: 'none',
+              border: '1px solid rgba(99,102,241,0.25)',
+              borderRadius: '0.5rem',
+              cursor: 'pointer',
+              padding: '4px 9px',
+              fontSize: '13px',
+              lineHeight: 1,
+              color: '#94a3b8',
+            }}
+          >
+            {isDark ? '☀' : '☾'}
+          </button>
         </nav>
       )}
 
@@ -108,8 +124,10 @@ function AppShell() {
 
 export default function App() {
   return (
-    <BrowserRouter>
-      <AppShell />
-    </BrowserRouter>
+    <ThemeProvider>
+      <BrowserRouter>
+        <AppShell />
+      </BrowserRouter>
+    </ThemeProvider>
   )
 }

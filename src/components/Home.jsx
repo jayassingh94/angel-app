@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { useTheme } from '../context/ThemeContext.jsx'
 
 const SERIF = "'Cormorant Garamond', Georgia, serif"
 const SANS  = "'Inter', system-ui, sans-serif"
@@ -183,29 +184,48 @@ function Card({ card }) {
 }
 
 export default function Home() {
+  const { isDark, toggle } = useTheme()
   return (
     <div className="relative z-10 flex flex-col min-h-screen">
       {/* ── Top bar ── */}
       <div
         className="sticky top-0 z-40 px-5 sm:px-8 py-3.5 flex items-center justify-between"
         style={{
-          background: 'rgba(6,4,18,0.82)',
+          background: 'var(--nav-bg)',
           backdropFilter: 'blur(14px)',
-          borderBottom: '1px solid rgba(255,255,255,0.04)',
+          borderBottom: '1px solid var(--nav-border)',
         }}
       >
         <span style={{ fontFamily: SERIF, color: '#a78bfa', fontSize: '1.15rem', fontWeight: 500, letterSpacing: '0.06em' }}>
           ✦ Angel App
         </span>
-        <div
-          className="w-8 h-8 rounded-full flex items-center justify-center text-xs select-none"
-          style={{
-            background: 'rgba(139,92,246,0.12)',
-            border: '1px solid rgba(139,92,246,0.22)',
-            color: '#6366f1',
-          }}
-        >
-          ◎
+        <div className="flex items-center gap-2">
+          <button
+            onClick={toggle}
+            title={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
+            style={{
+              background: 'none',
+              border: '1px solid rgba(99,102,241,0.25)',
+              borderRadius: '0.5rem',
+              cursor: 'pointer',
+              padding: '4px 9px',
+              fontSize: '13px',
+              lineHeight: 1,
+              color: '#94a3b8',
+            }}
+          >
+            {isDark ? '☀' : '☾'}
+          </button>
+          <div
+            className="w-8 h-8 rounded-full flex items-center justify-center text-xs select-none"
+            style={{
+              background: 'rgba(139,92,246,0.12)',
+              border: '1px solid rgba(139,92,246,0.22)',
+              color: '#6366f1',
+            }}
+          >
+            ◎
+          </div>
         </div>
       </div>
 
