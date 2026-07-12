@@ -2,13 +2,13 @@ import { useState } from 'react'
 import { computePersonality } from '../utils/lifeReport.js'
 import { computeCareer }      from '../utils/careerReport.js'
 import { computeMarriage }    from '../utils/marriageReport.js'
+import { computeHealth }      from '../utils/healthReport.js'
 
 const SERIF = "'Cormorant Garamond', Georgia, serif"
 const SANS  = "'Inter', system-ui, sans-serif"
 
 const COMING_SOON_CATS = [
   { key: 'physical',  label: 'Physical Characteristics', icon: '◈', color: '#94a3b8' },
-  { key: 'health',    label: 'Health',                   icon: '◎', color: '#4ade80' },
   { key: 'love',      label: 'Love Life',                icon: '♀', color: '#f9a8d4' },
   { key: 'children',  label: 'Children',                 icon: '✶', color: '#6ee7b7' },
 ]
@@ -134,6 +134,7 @@ export default function LifeReport({ chart }) {
   const personality = computePersonality(chart)
   const career      = computeCareer(chart)
   const marriage    = computeMarriage(chart)
+  const health      = computeHealth(chart)
 
   return (
     <div className="flex flex-col gap-3">
@@ -189,6 +190,20 @@ export default function LifeReport({ chart }) {
           {...marriage}
           accentColor="#c4b5fd"
           modifierLabel={`${marriage.lordName} in House ${marriage.lordHouse} · How it unfolds`}
+        />
+      </ReportSection>
+
+      {/* Health */}
+      <ReportSection
+        label="Health"
+        icon="◎"
+        color="#4ade80"
+        subtitle={`${health.signDisplay} · ${health.lordName} in H${health.lordHouse}`}
+      >
+        <ReportContent
+          {...health}
+          accentColor="#4ade80"
+          modifierLabel={`${health.lordName} in House ${health.lordHouse} · Where it connects`}
         />
       </ReportSection>
 
