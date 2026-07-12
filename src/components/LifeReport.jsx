@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { computePersonality } from '../utils/lifeReport.js'
+import { computeCareer }      from '../utils/careerReport.js'
 
 const SERIF = "'Cormorant Garamond', Georgia, serif"
 const SANS  = "'Inter', system-ui, sans-serif"
@@ -7,7 +8,6 @@ const SANS  = "'Inter', system-ui, sans-serif"
 const COMING_SOON_CATS = [
   { key: 'physical',  label: 'Physical Characteristics', icon: '◈', color: '#94a3b8' },
   { key: 'health',    label: 'Health',                   icon: '◎', color: '#4ade80' },
-  { key: 'career',    label: 'Career',                   icon: '⊕', color: '#fb923c' },
   { key: 'love',      label: 'Love Life',                icon: '♀', color: '#f9a8d4' },
   { key: 'marriage',  label: 'Marriage',                 icon: '⊞', color: '#c4b5fd' },
   { key: 'children',  label: 'Children',                 icon: '✶', color: '#6ee7b7' },
@@ -73,42 +73,52 @@ function ReportSection({ label, icon, color, subtitle, comingSoon, children }) {
   )
 }
 
-// ── Personality & Character content ───────────────────────────────────────────
+// ── Shared content renderer ────────────────────────────────────────────────────
+// Used by every live category — same two-layer shape throughout.
 
-function PersonalityContent({ signDisplay, lordName, lordHouse, baseText, modifierText }) {
+function ReportContent({ signDisplay, lordName, lordHouse, baseText, modifierText, accentColor = '#a78bfa', modifierLabel }) {
+  const innerLabel = modifierLabel ?? `${lordName} in House ${lordHouse}`
   return (
     <>
       {/* Identity chips */}
       <div className="flex flex-wrap gap-2 pt-4">
         <span
           className="text-[10px] font-mono px-2.5 py-1 rounded-full uppercase tracking-[0.1em]"
-          style={{ background: 'rgba(167,139,250,0.12)', border: '1px solid rgba(167,139,250,0.28)', color: '#a78bfa' }}
+          style={{
+            background: `${accentColor}1e`,
+            border: `1px solid ${accentColor}47`,
+            color: accentColor,
+          }}
         >
           {signDisplay}
         </span>
         <span
           className="text-[10px] font-mono px-2.5 py-1 rounded-full uppercase tracking-[0.1em]"
-          style={{ background: 'rgba(167,139,250,0.07)', border: '1px solid rgba(167,139,250,0.18)', color: '#c4b5fd' }}
+          style={{
+            background: `${accentColor}12`,
+            border: `1px solid ${accentColor}2e`,
+            color: accentColor,
+          }}
         >
           {lordName} lord · H{lordHouse}
         </span>
       </div>
 
-      {/* Base personality (Lagna sign) */}
+      {/* Base paragraph */}
       <p style={{ fontFamily: SANS, fontSize: '1rem', color: 'var(--text-body)', lineHeight: 1.78, margin: 0 }}>
         {baseText}
       </p>
 
-      {/* Lord-in-house modifier */}
+      {/* Modifier inner card */}
       <div
         className="rounded-xl px-4 py-3.5"
-        style={{ background: 'var(--card-inner)', borderLeft: '2px solid rgba(167,139,250,0.4)' }}
+        style={{ background: 'var(--card-inner)', borderLeft: `2px solid ${accentColor}66` }}
       >
         <p
           className="text-[10px] uppercase tracking-[0.2em] font-semibold mb-2"
-          style={{ color: '#a78bfa' }}
+          style={{ color: accentColor }}
         >
-          {lordName} in House {lordHouse} · How it expresses
+          {innerLabel}
         </p>
         <p style={{ fontFamily: SANS, fontSize: '1rem', color: 'var(--text-body)', lineHeight: 1.78, margin: 0 }}>
           {modifierText}
@@ -122,7 +132,7 @@ function PersonalityContent({ signDisplay, lordName, lordHouse, baseText, modifi
 
 export default function LifeReport({ chart }) {
   const personality = computePersonality(chart)
-  const { signDisplay, lordName, lordHouse } = personality
+  const career      = computeCareer(chart)
 
   return (
     <div className="flex flex-col gap-3">
@@ -139,14 +149,32 @@ export default function LifeReport({ chart }) {
         </p>
       </div>
 
-      {/* Personality & Character — live */}
+      {/* Personality & Character */}
       <ReportSection
         label="Personality & Character"
         icon="✦"
         color="#a78bfa"
-        subtitle={`${signDisplay} · ${lordName} in H${lordHouse}`}
+        subtitle={`${personality.signDisplay} · ${personality.lordName} in H${personality.lordHouse}`}
       >
-        <PersonalityContent {...personality} />
+        <ReportContent
+          {...personality}
+          accentColor="#a78bfa"
+          modifierLabel={`${personality.lordName} in House ${personality.lordHouse} · How it expresses`}
+        />
+      </ReportSection>
+
+      {/* Career */}
+      <ReportSection
+        label="Career"
+        icon="⊕"
+        color="#fb923c"
+        subtitle={`${career.signDisplay} · ${career.lordName} in H${career.lordHouse}`}
+      >
+        <ReportContent
+          {...career}
+          accentColor="#fb923c"
+          modifierLabel={`${career.lordName} in House ${career.lordHouse} · How it channels`}
+        />
       </ReportSection>
 
       {/* Remaining categories — coming soon */}
