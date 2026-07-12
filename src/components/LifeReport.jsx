@@ -63,7 +63,7 @@ function ReportSection({ label, icon, color, subtitle, comingSoon, children }) {
 
       {open && !comingSoon && (
         <div
-          className="px-5 pb-6 flex flex-col gap-5"
+          className="px-5 pb-6 flex flex-col gap-4"
           style={{ borderTop: '1px solid rgba(99,102,241,0.1)' }}
         >
           {children}
@@ -73,20 +73,18 @@ function ReportSection({ label, icon, color, subtitle, comingSoon, children }) {
   )
 }
 
-// ── Personality & Character section content ───────────────────────────────────
+// ── Personality & Character content ───────────────────────────────────────────
 
-function PersonalityContent({ personality }) {
-  const { lagnaPersonality: lp, lordName, lordHouse, lordInHouse, moonOverlay } = personality
-
+function PersonalityContent({ signDisplay, lordName, lordHouse, baseText, modifierText }) {
   return (
     <>
-      {/* Chips */}
+      {/* Identity chips */}
       <div className="flex flex-wrap gap-2 pt-4">
         <span
           className="text-[10px] font-mono px-2.5 py-1 rounded-full uppercase tracking-[0.1em]"
           style={{ background: 'rgba(167,139,250,0.12)', border: '1px solid rgba(167,139,250,0.28)', color: '#a78bfa' }}
         >
-          {lp.signTitle}
+          {signDisplay}
         </span>
         <span
           className="text-[10px] font-mono px-2.5 py-1 rounded-full uppercase tracking-[0.1em]"
@@ -94,70 +92,26 @@ function PersonalityContent({ personality }) {
         >
           {lordName} lord · H{lordHouse}
         </span>
-        <span
-          className="text-[10px] font-mono px-2.5 py-1 rounded-full uppercase tracking-[0.1em]"
-          style={{ background: 'rgba(148,163,184,0.07)', border: '1px solid rgba(148,163,184,0.2)', color: '#94a3b8' }}
-        >
-          {moonOverlay.label}
-        </span>
       </div>
 
-      {/* Lagna sign block */}
-      <div>
-        <p
-          className="text-[10px] uppercase tracking-[0.22em] font-semibold mb-1"
-          style={{ color: '#a78bfa' }}
-        >
-          Lagna · {lp.keywords}
-        </p>
-        <h3
-          className="mb-3"
-          style={{ fontFamily: SERIF, fontSize: '1.3rem', fontWeight: 500, color: 'var(--text-h)', lineHeight: 1.2 }}
-        >
-          {lp.archetype}
-        </h3>
-        {lp.paras.map((para, i) => (
-          <p
-            key={i}
-            style={{
-              fontFamily: SANS, fontSize: '1rem', color: 'var(--text-body)',
-              lineHeight: 1.78, marginBottom: i < lp.paras.length - 1 ? '0.8rem' : 0,
-            }}
-          >
-            {para}
-          </p>
-        ))}
-      </div>
+      {/* Base personality (Lagna sign) */}
+      <p style={{ fontFamily: SANS, fontSize: '1rem', color: 'var(--text-body)', lineHeight: 1.78, margin: 0 }}>
+        {baseText}
+      </p>
 
-      {/* Lagna lord in house */}
+      {/* Lord-in-house modifier */}
       <div
         className="rounded-xl px-4 py-3.5"
-        style={{ background: 'var(--card-inner)', borderLeft: '2px solid rgba(167,139,250,0.45)' }}
+        style={{ background: 'var(--card-inner)', borderLeft: '2px solid rgba(167,139,250,0.4)' }}
       >
         <p
           className="text-[10px] uppercase tracking-[0.2em] font-semibold mb-2"
           style={{ color: '#a78bfa' }}
         >
-          {lordName} in House {lordHouse} · Life Focus
+          {lordName} in House {lordHouse} · How it expresses
         </p>
-        <p style={{ fontFamily: SANS, fontSize: '1rem', color: 'var(--text-body)', lineHeight: 1.78 }}>
-          {lordInHouse}
-        </p>
-      </div>
-
-      {/* Moon sign overlay */}
-      <div
-        className="rounded-xl px-4 py-3.5"
-        style={{ background: 'var(--card-inner)', borderLeft: '2px solid rgba(148,163,184,0.38)' }}
-      >
-        <p
-          className="text-[10px] uppercase tracking-[0.2em] font-semibold mb-2"
-          style={{ color: '#94a3b8' }}
-        >
-          {moonOverlay.label} · Emotional Nature
-        </p>
-        <p style={{ fontFamily: SANS, fontSize: '1rem', color: 'var(--text-body)', lineHeight: 1.78 }}>
-          {moonOverlay.body}
+        <p style={{ fontFamily: SANS, fontSize: '1rem', color: 'var(--text-body)', lineHeight: 1.78, margin: 0 }}>
+          {modifierText}
         </p>
       </div>
     </>
@@ -168,7 +122,7 @@ function PersonalityContent({ personality }) {
 
 export default function LifeReport({ chart }) {
   const personality = computePersonality(chart)
-  const { lagnaPersonality: lp } = personality
+  const { signDisplay, lordName, lordHouse } = personality
 
   return (
     <div className="flex flex-col gap-3">
@@ -190,9 +144,9 @@ export default function LifeReport({ chart }) {
         label="Personality & Character"
         icon="✦"
         color="#a78bfa"
-        subtitle={`${lp.archetype} · ${lp.keywords}`}
+        subtitle={`${signDisplay} · ${lordName} in H${lordHouse}`}
       >
-        <PersonalityContent personality={personality} />
+        <PersonalityContent {...personality} />
       </ReportSection>
 
       {/* Remaining categories — coming soon */}
