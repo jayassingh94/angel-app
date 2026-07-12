@@ -102,10 +102,14 @@ function ReportContent({ signDisplay, lordName, lordHouse, baseText, modifierTex
         </span>
       </div>
 
-      {/* Base paragraph */}
-      <p style={{ fontFamily: SANS, fontSize: '1rem', color: 'var(--text-body)', lineHeight: 1.78, margin: 0 }}>
-        {baseText}
-      </p>
+      {/* Base text — supports multi-paragraph content separated by \n\n */}
+      <div className="flex flex-col gap-3">
+        {baseText.split('\n\n').filter(Boolean).map((para, i) => (
+          <p key={i} style={{ fontFamily: SANS, fontSize: '1rem', color: 'var(--text-body)', lineHeight: 1.78, margin: 0 }}>
+            {para}
+          </p>
+        ))}
+      </div>
 
       {/* Modifier inner card — omitted when there's nothing to add */}
       {modifierText && (
