@@ -39,7 +39,7 @@ export default function KalsarpaDosha({ chart }) {
     <div
       className="rounded-2xl p-5 flex flex-col gap-0"
       style={{
-        background: 'rgba(10,8,28,0.85)',
+        background: 'var(--card-bg)',
         border: '1px solid rgba(99,102,241,0.18)',
         boxShadow: '0 8px 32px rgba(0,0,0,0.4)',
       }}
@@ -84,12 +84,12 @@ export default function KalsarpaDosha({ chart }) {
                 key={label}
                 className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg"
                 style={{
-                  background: active ? `${nodeColor}14` : 'rgba(255,255,255,0.03)',
-                  border: `1px solid ${active ? `${nodeColor}48` : 'rgba(255,255,255,0.07)'}`,
+                  background: active ? `${nodeColor}14` : 'var(--card-inner)',
+                  border: `1px solid ${active ? `${nodeColor}48` : 'var(--card-border-subtle)'}`,
                 }}
               >
-                <span className="text-[11px]" style={{ color: active ? nodeColor : '#334155' }}>{symbol}</span>
-                <span className="text-xs font-mono" style={{ color: active ? nodeColor : '#334155' }}>
+                <span className="text-[11px]" style={{ color: active ? nodeColor : 'var(--text-faint)' }}>{symbol}</span>
+                <span className="text-xs font-mono" style={{ color: active ? nodeColor : 'var(--text-faint)' }}>
                   {label} H{house}
                 </span>
                 <span className="text-[9px] text-slate-700">{sign}</span>
@@ -99,7 +99,7 @@ export default function KalsarpaDosha({ chart }) {
 
           <p className="text-base text-slate-400 leading-relaxed">{explanation}</p>
 
-          <div className="pt-3 border-t" style={{ borderColor: 'rgba(255,255,255,0.05)' }}>
+          <div className="pt-3 border-t" style={{ borderColor: 'var(--card-border-subtle)' }}>
             <p className="text-xs uppercase tracking-[0.2em] text-slate-800 mb-1">How it's checked</p>
             <p className="text-xs text-slate-800">
               All 7 planets (Sun–Saturn) must be hemmed between Rahu and Ketu on one side of the axis.

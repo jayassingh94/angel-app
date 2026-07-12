@@ -8,7 +8,7 @@ const YEAR_MS = 365.25 * 24 * 3600 * 1000
 
 function ProgressBar({ pct, color }) {
   return (
-    <div className="relative h-1 rounded-full overflow-hidden" style={{ background: 'rgba(255,255,255,0.06)' }}>
+    <div className="relative h-1 rounded-full overflow-hidden" style={{ background: 'var(--btn-subtle-border)' }}>
       <div
         className="absolute inset-y-0 left-0 rounded-full"
         style={{
@@ -56,7 +56,7 @@ function InterpBlock({ planet, interp, color }) {
   return (
     <div
       className="mx-3 mt-1 mb-2 px-3 py-3 rounded-lg"
-      style={{ background: 'rgba(255,255,255,0.025)', borderLeft: `2px solid ${color}40` }}
+      style={{ background: 'var(--card-inner)', borderLeft: `2px solid ${color}40` }}
     >
       <p className="text-xs uppercase tracking-[0.18em] mb-2" style={{ color: `${color}70` }}>
         ✦ {planet} Mahadasha
@@ -107,7 +107,7 @@ export default function VedicDasha({ moonSidLon, birthDate }) {
     <div
       className="rounded-2xl p-5 flex flex-col gap-5"
       style={{
-        background: 'rgba(10,8,28,0.85)',
+        background: 'var(--card-bg)',
         border: '1px solid rgba(99,102,241,0.18)',
         boxShadow: '0 8px 32px rgba(0,0,0,0.4)',
       }}
@@ -129,7 +129,7 @@ export default function VedicDasha({ moonSidLon, birthDate }) {
         <div className="flex items-center gap-2 shrink-0">
           <div
             className="rounded-lg px-3 py-2 text-right"
-            style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}
+            style={{ background: 'var(--card-inner)', border: '1px solid var(--card-border-subtle)' }}
           >
             <p className="text-[9px] uppercase tracking-widest text-slate-700">Balance at birth</p>
             <p className="text-xs font-mono" style={{ color: lordMeta.color }}>
@@ -141,9 +141,9 @@ export default function VedicDasha({ moonSidLon, birthDate }) {
             onClick={handleCopyJSON}
             className="rounded-lg px-2.5 py-2 text-[9px] font-mono transition-all cursor-pointer"
             style={{
-              background: copied ? 'rgba(99,102,241,0.25)' : 'rgba(255,255,255,0.04)',
-              border: `1px solid ${copied ? 'rgba(99,102,241,0.5)' : 'rgba(255,255,255,0.08)'}`,
-              color: copied ? '#818cf8' : '#475569',
+              background: copied ? 'rgba(99,102,241,0.25)' : 'var(--btn-subtle-bg)',
+              border: `1px solid ${copied ? 'rgba(99,102,241,0.5)' : 'var(--btn-subtle-border)'}`,
+              color: copied ? '#818cf8' : 'var(--text-muted)',
             }}
             title="Copy full timeline as JSON"
           >
@@ -199,11 +199,11 @@ export default function VedicDasha({ moonSidLon, birthDate }) {
             const ageEnd    = Math.floor((md.end   - dasha.birthDate) / YEAR_MS)
 
             const rowOpacity  = isPast ? 0.32 : 1
-            const symbolColor = isPast ? '#334155' : meta.color
+            const symbolColor = isPast ? 'var(--text-faint)' : meta.color
             const symbolGlow  = isCurrent ? `drop-shadow(0 0 5px ${meta.color})` : 'none'
-            const nameColor   = isPast ? '#334155' : isCurrent ? '#f1f5f9' : '#cbd5e1'
-            const ageColor    = isPast ? '#1e293b' : isCurrent ? meta.color : '#475569'
-            const dateColor   = isPast ? '#1e293b' : '#374151'
+            const nameColor   = isPast ? 'var(--text-faint)' : isCurrent ? 'var(--text-h)' : 'var(--text-2)'
+            const ageColor    = isPast ? 'var(--text-faint)' : isCurrent ? meta.color : 'var(--text-muted)'
+            const dateColor   = isPast ? 'var(--text-faint)' : 'var(--text-soft)'
 
             const interp = dashaInterpretations[md.lord] ?? null
 
@@ -218,7 +218,7 @@ export default function VedicDasha({ moonSidLon, birthDate }) {
                     background: isCurrent
                       ? `${meta.color}10`
                       : expanded
-                        ? 'rgba(255,255,255,0.03)'
+                        ? 'var(--card-inner)'
                         : 'transparent',
                     border: isCurrent ? `1px solid ${meta.color}2a` : '1px solid transparent',
                   }}
@@ -239,7 +239,7 @@ export default function VedicDasha({ moonSidLon, birthDate }) {
                       <span className="text-[10px] font-mono font-semibold" style={{ color: ageColor }}>
                         Age {ageStart}–{ageEnd}
                       </span>
-                      <span className="text-[11px]" style={{ color: '#1e293b' }}>·</span>
+                      <span className="text-[11px]" style={{ color: 'var(--text-faint)' }}>·</span>
                       <span className="text-[12px] font-semibold" style={{ color: nameColor }}>
                         {md.lord}
                       </span>
@@ -264,19 +264,19 @@ export default function VedicDasha({ moonSidLon, birthDate }) {
                   </div>
 
                   <div className="text-right">
-                    <span className="text-[10px] font-mono" style={{ color: isPast ? '#1e293b' : '#64748b' }}>
+                    <span className="text-[10px] font-mono" style={{ color: isPast ? 'var(--text-faint)' : 'var(--text-soft)' }}>
                       {yrsReadable(md.years)}
                     </span>
                   </div>
 
                   <div>
                     {isCurrent && <ProgressBar pct={pct(md.start, md.end)} color={meta.color} />}
-                    {isPast    && <ProgressBar pct={100} color="#1e293b" />}
+                    {isPast    && <ProgressBar pct={100} color="#64748b" />}
                   </div>
 
                   <span
                     className="text-[11px] text-right transition-transform duration-150"
-                    style={{ color: isPast ? '#1e293b' : '#475569', transform: expanded ? 'rotate(90deg)' : 'none' }}
+                    style={{ color: isPast ? 'var(--text-faint)' : 'var(--text-muted)', transform: expanded ? 'rotate(90deg)' : 'none' }}
                   >
                     ›
                   </span>
@@ -288,7 +288,7 @@ export default function VedicDasha({ moonSidLon, birthDate }) {
                     {/* Antardashas */}
                     <div
                       className="ml-6 mb-0"
-                      style={{ borderLeft: `1px solid ${isPast ? '#1e293b' : meta.color + '20'}` }}
+                      style={{ borderLeft: `1px solid ${isPast ? 'var(--btn-subtle-border)' : meta.color + '20'}` }}
                     >
                       {md.antardashas.map((ad, ai) => {
                         const adMeta     = PLANET_META[ad.lord]
@@ -297,9 +297,9 @@ export default function VedicDasha({ moonSidLon, birthDate }) {
                         const adKey      = `${mi}-${ai}`
                         const adExpanded = expandedAD === adKey
 
-                        const adSymColor  = adIsPast ? '#1e293b' : adMeta.color
-                        const adNameColor = adIsPast ? '#1e293b' : isNowAD ? '#e2e8f0' : '#64748b'
-                        const adDateColor = adIsPast ? '#0f172a' : '#1e293b'
+                        const adSymColor  = adIsPast ? 'var(--text-faint)' : adMeta.color
+                        const adNameColor = adIsPast ? 'var(--text-faint)' : isNowAD ? 'var(--text-h)' : 'var(--text-soft)'
+                        const adDateColor = adIsPast ? 'var(--text-faint)' : 'var(--text-soft)'
 
                         return (
                           <div key={ai} style={{ opacity: adIsPast ? 0.45 : 1 }}>
@@ -309,7 +309,7 @@ export default function VedicDasha({ moonSidLon, birthDate }) {
                                 gridTemplateColumns: '1.2rem 1fr 4.5rem 3rem 1rem',
                                 columnGap: '0.5rem',
                                 background: isNowAD ? `${adMeta.color}0e` : 'transparent',
-                                borderBottom: '1px solid rgba(255,255,255,0.025)',
+                                borderBottom: '1px solid var(--btn-subtle-border)',
                               }}
                               onClick={e => {
                                 e.stopPropagation()
@@ -333,7 +333,7 @@ export default function VedicDasha({ moonSidLon, birthDate }) {
                                     </span>
                                   )}
                                   {adIsPast && (
-                                    <span className="text-[7px] uppercase tracking-widest" style={{ color: '#0f172a' }}>done</span>
+                                    <span className="text-[7px] uppercase tracking-widest" style={{ color: 'var(--text-faint)' }}>done</span>
                                   )}
                                   {ad.isPartial && (
                                     <span className="text-[8px]" style={{ color: adDateColor }}>★</span>
@@ -344,17 +344,17 @@ export default function VedicDasha({ moonSidLon, birthDate }) {
                                 </p>
                               </div>
                               <div className="text-right">
-                                <span className="text-[9px] font-mono" style={{ color: adIsPast ? '#0f172a' : '#475569' }}>
+                                <span className="text-[9px] font-mono" style={{ color: adIsPast ? 'var(--text-faint)' : 'var(--text-muted)' }}>
                                   {yrsReadable(ad.years)}
                                 </span>
                               </div>
                               <div>
                                 {isNowAD  && <ProgressBar pct={pct(ad.start, ad.end)} color={adMeta.color} />}
-                                {adIsPast && <ProgressBar pct={100} color="#0f172a" />}
+                                {adIsPast && <ProgressBar pct={100} color="#64748b" />}
                               </div>
                               <span
                                 className="text-[10px] text-right transition-transform duration-100"
-                                style={{ color: adIsPast ? '#0f172a' : '#334155', transform: adExpanded ? 'rotate(90deg)' : 'none' }}
+                                style={{ color: adIsPast ? 'var(--text-faint)' : 'var(--text-soft)', transform: adExpanded ? 'rotate(90deg)' : 'none' }}
                               >
                                 ›
                               </span>
@@ -375,13 +375,13 @@ export default function VedicDasha({ moonSidLon, birthDate }) {
                                         gridTemplateColumns: '1.2rem 1fr 4rem',
                                         columnGap: '0.4rem',
                                         background: isNow ? `${pMeta.color}0a` : 'transparent',
-                                        borderBottom: '1px solid rgba(255,255,255,0.018)',
+                                        borderBottom: '1px solid var(--btn-subtle-border)',
                                         opacity: padPast ? 0.4 : 1,
                                       }}
                                     >
                                       <span
                                         className="text-[10px] text-center leading-none"
-                                        style={{ color: padPast ? '#0f172a' : pMeta.color, opacity: 0.8 }}
+                                        style={{ color: padPast ? 'var(--text-faint)' : pMeta.color, opacity: 0.8 }}
                                       >
                                         {pMeta.symbol}
                                       </span>
@@ -389,7 +389,7 @@ export default function VedicDasha({ moonSidLon, birthDate }) {
                                         <div className="flex items-center gap-1">
                                           <span
                                             className="text-[10px]"
-                                            style={{ color: isNow ? pMeta.color : padPast ? '#0f172a' : '#475569' }}
+                                            style={{ color: isNow ? pMeta.color : padPast ? 'var(--text-faint)' : 'var(--text-muted)' }}
                                           >
                                             {md.lord}–{ad.lord}–{pad.lord}
                                           </span>
@@ -402,12 +402,12 @@ export default function VedicDasha({ moonSidLon, birthDate }) {
                                             </span>
                                           )}
                                         </div>
-                                        <p className="text-[8px] font-mono" style={{ color: padPast ? '#0f172a' : '#1e293b' }}>
+                                        <p className="text-[8px] font-mono" style={{ color: padPast ? 'var(--text-faint)' : 'var(--text-soft)' }}>
                                           {fmt(pad.start)} → {fmt(pad.end)}
                                         </p>
                                       </div>
                                       <div className="text-right">
-                                        <span className="text-[9px] font-mono" style={{ color: padPast ? '#0f172a' : '#475569' }}>
+                                        <span className="text-[9px] font-mono" style={{ color: padPast ? 'var(--text-faint)' : 'var(--text-muted)' }}>
                                           {yrsReadable(pad.years)}
                                         </span>
                                       </div>

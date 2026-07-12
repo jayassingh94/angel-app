@@ -37,7 +37,7 @@ export default function Transit({ swe, natalMoonRashi }) {
     <div
       className="rounded-2xl p-5 flex flex-col gap-4"
       style={{
-        background: 'rgba(10,8,28,0.85)',
+        background: 'var(--card-bg)',
         border: '1px solid rgba(99,102,241,0.18)',
         boxShadow: '0 8px 32px rgba(0,0,0,0.4)',
       }}
@@ -61,10 +61,9 @@ export default function Transit({ swe, natalMoonRashi }) {
           onChange={e => setDateStr(e.target.value)}
           className="text-[11px] font-mono px-2.5 py-1.5 rounded-lg outline-none"
           style={{
-            background: 'rgba(255,255,255,0.04)',
-            border: '1px solid rgba(99,102,241,0.2)',
-            color: '#94a3b8',
-            colorScheme: 'dark',
+            background: 'var(--input-bg)',
+            border: '1px solid var(--input-border)',
+            color: 'var(--select-color)',
           }}
         />
       </div>
@@ -104,7 +103,7 @@ export default function Transit({ swe, natalMoonRashi }) {
             <div key={t.name}>
               <div
                 className="flex items-center gap-3 px-3 py-2 rounded-lg cursor-pointer select-none transition-colors"
-                style={{ background: isOpen ? 'rgba(255,255,255,0.03)' : 'transparent' }}
+                style={{ background: isOpen ? 'var(--card-inner)' : 'transparent' }}
                 onClick={() => setExpandedPlanet(isOpen ? null : t.name)}
               >
                 {/* Planet symbol */}
@@ -147,7 +146,7 @@ export default function Transit({ swe, natalMoonRashi }) {
                 <div
                   className="mx-3 mb-1.5 px-3 py-2.5 rounded-lg"
                   style={{
-                    background: 'rgba(255,255,255,0.02)',
+                    background: 'var(--card-inner)',
                     borderLeft: `2px solid ${t.color}30`,
                   }}
                 >

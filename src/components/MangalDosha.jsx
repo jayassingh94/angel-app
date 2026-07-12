@@ -38,7 +38,7 @@ export default function MangalDosha({ chart }) {
     <div
       className="rounded-2xl p-5 flex flex-col gap-0"
       style={{
-        background: 'rgba(10,8,28,0.85)',
+        background: 'var(--card-bg)',
         border: '1px solid rgba(99,102,241,0.18)',
         boxShadow: '0 8px 32px rgba(0,0,0,0.4)',
       }}
@@ -83,19 +83,19 @@ export default function MangalDosha({ chart }) {
                 key={label}
                 className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg"
                 style={{
-                  background: active ? 'rgba(248,113,113,0.08)' : 'rgba(255,255,255,0.03)',
-                  border: `1px solid ${active ? 'rgba(248,113,113,0.28)' : 'rgba(255,255,255,0.07)'}`,
+                  background: active ? 'rgba(248,113,113,0.08)' : 'var(--card-inner)',
+                  border: `1px solid ${active ? 'rgba(248,113,113,0.28)' : 'var(--card-border-subtle)'}`,
                 }}
               >
                 <span
                   className="text-[8px]"
-                  style={{ color: active ? '#f87171' : '#334155' }}
+                  style={{ color: active ? '#f87171' : 'var(--text-faint)' }}
                 >
                   {active ? '●' : '○'}
                 </span>
                 <span
                   className="text-xs font-mono"
-                  style={{ color: active ? '#f87171' : '#334155' }}
+                  style={{ color: active ? '#f87171' : 'var(--text-faint)' }}
                 >
                   {label}
                 </span>
@@ -109,8 +109,8 @@ export default function MangalDosha({ chart }) {
             <div
               className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg"
               style={{
-                background: 'rgba(255,255,255,0.03)',
-                border: '1px solid rgba(255,255,255,0.07)',
+                background: 'var(--card-inner)',
+                border: '1px solid var(--card-border-subtle)',
               }}
             >
               <span className="text-[11px]" style={{ color: '#f87171' }}>♂</span>
@@ -126,7 +126,7 @@ export default function MangalDosha({ chart }) {
           {/* Footer reference */}
           <div
             className="pt-3 border-t"
-            style={{ borderColor: 'rgba(255,255,255,0.05)' }}
+            style={{ borderColor: 'var(--card-border-subtle)' }}
           >
             <p className="text-xs uppercase tracking-[0.2em] text-slate-800 mb-1">
               Dosha-activating houses
