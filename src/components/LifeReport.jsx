@@ -5,13 +5,10 @@ import { computeMarriage }    from '../utils/marriageReport.js'
 import { computeHealth }      from '../utils/healthReport.js'
 import { computeChildren }    from '../utils/childrenReport.js'
 import { computeLoveLife }    from '../utils/loveLifeReport.js'
+import { computePhysical }    from '../utils/physicalReport.js'
 
 const SERIF = "'Cormorant Garamond', Georgia, serif"
 const SANS  = "'Inter', system-ui, sans-serif"
-
-const COMING_SOON_CATS = [
-  { key: 'physical',  label: 'Physical Characteristics', icon: '◈', color: '#94a3b8' },
-]
 
 // ── Expandable section shell ───────────────────────────────────────────────────
 
@@ -76,7 +73,8 @@ function ReportSection({ label, icon, color, subtitle, comingSoon, children }) {
 // ── Shared content renderer ────────────────────────────────────────────────────
 // Used by every live category — same two-layer shape throughout.
 
-function ReportContent({ signDisplay, lordName, lordHouse, baseText, modifierText, accentColor = '#a78bfa', modifierLabel }) {
+function ReportContent({ signDisplay, lordName, lordHouse, baseText, modifierText, accentColor = '#a78bfa', modifierLabel, chip2Label }) {
+  const chip2      = chip2Label ?? `${lordName} lord · H${lordHouse}`
   const innerLabel = modifierLabel ?? `${lordName} in House ${lordHouse}`
   return (
     <>
@@ -100,7 +98,7 @@ function ReportContent({ signDisplay, lordName, lordHouse, baseText, modifierTex
             color: accentColor,
           }}
         >
-          {lordName} lord · H{lordHouse}
+          {chip2}
         </span>
       </div>
 
@@ -109,21 +107,23 @@ function ReportContent({ signDisplay, lordName, lordHouse, baseText, modifierTex
         {baseText}
       </p>
 
-      {/* Modifier inner card */}
-      <div
-        className="rounded-xl px-4 py-3.5"
-        style={{ background: 'var(--card-inner)', borderLeft: `2px solid ${accentColor}66` }}
-      >
-        <p
-          className="text-[10px] uppercase tracking-[0.2em] font-semibold mb-2"
-          style={{ color: accentColor }}
+      {/* Modifier inner card — omitted when there's nothing to add */}
+      {modifierText && (
+        <div
+          className="rounded-xl px-4 py-3.5"
+          style={{ background: 'var(--card-inner)', borderLeft: `2px solid ${accentColor}66` }}
         >
-          {innerLabel}
-        </p>
-        <p style={{ fontFamily: SANS, fontSize: '1rem', color: 'var(--text-body)', lineHeight: 1.78, margin: 0 }}>
-          {modifierText}
-        </p>
-      </div>
+          <p
+            className="text-[10px] uppercase tracking-[0.2em] font-semibold mb-2"
+            style={{ color: accentColor }}
+          >
+            {innerLabel}
+          </p>
+          <p style={{ fontFamily: SANS, fontSize: '1rem', color: 'var(--text-body)', lineHeight: 1.78, margin: 0 }}>
+            {modifierText}
+          </p>
+        </div>
+      )}
     </>
   )
 }
@@ -137,6 +137,7 @@ export default function LifeReport({ chart }) {
   const health      = computeHealth(chart)
   const children    = computeChildren(chart)
   const loveLife    = computeLoveLife(chart)
+  const physical    = computePhysical(chart)
 
   return (
     <div className="flex flex-col gap-3">
@@ -164,6 +165,33 @@ export default function LifeReport({ chart }) {
           {...personality}
           accentColor="#a78bfa"
           modifierLabel={`${personality.lordName} in House ${personality.lordHouse} · How it expresses`}
+        />
+      </ReportSection>
+
+      {/* Physical Characteristics */}
+      <ReportSection
+        label="Physical Characteristics"
+        icon="◈"
+        color="#94a3b8"
+        subtitle={
+          physical.planetNames.length > 0
+            ? `${physical.signDisplay} · ${physical.planetNames.join(', ')} in H1`
+            : physical.signDisplay
+        }
+      >
+        <ReportContent
+          {...physical}
+          accentColor="#94a3b8"
+          chip2Label={
+            physical.planetNames.length > 0
+              ? `${physical.planetNames.join(', ')} in H1`
+              : 'No planets in H1'
+          }
+          modifierLabel={
+            physical.planetNames.length > 0
+              ? `${physical.planetNames.join(', ')} in H1 · Additional influence`
+              : undefined
+          }
         />
       </ReportSection>
 
@@ -237,17 +265,6 @@ export default function LifeReport({ chart }) {
         />
       </ReportSection>
 
-      {/* Remaining categories — coming soon */}
-      {COMING_SOON_CATS.map(cat => (
-        <ReportSection
-          key={cat.key}
-          label={cat.label}
-          icon={cat.icon}
-          color={cat.color}
-          subtitle="Coming soon"
-          comingSoon
-        />
-      ))}
 
       <p
         className="text-center text-[8px] uppercase tracking-[0.2em] mt-1"
