@@ -6,6 +6,7 @@ import KalsarpaDosha from './KalsarpaDosha.jsx'
 import { computeNavamsa } from '../utils/navamsa.js'
 import { computeDashamsha } from '../utils/dashamsha.js'
 import Transit from './Transit.jsx'
+import LifeReport from './LifeReport.jsx'
 
 // ── WASM singleton — initialised once at module load ──────────────────────────
 
@@ -1253,6 +1254,7 @@ export default function VedicKundali() {
               {/* ── Report tab ── */}
               {topTab === 'report' && (
                 <div className="flex flex-col gap-4">
+                  <LifeReport chart={chart} />
                   <MangalDosha chart={chart} />
                   <KalsarpaDosha chart={chart} />
                   {moon && <Transit swe={_swe} natalMoonRashi={moon.rashiIdx} />}
