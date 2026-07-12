@@ -35,7 +35,7 @@ function CurrentCard({ label, title, symbol, color, start, end, pct }) {
         <span className="text-xl leading-none" style={{ color, filter: `drop-shadow(0 0 5px ${color})` }}>
           {symbol}
         </span>
-        <span className="text-sm font-bold text-white truncate">{title}</span>
+        <span className="text-sm font-bold truncate" style={{ color: 'var(--text-h)' }}>{title}</span>
       </div>
       <p className="text-[9px] font-mono text-slate-600">{fmt(start)} → {fmt(end)}</p>
       <ProgressBar pct={pct} color={color} />
@@ -58,12 +58,12 @@ function InterpBlock({ planet, interp, color }) {
       className="mx-3 mt-1 mb-2 px-3 py-3 rounded-lg"
       style={{ background: 'var(--card-inner)', borderLeft: `2px solid ${color}40` }}
     >
-      <p className="text-xs uppercase tracking-[0.18em] mb-2" style={{ color: `${color}70` }}>
+      <p className="text-xs uppercase tracking-[0.18em] mb-2 font-semibold" style={{ color: 'var(--text-h)' }}>
         ✦ {planet} Mahadasha
       </p>
-      <p className="text-base text-slate-400 leading-[1.7] mb-3">{interp.theme}</p>
-      <p className="text-xs uppercase tracking-[0.15em] mb-1.5 text-slate-700">Points to navigate</p>
-      <p className="text-base text-slate-500 leading-[1.7]">{interp.challenges}</p>
+      <p className="text-base leading-[1.7] mb-3" style={{ color: 'var(--text-body)' }}>{interp.theme}</p>
+      <p className="text-xs uppercase tracking-[0.15em] mb-1.5 font-semibold" style={{ color: 'var(--text-soft)' }}>Points to navigate</p>
+      <p className="text-base leading-[1.7]" style={{ color: 'var(--text-body)' }}>{interp.challenges}</p>
     </div>
   )
 }
@@ -118,7 +118,7 @@ export default function VedicDasha({ moonSidLon, birthDate }) {
           <p className="text-[10px] uppercase tracking-[0.22em] text-indigo-400/70 font-semibold mb-1">
             Vimshottari Dasha · Full Lifetime Timeline
           </p>
-          <p className="text-white font-semibold text-sm">
+          <p className="font-semibold text-sm" style={{ color: 'var(--text-h)' }}>
             Moon in{' '}
             <span style={{ color: lordMeta.color }}>{dasha.nakName}</span>
             <span className="text-slate-500 font-normal">
