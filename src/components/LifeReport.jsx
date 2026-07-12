@@ -4,13 +4,13 @@ import { computeCareer }      from '../utils/careerReport.js'
 import { computeMarriage }    from '../utils/marriageReport.js'
 import { computeHealth }      from '../utils/healthReport.js'
 import { computeChildren }    from '../utils/childrenReport.js'
+import { computeLoveLife }    from '../utils/loveLifeReport.js'
 
 const SERIF = "'Cormorant Garamond', Georgia, serif"
 const SANS  = "'Inter', system-ui, sans-serif"
 
 const COMING_SOON_CATS = [
   { key: 'physical',  label: 'Physical Characteristics', icon: '◈', color: '#94a3b8' },
-  { key: 'love',      label: 'Love Life',                icon: '♀', color: '#f9a8d4' },
 ]
 
 // ── Expandable section shell ───────────────────────────────────────────────────
@@ -136,6 +136,7 @@ export default function LifeReport({ chart }) {
   const marriage    = computeMarriage(chart)
   const health      = computeHealth(chart)
   const children    = computeChildren(chart)
+  const loveLife    = computeLoveLife(chart)
 
   return (
     <div className="flex flex-col gap-3">
@@ -219,6 +220,20 @@ export default function LifeReport({ chart }) {
           {...children}
           accentColor="#6ee7b7"
           modifierLabel={`${children.lordName} in House ${children.lordHouse} · How it shapes`}
+        />
+      </ReportSection>
+
+      {/* Love Life */}
+      <ReportSection
+        label="Love Life"
+        icon="♀"
+        color="#f9a8d4"
+        subtitle={`Venus in ${loveLife.signDisplay} · H${loveLife.lordHouse}`}
+      >
+        <ReportContent
+          {...loveLife}
+          accentColor="#f9a8d4"
+          modifierLabel={`Venus in House ${loveLife.lordHouse} · How it plays out`}
         />
       </ReportSection>
 
