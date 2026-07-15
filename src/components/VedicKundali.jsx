@@ -62,23 +62,27 @@ const GRAHAS = [
   { id: 'Ke', name: 'Ketu',    vName: 'Ketu',     symbol: '☋', bodyKey: null,      color: '#6ee7b7' },
 ]
 
-// North Indian diamond layout: 12 triangular house sections in 400×400 SVG
-// Inner square corners: iNW(100,100), iNE(300,100), iSE(300,300), iSW(100,300)
-// [houseNum, [[x1,y1],[x2,y2],[x3,y3]], [labelX, labelY]]
-const HOUSE_TRIANGLES = [
-  [1,  [[200,0],[100,100],[300,100]],   [200, 26]],   // top-center (Lagna)
-  [2,  [[200,0],[400,0],[300,100]],     [363, 22]],   // top-right corner
-  [3,  [[400,0],[400,200],[300,100]],   [384, 80]],   // right-upper
-  [4,  [[400,200],[300,100],[300,300]], [362, 200]],  // right-center
-  [5,  [[400,200],[400,400],[300,300]], [384, 320]],  // right-lower
-  [6,  [[400,400],[200,400],[300,300]], [363, 380]],  // bottom-right corner
-  [7,  [[200,400],[300,300],[100,300]], [200, 382]],  // bottom-center
-  [8,  [[0,400],[200,400],[100,300]],   [37, 380]],   // bottom-left corner
-  [9,  [[0,400],[0,200],[100,300]],     [16, 320]],   // left-lower
-  [10, [[0,200],[100,100],[100,300]],   [38, 200]],   // left-center
-  [11, [[0,0],[0,200],[100,100]],       [16, 80]],    // left-upper
-  [12, [[0,0],[200,0],[100,100]],       [37, 22]],    // top-left corner
+// North Indian diamond layout: 12 positions ordered clockwise from H1 (index 0).
+// NO pre-assigned house numbers — they are derived at render time from NI_LAGNA_POS.
+// Each entry: [[[x1,y1],[x2,y2],[x3,y3]], [labelX, labelY]]
+const NI_POSITIONS = [
+  [[[200,0],[100,100],[300,100]],   [200, 26]],   // 0  → H1  top-center (Lagna)
+  [[[200,0],[400,0],[300,100]],     [363, 22]],   // 1  → H2  top-right corner
+  [[[400,0],[400,200],[300,100]],   [384, 80]],   // 2  → H3  right-upper
+  [[[400,200],[300,100],[300,300]], [362, 200]],  // 3  → H4  right-center
+  [[[400,200],[400,400],[300,300]], [384, 320]],  // 4  → H5  right-lower
+  [[[400,400],[200,400],[300,300]], [363, 380]],  // 5  → H6  bottom-right corner
+  [[[200,400],[300,300],[100,300]], [200, 382]],  // 6  → H7  bottom-center
+  [[[0,400],[200,400],[100,300]],   [37, 380]],   // 7  → H8  bottom-left corner
+  [[[0,400],[0,200],[100,300]],     [16, 320]],   // 8  → H9  left-lower
+  [[[0,200],[100,100],[100,300]],   [38, 200]],   // 9  → H10 left-center
+  [[[0,0],[0,200],[100,100]],       [16, 80]],    // 10 → H11 left-upper
+  [[[0,0],[200,0],[100,100]],       [37, 22]],    // 11 → H12 top-left corner
 ]
+
+// Single source of truth: Lagna (H1) is ALWAYS at position index 0.
+// house number for any position = ((posIdx - NI_LAGNA_POS + 12) % 12) + 1
+const NI_LAGNA_POS = 0
 
 // South Indian fixed sign grid (0-indexed rashi, -1 = center blank cell)
 const SI_GRID = [
@@ -193,22 +197,37 @@ function NorthIndianChart({ chart }) {
   const lineC = '#2d2a50'
   const lineW = 1.2
 
+  // ── Single source of truth ──────────────────────────────────────────────────
+  // NI_LAGNA_POS is the one constant that drives EVERYTHING below.
+  // houseAtPos derives the house number for any position from it.
+  // isLagna derives the Asc marker position from it.
+  // They share the same root, so they can never disagree.
+  const houseAtPos = posIdx => ((posIdx - NI_LAGNA_POS + 12) % 12) + 1
+
+  // Build planet map keyed by house number
   const planetsByHouse = {}
   for (let i = 1; i <= 12; i++) planetsByHouse[i] = []
   chart.grahas.forEach(g => planetsByHouse[g.houseNum].push(g.id))
+
+  // ── Diagnostic console output ───────────────────────────────────────────────
+  const houseNumberMap = Object.fromEntries(NI_POSITIONS.map((_, i) => [i, houseAtPos(i)]))
+  console.log('[NorthIndianChart] lagnaRashi:', chart.lagnaRashi, '(' + RASHI_SHORT[chart.lagnaRashi] + ')')
+  console.log('[NorthIndianChart] Asc renders in position:', NI_LAGNA_POS)
+  console.log('[NorthIndianChart] House numbers assigned (posIdx→houseNum):', houseNumberMap)
+  console.log('[NorthIndianChart] Verify: position', NI_LAGNA_POS, '→ house', houseAtPos(NI_LAGNA_POS), '(must be 1)')
 
   return (
     <svg width="100%" viewBox={`0 0 ${S} ${S}`} style={{ display: 'block' }}>
       {/* White background */}
       <rect width={S} height={S} fill="#fff" />
 
-      {/* H1 Lagna accent */}
+      {/* H1 Lagna accent — position 0 is always top-center */}
       <polygon points="200,0 100,100 300,100" fill="rgba(79,70,229,0.08)" />
 
       {/* Outer border */}
       <rect x={0.5} y={0.5} width={S-1} height={S-1} fill="none" stroke={lineC} strokeWidth={1.5} />
 
-      {/* Full corner-to-corner diagonals — continuous through center */}
+      {/* Full corner-to-corner diagonals */}
       <line x1={0} y1={0} x2={S} y2={S} stroke={lineC} strokeWidth={lineW} />
       <line x1={S} y1={0} x2={0} y2={S} stroke={lineC} strokeWidth={lineW} />
 
@@ -222,10 +241,11 @@ function NorthIndianChart({ chart }) {
       <line x1={0}   y1={200} x2={100} y2={300} stroke={lineC} strokeWidth={lineW} />
       <line x1={0}   y1={200} x2={100} y2={100} stroke={lineC} strokeWidth={lineW} />
 
-
-      {HOUSE_TRIANGLES.map(([houseNum, pts, [lx, ly]]) => {
-        const isLagna = houseNum === 1
-        const planets = planetsByHouse[houseNum]
+      {NI_POSITIONS.map(([pts, [lx, ly]], posIdx) => {
+        // houseNum and isLagna both derived from the same NI_LAGNA_POS — one source
+        const houseNum = houseAtPos(posIdx)
+        const isLagna  = posIdx === NI_LAGNA_POS
+        const planets  = planetsByHouse[houseNum]
         const cx = (pts[0][0] + pts[1][0] + pts[2][0]) / 3
         const cy = (pts[0][1] + pts[1][1] + pts[2][1]) / 3
         const signIdx = (chart.lagnaRashi + houseNum - 1) % 12
@@ -239,21 +259,21 @@ function NorthIndianChart({ chart }) {
           : cy - totalH / 2 + lineH * 0.75
 
         return (
-          <g key={houseNum}>
-            {/* House number — at the outer apex of each house triangle */}
+          <g key={posIdx}>
+            {/* House number label at apex — derived from NI_LAGNA_POS, not hardcoded */}
             <text x={lx} y={ly} textAnchor="middle" fontSize={9}
               fontFamily="Georgia, 'Times New Roman', serif" fontWeight="600"
               fill={isLagna ? '#3730a3' : '#6b64a8'}>
               {houseNum}
             </text>
-            {/* Rashi abbreviation — small label below house number */}
+            {/* Rashi abbreviation below house number */}
             <text x={lx} y={ly + 10} textAnchor="middle" fontSize={6.5}
               fontFamily="monospace"
               fill={isLagna ? '#4f46e5' : '#9090c0'}>
               {RASHI_SHORT[signIdx]}
             </text>
 
-            {/* "Asc" marker in Lagna house */}
+            {/* "Asc" marker — same condition as house "1" label, both from NI_LAGNA_POS */}
             {isLagna && (
               <text x={cx} y={planets.length > 0 ? cy - 1 : cy + 5}
                 textAnchor="middle" fontSize={9} fontWeight="bold"
@@ -293,9 +313,17 @@ function SouthIndianChart({ chart }) {
   const CS = 100
   const lineColor = 'rgba(100,90,160,0.35)'
 
+  // House number for any rashi cell: derived from lagnaRashi, same formula as grahas
+  const houseOfRashi = rashiIdx => ((rashiIdx - chart.lagnaRashi + 12) % 12) + 1
+
   const planetsByRashi = {}
   for (let i = 0; i < 12; i++) planetsByRashi[i] = []
   chart.grahas.forEach(g => planetsByRashi[g.rashiIdx].push(g.id))
+
+  // ── Diagnostic console output ───────────────────────────────────────────────
+  console.log('[SouthIndianChart] lagnaRashi:', chart.lagnaRashi, '(' + RASHI_SHORT[chart.lagnaRashi] + ')')
+  console.log('[SouthIndianChart] Asc renders in rashiIdx:', chart.lagnaRashi)
+  console.log('[SouthIndianChart] House number at Asc cell:', houseOfRashi(chart.lagnaRashi), '(must be 1)')
 
   return (
     <svg width="100%" viewBox={`0 0 ${S} ${S}`} style={{ maxWidth: S, display: 'block', borderRadius: 6 }}>
@@ -314,8 +342,9 @@ function SouthIndianChart({ chart }) {
             )
           }
 
-          const isLagna = rashiIdx === chart.lagnaRashi
-          const planets = planetsByRashi[rashiIdx]
+          const isLagna  = rashiIdx === chart.lagnaRashi
+          const houseNum = houseOfRashi(rashiIdx)  // derived, not hardcoded
+          const planets  = planetsByRashi[rashiIdx]
           const cx = x + CS / 2
           const cy = y + CS / 2
 
@@ -331,8 +360,11 @@ function SouthIndianChart({ chart }) {
                 fill={isLagna ? 'rgba(99,102,241,0.08)' : 'transparent'}
                 stroke={lineColor} strokeWidth={0.7} />
 
-              <text x={x + 5} y={y + 13} fontSize={8} fill="#9898b8" fontFamily="monospace">
-                {rashiIdx + 1}
+              {/* House number — derived from lagnaRashi, same source as isLagna */}
+              <text x={x + 5} y={y + 13} fontSize={8}
+                fill={isLagna ? '#3730a3' : '#9898b8'} fontFamily="monospace"
+                fontWeight={isLagna ? 'bold' : 'normal'}>
+                {houseNum}
               </text>
               <text x={x + CS - 4} y={y + 13} fontSize={7} fill="#8888a8" fontFamily="monospace" textAnchor="end">
                 {RASHI_SHORT[rashiIdx]}
