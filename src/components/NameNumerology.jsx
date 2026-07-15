@@ -66,8 +66,6 @@ function NumberCard({ label, number, isMaster }) {
 
 function SuggestionCard({ suggestion, lifePath }) {
   const interp = nameNumberInterpretations[suggestion.nameNumber]
-  // Trim theme to a readable snippet
-  const snippet = interp?.theme?.slice(0, 110).trimEnd() + (interp?.theme?.length > 110 ? '…' : '')
   return (
     <div className="rounded-xl p-4 flex flex-col gap-2.5"
       style={{ background: 'var(--card-subtle)', border: '1px solid rgba(99,102,241,0.18)' }}>
@@ -83,7 +81,7 @@ function SuggestionCard({ suggestion, lifePath }) {
       </div>
       {/* Reason */}
       <p style={{ fontFamily: SANS, fontSize: '1rem', color: 'var(--text-soft)', lineHeight: 1.6 }}>
-        {snippet}
+        {interp?.theme}
       </p>
       <p style={{ fontFamily: SANS, fontSize: '0.75rem', color: 'var(--text-faint)', lineHeight: 1.5 }}>
         Name Number {suggestion.nameNumber} is compatible with Life Path {lifePath}.
