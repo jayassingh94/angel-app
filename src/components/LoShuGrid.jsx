@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { LO_SHU, PLANE_READINGS } from '../data.js'
+import { useTheme } from '../context/ThemeContext.jsx'
 
 // Meaning of each Lo Shu digit — used to build Superpowers and Missing Numbers
 const NUMBER_MEANINGS = {
@@ -221,7 +222,7 @@ const NUMBER_MEANINGS = {
   },
 }
 
-function GridCell({ num, count, index, isGhost }) {
+function GridCell({ num, count, index, isGhost, isDark }) {
   const isLit = !isGhost && count > 0
 
   return (
@@ -231,10 +232,10 @@ function GridCell({ num, count, index, isGhost }) {
         animationDelay: `${index * 0.07}s`,
         background: isLit
           ? 'radial-gradient(circle at center, rgba(139,92,246,0.22) 0%, rgba(109,40,217,0.08) 100%)'
-          : 'rgba(255,255,255,0.02)',
+          : isDark ? 'rgba(255,255,255,0.02)' : 'rgba(0,0,0,0.03)',
         border: isLit
           ? '1px solid rgba(167,139,250,0.55)'
-          : '1px solid rgba(255,255,255,0.07)',
+          : isDark ? '1px solid rgba(255,255,255,0.07)' : '1px solid rgba(0,0,0,0.1)',
         boxShadow: isLit
           ? '0 0 22px rgba(139,92,246,0.45), 0 0 44px rgba(139,92,246,0.15), inset 0 0 22px rgba(139,92,246,0.1)'
           : 'none',
@@ -243,8 +244,10 @@ function GridCell({ num, count, index, isGhost }) {
       <span
         className="text-4xl sm:text-5xl font-bold"
         style={{
-          color: isLit ? '#c4b5fd' : 'rgba(255,255,255,0.1)',
-          textShadow: isLit
+          color: isLit
+            ? (isDark ? '#c4b5fd' : '#4c1d95')
+            : (isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.18)'),
+          textShadow: isLit && isDark
             ? '0 0 20px rgba(196,181,253,0.9), 0 0 40px rgba(167,139,250,0.6)'
             : 'none',
         }}
@@ -254,7 +257,7 @@ function GridCell({ num, count, index, isGhost }) {
       {!isGhost && count > 1 && (
         <span
           className="absolute top-2 right-2.5 text-xs font-bold text-violet-400"
-          style={{ textShadow: '0 0 8px rgba(167,139,250,0.8)' }}
+          style={{ textShadow: isDark ? '0 0 8px rgba(167,139,250,0.8)' : 'none' }}
         >
           ×{count}
         </span>
@@ -274,15 +277,15 @@ function SectionLabel({ children }) {
 function PlaneRow({ plane }) {
   return (
     <div
-      className={`flex items-start gap-4 rounded-2xl border ${plane.borderColor} bg-white/4 px-5 py-4`}
-      style={{ boxShadow: '0 0 18px rgba(139,92,246,0.12)' }}
+      className={`flex items-start gap-4 rounded-2xl border ${plane.borderColor} px-5 py-4`}
+      style={{ background: 'var(--card-inner)', boxShadow: '0 0 18px rgba(139,92,246,0.12)' }}
     >
       <span className="text-xl mt-0.5 shrink-0">{plane.icon}</span>
       <div className="min-w-0">
         <p className={`text-sm font-semibold bg-gradient-to-r ${plane.color} bg-clip-text text-transparent mb-0.5`}>
           {plane.label}
         </p>
-        <p className="text-slate-400 text-base leading-relaxed">{plane.text}</p>
+        <p className="text-base leading-relaxed" style={{ color: 'var(--text-body)' }}>{plane.text}</p>
       </div>
     </div>
   )
@@ -291,14 +294,14 @@ function PlaneRow({ plane }) {
 function PowerCard({ title, icon, items, accentColor, borderColor, emptyText }) {
   return (
     <div
-      className={`flex flex-col gap-3 rounded-2xl border ${borderColor} bg-white/4 p-5`}
-      style={{ boxShadow: '0 0 20px rgba(139,92,246,0.1)' }}
+      className={`flex flex-col gap-3 rounded-2xl border ${borderColor} p-5`}
+      style={{ background: 'var(--card-inner)', boxShadow: '0 0 20px rgba(139,92,246,0.1)' }}
     >
-      <p className="text-sm font-semibold text-white flex items-center gap-2">
+      <p className="text-sm font-semibold flex items-center gap-2" style={{ color: 'var(--text-h)' }}>
         <span>{icon}</span> {title}
       </p>
       {items.length === 0 ? (
-        <p className="text-slate-600 text-xs leading-relaxed">{emptyText}</p>
+        <p className="text-xs leading-relaxed" style={{ color: 'var(--text-muted)' }}>{emptyText}</p>
       ) : (
         <ul className="flex flex-col gap-3">
           {items.map(({ num, name, freqLabel, text }) => (
@@ -331,7 +334,7 @@ function PowerCard({ title, icon, items, accentColor, borderColor, emptyText }) 
                     </span>
                   )}
                 </div>
-                <p className="text-slate-500 text-[0.8125rem] leading-relaxed mt-0.5">{text}</p>
+                <p className="text-[0.8125rem] leading-relaxed mt-0.5" style={{ color: 'var(--text-soft)' }}>{text}</p>
               </div>
             </li>
           ))}
@@ -387,8 +390,8 @@ function MissingNumberCard({ num, name, energy, missingMeaning, remedies, gemsto
             <p className="text-[10px] font-semibold uppercase tracking-[0.22em] text-amber-500/70 mb-0.5">
               Missing Number
             </p>
-            <p className="text-base font-bold text-white leading-tight">{name}</p>
-            <p className="text-xs text-slate-500 mt-0.5">{energy}</p>
+            <p className="text-base font-bold leading-tight" style={{ color: 'var(--text-h)' }}>{name}</p>
+            <p className="text-xs mt-0.5" style={{ color: 'var(--text-soft)' }}>{energy}</p>
           </div>
         </div>
       </div>
@@ -396,13 +399,13 @@ function MissingNumberCard({ num, name, energy, missingMeaning, remedies, gemsto
       {/* ── Card body ──────────────────────────────────────────── */}
       <div
         className="flex flex-col gap-5 px-5 py-5"
-        style={{ background: 'rgba(10,8,24,0.55)' }}
+        style={{ background: 'var(--card-inner)' }}
       >
 
         {/* 1. Significance */}
         <div className="flex flex-col gap-2">
           <SubLabel color="#f59e0b">Significance</SubLabel>
-          <p className="text-slate-400 text-sm leading-relaxed pl-0.5">
+          <p className="text-sm leading-relaxed pl-0.5" style={{ color: 'var(--text-body)' }}>
             {missingMeaning}
           </p>
         </div>
@@ -417,7 +420,7 @@ function MissingNumberCard({ num, name, energy, missingMeaning, remedies, gemsto
                   className="shrink-0 mt-1 w-1.5 h-1.5 rounded-full"
                   style={{ background: '#2dd4bf', boxShadow: '0 0 6px #2dd4bf' }}
                 />
-                <span className="text-slate-400 text-sm leading-relaxed">{remedy}</span>
+                <span className="text-sm leading-relaxed" style={{ color: 'var(--text-body)' }}>{remedy}</span>
               </li>
             ))}
           </ul>
@@ -493,8 +496,8 @@ function MissingNumberCard({ num, name, energy, missingMeaning, remedies, gemsto
           <div
             className="rounded-xl px-4 py-3 flex flex-col gap-1"
             style={{
-              background: 'rgba(255,255,255,0.02)',
-              border: '1px solid rgba(255,255,255,0.06)',
+              background: 'var(--card-bg)',
+              border: '1px solid var(--card-border-subtle)',
             }}
           >
             <p
@@ -503,7 +506,7 @@ function MissingNumberCard({ num, name, energy, missingMeaning, remedies, gemsto
             >
               Meditation &amp; Activation
             </p>
-            <p className="text-slate-400 text-sm leading-relaxed">
+            <p className="text-sm leading-relaxed" style={{ color: 'var(--text-body)' }}>
               {chakra.activation}
             </p>
           </div>
@@ -521,7 +524,7 @@ function MissingNumbersSection({ items }) {
         className="rounded-2xl border border-amber-500/15 p-5 text-center"
         style={{ background: 'rgba(251,191,36,0.03)' }}
       >
-        <p className="text-slate-500 text-sm leading-relaxed">
+        <p className="text-sm leading-relaxed" style={{ color: 'var(--text-soft)' }}>
           All nine numbers are present in your date — your grid is remarkably complete.
         </p>
       </div>
@@ -547,7 +550,7 @@ function MissingNumbersSection({ items }) {
             <p className="text-amber-300 text-sm font-semibold tracking-wide">
               Missing: {missingList}
             </p>
-            <p className="text-slate-500 text-sm leading-relaxed">
+            <p className="text-sm leading-relaxed" style={{ color: 'var(--text-soft)' }}>
               Absent numbers are not weaknesses — each one is a precise cosmic invitation to grow, heal, and consciously activate the energy you came here to embody.
             </p>
           </div>
@@ -577,7 +580,7 @@ const YEARS = Array.from(
 )
 
 const SELECT_CLASS =
-  'w-full px-3 py-4 rounded-2xl bg-white/5 border border-violet-500/30 text-white ' +
+  'w-full px-3 py-4 rounded-2xl border border-violet-500/30 ' +
   'appearance-none cursor-pointer focus:outline-none focus:border-violet-400/60 ' +
   'transition-all duration-200 text-sm text-center'
 
@@ -588,9 +591,12 @@ function DateSelect({ value, onChange, placeholder, children }) {
         value={value}
         onChange={(e) => onChange(e.target.value)}
         className={SELECT_CLASS}
-        style={{ color: value ? 'white' : '#64748b' }}
+        style={{
+          background: 'var(--input-bg)',
+          color: value ? 'var(--text-h)' : 'var(--text-muted)',
+        }}
       >
-        <option value="" disabled style={{ color: '#64748b', background: '#0f0a1e' }}>
+        <option value="" disabled style={{ color: 'var(--text-muted)', background: 'var(--input-bg)' }}>
           {placeholder}
         </option>
         {children}
@@ -603,6 +609,7 @@ function DateSelect({ value, onChange, placeholder, children }) {
 }
 
 export default function LoShuGrid() {
+  const { isDark } = useTheme()
   const [day,   setDay]   = useState('')
   const [month, setMonth] = useState('')
   const [year,  setYear]  = useState('')
@@ -674,10 +681,10 @@ export default function LoShuGrid() {
         {/* ─── Section header ─────────────────────────────────────────── */}
         <div className="text-center">
           <p className="text-violet-400/70 text-xs uppercase tracking-[0.3em] mb-2">Vedic Numerology</p>
-          <h2 className="text-3xl font-bold text-white">
+          <h2 className="text-3xl font-bold" style={{ color: 'var(--text-h)' }}>
             <span className="shimmer-text">Lo Shu Grid</span>
           </h2>
-          <p className="mt-3 text-slate-500 text-sm max-w-sm mx-auto leading-relaxed">
+          <p className="mt-3 text-sm max-w-sm mx-auto leading-relaxed" style={{ color: 'var(--text-body)' }}>
             Your date of birth holds a unique cosmic blueprint. Enter it below to illuminate your personal magic square.
           </p>
         </div>
@@ -690,7 +697,7 @@ export default function LoShuGrid() {
 
             <DateSelect value={day} onChange={(v) => { setDay(v); setGridData(null) }} placeholder="Day">
               {DAYS.map((d) => (
-                <option key={d} value={d} style={{ background: '#0f0a1e', color: 'white' }}>
+                <option key={d} value={d}>
                   {String(d).padStart(2, '0')}
                 </option>
               ))}
@@ -698,7 +705,7 @@ export default function LoShuGrid() {
 
             <DateSelect value={month} onChange={(v) => { setMonth(v); setGridData(null) }} placeholder="Month">
               {MONTHS.map((name, i) => (
-                <option key={name} value={i + 1} style={{ background: '#0f0a1e', color: 'white' }}>
+                <option key={name} value={i + 1}>
                   {name}
                 </option>
               ))}
@@ -706,7 +713,7 @@ export default function LoShuGrid() {
 
             <DateSelect value={year} onChange={(v) => { setYear(v); setGridData(null) }} placeholder="Year">
               {YEARS.map((y) => (
-                <option key={y} value={y} style={{ background: '#0f0a1e', color: 'white' }}>
+                <option key={y} value={y}>
                   {y}
                 </option>
               ))}
@@ -721,8 +728,9 @@ export default function LoShuGrid() {
             className={`w-full py-4 rounded-2xl font-semibold text-sm tracking-wide border transition-all duration-200
               ${canCalculate
                 ? 'glow-button bg-gradient-to-r from-violet-600 to-indigo-700 border-violet-400/30 text-white cursor-pointer hover:scale-[1.02] active:scale-95'
-                : 'bg-white/3 border-white/10 text-slate-600 cursor-not-allowed'
+                : 'border-white/10 cursor-not-allowed'
               }`}
+            style={!canCalculate ? { background: 'var(--btn-subtle-bg)', color: 'var(--text-muted)' } : {}}
           >
             ✦ Calculate Grid
           </button>
@@ -739,12 +747,13 @@ export default function LoShuGrid() {
                 count={gridData ? (gridData[num] || 0) : 0}
                 index={i}
                 isGhost={!gridData}
+                isDark={isDark}
               />
             ))}
           </div>
 
           {/* Legend */}
-          <div className="flex flex-wrap items-center justify-center gap-x-5 gap-y-1 text-xs text-slate-600">
+          <div className="flex flex-wrap items-center justify-center gap-x-5 gap-y-1 text-xs" style={{ color: 'var(--text-muted)' }}>
             <span className="flex items-center gap-1.5">
               <span className="w-3 h-3 rounded-full bg-violet-500/40 border border-violet-400/60 inline-block" />
               Present in your date
@@ -772,7 +781,7 @@ export default function LoShuGrid() {
                   <PlaneRow key={plane.label} plane={plane} />
                 ))
               ) : (
-                <p className="text-center text-slate-500 text-sm leading-relaxed px-4 py-2">
+                <p className="text-center text-sm leading-relaxed px-4 py-2" style={{ color: 'var(--text-soft)' }}>
                   No planes are fully activated — your grid reveals a{' '}
                   <span className="text-violet-400">unique cosmic signature</span> that transcends a single category.
                   Each gap is an invitation to grow.
