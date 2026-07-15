@@ -198,7 +198,7 @@ function NorthIndianChart({ chart }) {
   chart.grahas.forEach(g => planetsByHouse[g.houseNum].push(g.id))
 
   return (
-    <svg width="100%" viewBox={`0 0 ${S} ${S}`} style={{ maxWidth: S, display: 'block' }}>
+    <svg width="100%" viewBox={`0 0 ${S} ${S}`} style={{ display: 'block' }}>
       {/* White background */}
       <rect width={S} height={S} fill="#fff" />
 
@@ -240,13 +240,13 @@ function NorthIndianChart({ chart }) {
 
         return (
           <g key={houseNum}>
-            {/* Sign number — at the outer apex of each house triangle */}
+            {/* House number — at the outer apex of each house triangle */}
             <text x={lx} y={ly} textAnchor="middle" fontSize={9}
               fontFamily="Georgia, 'Times New Roman', serif" fontWeight="600"
               fill={isLagna ? '#3730a3' : '#6b64a8'}>
-              {signIdx + 1}
+              {houseNum}
             </text>
-            {/* Rashi abbreviation — small label below sign number */}
+            {/* Rashi abbreviation — small label below house number */}
             <text x={lx} y={ly + 10} textAnchor="middle" fontSize={6.5}
               fontFamily="monospace"
               fill={isLagna ? '#4f46e5' : '#9090c0'}>
