@@ -3,7 +3,7 @@ import { computePersonality } from '../utils/lifeReport.js'
 import { computeCareer }      from '../utils/careerReport.js'
 import { computeMarriage }    from '../utils/marriageReport.js'
 import { computeHealth }      from '../utils/healthReport.js'
-import { computeChildren }    from '../utils/childrenReport.js'
+import { computeChildren, DISCLAIMER as CHILDREN_DISCLAIMER } from '../utils/childrenReport.js'
 import { computeLoveLife }    from '../utils/loveLifeReport.js'
 import { computePhysical }    from '../utils/physicalReport.js'
 
@@ -248,10 +248,16 @@ export default function LifeReport({ chart }) {
         color="#6ee7b7"
         subtitle={`${children.signDisplay} · ${children.lordName} in H${children.lordHouse}`}
       >
+        <p
+          className="text-[11px] italic leading-relaxed pt-4"
+          style={{ color: 'var(--text-faint)', fontFamily: SANS }}
+        >
+          {CHILDREN_DISCLAIMER}
+        </p>
         <ReportContent
           {...children}
           accentColor="#6ee7b7"
-          modifierLabel={`${children.lordName} in House ${children.lordHouse} · How it shapes`}
+          modifierLabel={`${children.lordName} in House ${children.lordHouse} · Traditional timing`}
         />
       </ReportSection>
 
