@@ -87,10 +87,10 @@ const NI_LAGNA_POS = 0
 
 // South Indian fixed sign grid (0-indexed rashi, -1 = center blank cell)
 const SI_GRID = [
-  [11,  0,  1,  2],  // Pi Ar Ta Ge
-  [10, -1, -1,  3],  // Aq  _  _ Ca
-  [ 9, -1, -1,  4],  // Cp  _  _ Le
-  [ 8,  7,  6,  5],  // Sg Sc Li Vi
+  [ 0,  1,  2,  3],  // Ar Ta Ge Ca
+  [11, -1, -1,  4],  // Pi  _  _ Le
+  [10, -1, -1,  5],  // Aq  _  _ Vi
+  [ 9,  8,  7,  6],  // Cp Sg Sc Li
 ]
 
 // Distinct planet colors for the light chart background
