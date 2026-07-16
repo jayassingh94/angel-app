@@ -62,22 +62,23 @@ const GRAHAS = [
   { id: 'Ke', name: 'Ketu',    vName: 'Ketu',     symbol: '☋', bodyKey: null,      color: '#6ee7b7' },
 ]
 
-// North Indian diamond layout: 12 positions ordered clockwise from H1 (index 0).
+// North Indian diamond layout: 12 positions ordered counter-clockwise from H1 (index 0).
+// Traditional convention: H2 is to the LEFT of H1, H4 at left-center, H10 at right-center.
 // NO pre-assigned house numbers — they are derived at render time from NI_LAGNA_POS.
 // Each entry: [[[x1,y1],[x2,y2],[x3,y3]], [labelX, labelY]]
 const NI_POSITIONS = [
   [[[200,0],[100,100],[300,100]],   [200, 26]],   // 0  → H1  top-center (Lagna)
-  [[[200,0],[400,0],[300,100]],     [363, 22]],   // 1  → H2  top-right corner
-  [[[400,0],[400,200],[300,100]],   [384, 80]],   // 2  → H3  right-upper
-  [[[400,200],[300,100],[300,300]], [362, 200]],  // 3  → H4  right-center
-  [[[400,200],[400,400],[300,300]], [384, 320]],  // 4  → H5  right-lower
-  [[[400,400],[200,400],[300,300]], [363, 380]],  // 5  → H6  bottom-right corner
+  [[[0,0],[200,0],[100,100]],       [37, 22]],    // 1  → H2  top-left corner
+  [[[0,0],[0,200],[100,100]],       [16, 80]],    // 2  → H3  left-upper
+  [[[0,200],[100,100],[100,300]],   [38, 200]],   // 3  → H4  left-center
+  [[[0,400],[0,200],[100,300]],     [16, 320]],   // 4  → H5  left-lower
+  [[[0,400],[200,400],[100,300]],   [37, 380]],   // 5  → H6  bottom-left corner
   [[[200,400],[300,300],[100,300]], [200, 382]],  // 6  → H7  bottom-center
-  [[[0,400],[200,400],[100,300]],   [37, 380]],   // 7  → H8  bottom-left corner
-  [[[0,400],[0,200],[100,300]],     [16, 320]],   // 8  → H9  left-lower
-  [[[0,200],[100,100],[100,300]],   [38, 200]],   // 9  → H10 left-center
-  [[[0,0],[0,200],[100,100]],       [16, 80]],    // 10 → H11 left-upper
-  [[[0,0],[200,0],[100,100]],       [37, 22]],    // 11 → H12 top-left corner
+  [[[400,400],[200,400],[300,300]], [363, 380]],  // 7  → H8  bottom-right corner
+  [[[400,400],[400,200],[300,300]], [384, 320]],  // 8  → H9  right-lower
+  [[[400,200],[300,100],[300,300]], [362, 200]],  // 9  → H10 right-center
+  [[[400,0],[400,200],[300,100]],   [384, 80]],   // 10 → H11 right-upper
+  [[[200,0],[400,0],[300,100]],     [363, 22]],   // 11 → H12 top-right corner
 ]
 
 // Single source of truth: Lagna (H1) is ALWAYS at position index 0.
